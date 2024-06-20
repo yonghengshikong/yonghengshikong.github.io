@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>create-hexo-blog</title>
+    <link href="/2024/06/20/create-hexo-blog/"/>
+    <url>/2024/06/20/create-hexo-blog/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-创建博客仓库，这里默认使用github"><a href="#1-创建博客仓库，这里默认使用github" class="headerlink" title="1.创建博客仓库，这里默认使用github"></a>1.创建博客仓库，这里默认使用github</h2><p><img src="/2024/06/20/create-hexo-blog/1.png" alt="创建仓库"></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Hello World</title>
     <link href="/2024/06/20/hello-world/"/>
     <url>/2024/06/20/hello-world/</url>
