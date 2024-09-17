@@ -24,10 +24,10 @@
 <meta property="og:description" content="ES6（ECMAScript 6，也称为ECMAScript 2015）是JavaScript语言的一个重大更新，引入了许多新特性，旨在使代码更简洁、更易读，同时提供更强大的功能。以下是ES6中引入的主要新特性及其详细解释：  1. let 和 const 关键字let 声明 块级作用域：let 声明的变量具有块级作用域，即变量只在其所在的代码块 &#123;&#125; 内有效。 不允许重复声明">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-09-17T09:14:01.000Z">
-<meta property="article:modified_time" content="2024-09-17T10:28:19.019Z">
+<meta property="article:modified_time" content="2024-09-17T10:50:38.802Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="JavaScript">
-<meta property="article:tag" content="ES6">
+<meta property="article:tag" content="ECMAScript 6">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          11k 字
+          13k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          94 分钟
+          108 分钟
         
       </span>
     
@@ -624,26 +624,126 @@
 </ul>
 <p>通过理解和掌握这些概念，你可以更有效地处理各种数据结构，编写更加清晰和可维护的代码。</p>
 <hr>
-<h1 id="13-生成器（Generators）"><a href="#13-生成器（Generators）" class="headerlink" title="13. 生成器（Generators）"></a>13. <strong>生成器（Generators）</strong></h1><ul>
-<li><strong>定义生成器函数</strong>：使用 <code>function*</code> 语法定义，生成器函数可以在执行过程中暂停和恢复。</li>
-<li><strong><code>yield</code> 关键字</strong>：用于暂停函数执行，返回一个值。</li>
-</ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span>* <span class="hljs-title function_">count</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">yield</span> <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">yield</span> <span class="hljs-number">2</span>;<br>  <span class="hljs-keyword">yield</span> <span class="hljs-number">3</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> counter = <span class="hljs-title function_">count</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(counter.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出 1</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(counter.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出 2</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(counter.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出 3</span><br></code></pre></td></tr></table></figure>
+<h1 id="13-生成器（Generators）"><a href="#13-生成器（Generators）" class="headerlink" title="13. 生成器（Generators）"></a>13. <strong>生成器（Generators）</strong></h1><p>生成器是 ECMAScript 6 (ES6) 引入的一种特殊类型的函数，允许函数在执行时被暂停和恢复。生成器在处理需要多次迭代的任务时非常有用，比如遍历数据集、异步操作等。生成器函数可以简化代码逻辑，并提供了一种优雅的方式来管理异步操作。</p>
+<h2 id="1-生成器的基本概念"><a href="#1-生成器的基本概念" class="headerlink" title="1. 生成器的基本概念"></a>1. <strong>生成器的基本概念</strong></h2><p>生成器是能够暂停执行并在之后的时间点恢复执行的函数。生成器函数通过 <code>function*</code> 关键字定义，并且返回一个生成器对象。生成器对象具有 <code>next()</code> 方法，可以用来控制生成器的执行过程。</p>
+<h2 id="2-生成器函数的定义"><a href="#2-生成器函数的定义" class="headerlink" title="2. 生成器函数的定义"></a>2. <strong>生成器函数的定义</strong></h2><p>生成器函数通过 <code>function*</code> 语法定义。生成器函数内部使用 <code>yield</code> 关键字来暂停函数的执行，并返回一个值。每次调用 <code>next()</code> 方法时，生成器会从上次暂停的位置继续执行，直到遇到下一个 <code>yield</code> 语句。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span>* <span class="hljs-title function_">myGenerator</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">yield</span> <span class="hljs-string">&#x27;Hello&#x27;</span>;<br>  <span class="hljs-keyword">yield</span> <span class="hljs-string">&#x27;World&#x27;</span>;<br>  <span class="hljs-keyword">yield</span> <span class="hljs-string">&#x27;!&#x27;</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> generator = <span class="hljs-title function_">myGenerator</span>();<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(generator.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: Hello</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(generator.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: World</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(generator.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: !</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(generator.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: undefined</span><br></code></pre></td></tr></table></figure>
 
+<h2 id="3-生成器对象"><a href="#3-生成器对象" class="headerlink" title="3. 生成器对象"></a>3. <strong>生成器对象</strong></h2><p>生成器函数返回一个生成器对象，该对象具有以下方法：</p>
+<ul>
+<li>**<code>next([value])</code>**：恢复生成器函数的执行，直到下一个 <code>yield</code> 表达式。可以传递一个参数 <code>value</code>，作为 <code>yield</code> 表达式的返回值。返回的对象包含两个属性：<ul>
+<li><code>value</code>：<code>yield</code> 表达式返回的值。</li>
+<li><code>done</code>：布尔值，表示生成器是否已经完成执行。</li>
+</ul>
+</li>
+<li>**<code>return([value])</code>**：结束生成器的执行，返回一个包含 <code>value</code> 的对象。<code>done</code> 属性将被设置为 <code>true</code>。</li>
+<li>**<code>throw(exception)</code>**：在生成器中抛出异常，生成器会捕获这个异常并将其作为 <code>throw</code> 表达式的结果。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span>* <span class="hljs-title function_">myGenerator</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">yield</span> <span class="hljs-string">&#x27;Hello&#x27;</span>;<br>    <span class="hljs-keyword">yield</span> <span class="hljs-string">&#x27;World&#x27;</span>;<br>  &#125; <span class="hljs-keyword">catch</span> (e) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Error:&#x27;</span>, e);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> generator = <span class="hljs-title function_">myGenerator</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(generator.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: Hello</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(generator.<span class="hljs-keyword">throw</span>(<span class="hljs-string">&#x27;Something went wrong&#x27;</span>)); <span class="hljs-comment">// 输出: Error: Something went wrong</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(generator.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: undefined</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-生成器的实际应用"><a href="#4-生成器的实际应用" class="headerlink" title="4. 生成器的实际应用"></a>4. <strong>生成器的实际应用</strong></h2><p>生成器在许多实际场景中都非常有用：</p>
+<ul>
+<li><p><strong>迭代器</strong>：生成器提供了一种简洁的方式来实现自定义的迭代器，使得遍历自定义数据结构变得容易。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span>* <span class="hljs-title function_">range</span>(<span class="hljs-params">start, end</span>) &#123;<br>  <span class="hljs-keyword">while</span> (start &lt;= end) &#123;<br>    <span class="hljs-keyword">yield</span> start++;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> num <span class="hljs-keyword">of</span> <span class="hljs-title function_">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>)) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num); <span class="hljs-comment">// 输出: 1 2 3 4 5</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>异步编程</strong>：生成器与 Promise 结合可以简化异步编程。通过使用 <code>yield</code> 可以逐步处理异步操作，代码看起来更加同步。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span>* <span class="hljs-title function_">fetchData</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">yield</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://api.example.com/data&#x27;</span>);<br>  <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">yield</span> response.<span class="hljs-title function_">json</span>();<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>&#125;<br><br><span class="hljs-keyword">const</span> generator = <span class="hljs-title function_">fetchData</span>();<br>generator.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span><br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> generator.<span class="hljs-title function_">next</span>(response).<span class="hljs-property">value</span>)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> generator.<span class="hljs-title function_">next</span>(data));<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>状态机</strong>：生成器可以用来实现状态机，通过 <code>yield</code> 和 <code>next()</code> 控制状态的转换。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span>* <span class="hljs-title function_">stateMachine</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">let</span> state = <span class="hljs-string">&#x27;start&#x27;</span>;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>    <span class="hljs-keyword">switch</span> (state) &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;start&#x27;</span>:<br>        state = <span class="hljs-keyword">yield</span> <span class="hljs-string">&#x27;State is start&#x27;</span>;<br>        <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;middle&#x27;</span>:<br>        state = <span class="hljs-keyword">yield</span> <span class="hljs-string">&#x27;State is middle&#x27;</span>;<br>        <span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;end&#x27;</span>:<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;State is end&#x27;</span>;<br>    &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> machine = <span class="hljs-title function_">stateMachine</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(machine.<span class="hljs-title function_">next</span>().<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: State is start</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(machine.<span class="hljs-title function_">next</span>(<span class="hljs-string">&#x27;middle&#x27;</span>).<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: State is middle</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(machine.<span class="hljs-title function_">next</span>(<span class="hljs-string">&#x27;end&#x27;</span>).<span class="hljs-property">value</span>); <span class="hljs-comment">// 输出: State is end</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. <strong>总结</strong></h2><p>生成器是 ES6 中一个强大的特性，它提供了一种简单而灵活的方式来控制函数的执行流。通过 <code>function*</code> 语法定义生成器函数，并使用 <code>yield</code> 来暂停和恢复执行。生成器可以用于实现自定义迭代器、简化异步编程、实现状态机等。它们的使用可以使代码更加优雅和易于维护。</p>
+<p>如果你有任何其他问题或需要进一步的帮助，请随时告诉我！</p>
 <hr>
-<h1 id="14-Map-和-Set-数据结构"><a href="#14-Map-和-Set-数据结构" class="headerlink" title="14. Map 和 Set 数据结构"></a>14. <strong><code>Map</code> 和 <code>Set</code> 数据结构</strong></h1><h4 id="Map-对象"><a href="#Map-对象" class="headerlink" title="Map 对象"></a><strong><code>Map</code> 对象</strong></h4><ul>
-<li><strong>键值对集合</strong>：类似于对象，但键可以是任意类型，包括对象。</li>
-</ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();<br>map.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;Alice&#x27;</span>);<br>map.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;age&#x27;</span>, <span class="hljs-number">25</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(map.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;name&#x27;</span>)); <span class="hljs-comment">// 输出 Alice</span><br></code></pre></td></tr></table></figure>
+<h1 id="14-Map-和-Set-数据结构"><a href="#14-Map-和-Set-数据结构" class="headerlink" title="14. Map 和 Set 数据结构"></a>14. <strong><code>Map</code> 和 <code>Set</code> 数据结构</strong></h1><p>在 ECMAScript 6 (ES6) 中，<code>Map</code> 和 <code>Set</code> 是两个新的数据结构，它们提供了比传统的对象和数组更强大的功能，特别是在处理键值对和唯一值时。下面是对这两个数据结构的详细解释。</p>
+<hr>
+<h2 id="Map-数据结构"><a href="#Map-数据结构" class="headerlink" title="Map 数据结构"></a><strong><code>Map</code> 数据结构</strong></h2><h3 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. <strong>基本概念</strong></h3><p><code>Map</code> 是一个有序的键值对集合，其中的键和值都可以是任何类型的值。与普通的对象不同，<code>Map</code> 的键值对是按插入顺序保持的，并且键的类型不受限制。</p>
+<h3 id="2-创建-Map"><a href="#2-创建-Map" class="headerlink" title="2. 创建 Map"></a>2. <strong>创建 <code>Map</code></strong></h3><p>你可以使用 <code>new Map()</code> 来创建一个新的 <code>Map</code> 实例。可以选择传递一个可迭代对象（如数组）来初始化 <code>Map</code>。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 创建一个空的 Map 实例</span><br><span class="hljs-keyword">const</span> map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();<br><br><span class="hljs-comment">// 使用数组初始化 Map</span><br><span class="hljs-keyword">const</span> mapWithValues = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>([<br>  [<span class="hljs-string">&#x27;key1&#x27;</span>, <span class="hljs-string">&#x27;value1&#x27;</span>],<br>  [<span class="hljs-string">&#x27;key2&#x27;</span>, <span class="hljs-string">&#x27;value2&#x27;</span>],<br>]);<br></code></pre></td></tr></table></figure>
 
-<h4 id="Set-对象"><a href="#Set-对象" class="headerlink" title="Set 对象"></a><strong><code>Set</code> 对象</strong></h4><ul>
-<li><strong>值的集合</strong>：<code>Set</code> 是一组无重复值的集合。</li>
+<h3 id="3-常用方法"><a href="#3-常用方法" class="headerlink" title="3. 常用方法"></a>3. <strong>常用方法</strong></h3><ul>
+<li><p>**<code>set(key, value)</code>**：添加或更新键值对。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript">map.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;John&#x27;</span>);<br>map.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;age&#x27;</span>, <span class="hljs-number">30</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>get(key)</code>**：根据键获取值。如果键不存在，返回 <code>undefined</code>。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(map.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;name&#x27;</span>)); <span class="hljs-comment">// 输出: John</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>has(key)</code>**：检查是否存在指定的键。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(map.<span class="hljs-title function_">has</span>(<span class="hljs-string">&#x27;age&#x27;</span>)); <span class="hljs-comment">// 输出: true</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>delete(key)</code>**：删除指定的键及其对应的值。如果删除成功，返回 <code>true</code>；否则，返回 <code>false</code>。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">map.<span class="hljs-title function_">delete</span>(<span class="hljs-string">&#x27;age&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>clear()</code>**：删除 <code>Map</code> 中的所有键值对。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">map.<span class="hljs-title function_">clear</span>();<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>size</code>**：获取 <code>Map</code> 中键值对的数量。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(map.<span class="hljs-property">size</span>); <span class="hljs-comment">// 输出: 0</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>迭代方法</strong>：</p>
+<ul>
+<li>**<code>keys()</code>**：返回一个迭代器对象，包含 <code>Map</code> 中所有的键。</li>
+<li>**<code>values()</code>**：返回一个迭代器对象，包含 <code>Map</code> 中所有的值。</li>
+<li>**<code>entries()</code>**：返回一个迭代器对象，包含 <code>Map</code> 中所有的键值对。</li>
+<li>**<code>forEach(callback)</code>**：对 <code>Map</code> 中的每个键值对执行回调函数。</li>
 </ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(set.<span class="hljs-property">size</span>); <span class="hljs-comment">// 输出 3</span><br>set.<span class="hljs-title function_">add</span>(<span class="hljs-number">4</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(set.<span class="hljs-title function_">has</span>(<span class="hljs-number">2</span>)); <span class="hljs-comment">// 输出 true</span><br></code></pre></td></tr></table></figure>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript">map.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;key1&#x27;</span>, <span class="hljs-string">&#x27;value1&#x27;</span>);<br>map.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;key2&#x27;</span>, <span class="hljs-string">&#x27;value2&#x27;</span>);<br><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> map.<span class="hljs-title function_">entries</span>()) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;key&#125;</span>: <span class="hljs-subst">$&#123;value&#125;</span>`</span>);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="Set-数据结构"><a href="#Set-数据结构" class="headerlink" title="Set 数据结构"></a><strong><code>Set</code> 数据结构</strong></h2><h3 id="1-基本概念-1"><a href="#1-基本概念-1" class="headerlink" title="1. 基本概念"></a>1. <strong>基本概念</strong></h3><p><code>Set</code> 是一个值的集合，其中的值是唯一的，不允许重复。<code>Set</code> 的值是按照插入顺序排列的。</p>
+<h3 id="2-创建-Set"><a href="#2-创建-Set" class="headerlink" title="2. 创建 Set"></a>2. <strong>创建 <code>Set</code></strong></h3><p>你可以使用 <code>new Set()</code> 来创建一个新的 <code>Set</code> 实例。可以选择传递一个可迭代对象（如数组）来初始化 <code>Set</code>。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 创建一个空的 Set 实例</span><br><span class="hljs-keyword">const</span> set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>();<br><br><span class="hljs-comment">// 使用数组初始化 Set</span><br><span class="hljs-keyword">const</span> setWithValues = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]);<br></code></pre></td></tr></table></figure>
 
+<h3 id="3-常用方法-1"><a href="#3-常用方法-1" class="headerlink" title="3. 常用方法"></a>3. <strong>常用方法</strong></h3><ul>
+<li><p>**<code>add(value)</code>**：向 <code>Set</code> 中添加一个值。如果值已经存在，则不会重复添加。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript">set.<span class="hljs-title function_">add</span>(<span class="hljs-string">&#x27;apple&#x27;</span>);<br>set.<span class="hljs-title function_">add</span>(<span class="hljs-string">&#x27;banana&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>has(value)</code>**：检查 <code>Set</code> 中是否存在指定的值。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(set.<span class="hljs-title function_">has</span>(<span class="hljs-string">&#x27;apple&#x27;</span>)); <span class="hljs-comment">// 输出: true</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>delete(value)</code>**：删除 <code>Set</code> 中的指定值。如果值存在并且删除成功，返回 <code>true</code>；否则，返回 <code>false</code>。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">set.<span class="hljs-title function_">delete</span>(<span class="hljs-string">&#x27;banana&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>clear()</code>**：删除 <code>Set</code> 中的所有值。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">set.<span class="hljs-title function_">clear</span>();<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**<code>size</code>**：获取 <code>Set</code> 中的值的数量。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(set.<span class="hljs-property">size</span>); <span class="hljs-comment">// 输出: 0</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>迭代方法</strong>：</p>
+<ul>
+<li><strong><code>keys()</code></strong> 和 **<code>values()</code>**：返回一个迭代器对象，包含 <code>Set</code> 中的所有值（在 <code>Set</code> 中，键和值是一样的）。</li>
+<li>**<code>entries()</code>**：返回一个迭代器对象，包含 <code>Set</code> 中的所有键值对（在 <code>Set</code> 中，键和值是一样的）。</li>
+<li>**<code>forEach(callback)</code>**：对 <code>Set</code> 中的每个值执行回调函数。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript">set.<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>);<br>set.<span class="hljs-title function_">add</span>(<span class="hljs-number">2</span>);<br>set.<span class="hljs-title function_">add</span>(<span class="hljs-number">3</span>);<br><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> value <span class="hljs-keyword">of</span> set.<span class="hljs-title function_">values</span>()) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>**<code>Map</code>**：适用于需要键值对并且键可以是任意类型的情况。提供了有序的键值对，并且具有丰富的方法来操作数据。</li>
+<li>**<code>Set</code>**：适用于需要唯一值的情况。提供了无重复的值集合，并且具有方便的方法来检查和操作这些值。</li>
+</ul>
+<p>这两个数据结构在 ES6 中提供了比传统的对象和数组更高效和灵活的操作方式。如果你有任何其他问题或需要进一步的帮助，请随时告诉我！</p>
 <hr>
 <h1 id="15-WeakMap-和-WeakSet"><a href="#15-WeakMap-和-WeakSet" class="headerlink" title="15. WeakMap 和 WeakSet"></a>15. <strong><code>WeakMap</code> 和 <code>WeakSet</code></strong></h1><ul>
 <li><strong>弱引用</strong>：<code>WeakMap</code> 和 <code>WeakSet</code> 中的键（对于 <code>WeakMap</code>）和值（对于 <code>WeakSet</code>）是弱引用，不会阻止垃圾回收。</li>
@@ -1009,7 +1109,7 @@
 </ul>
 <h2 id="9-总结"><a href="#9-总结" class="headerlink" title="9. 总结"></a>9. <strong>总结</strong></h2><p>ES6 模块系统通过 <code>import</code> 和 <code>export</code> 语法提供了一个标准化的模块化机制，支持静态加载和动态导入。它的引入使得 JavaScript 的模块化编程更加高效和一致，为开发大型应用程序提供了强大的工具。了解 ES6 模块系统的工作原理和使用方法，有助于更好地组织和管理代码，提高代码的可维护性和重用性。</p>
 <hr>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>ES6 的引入使 JavaScript 语言更加完善，提供了更强大的功能和更简洁的语法，极大地提高了开发效率。这些新特性涵盖了变量声明、函数定义、对象和数组操作、类和继承、模块化、异步编程等各个方面。熟练掌握ES6的新特性，将有助于编写出更加高效、可读性更强的代码。</p>
+<h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><p>ES6 的引入使 JavaScript 语言更加完善，提供了更强大的功能和更简洁的语法，极大地提高了开发效率。这些新特性涵盖了变量声明、函数定义、对象和数组操作、类和继承、模块化、异步编程等各个方面。熟练掌握ES6的新特性，将有助于编写出更加高效、可读性更强的代码。</p>
 
                 
               </div>
@@ -1045,7 +1145,7 @@
       
         <a href="/tags/JavaScript/" class="print-no-link">#JavaScript</a>
       
-        <a href="/tags/ES6/" class="print-no-link">#ES6</a>
+        <a href="/tags/ECMAScript-6/" class="print-no-link">#ECMAScript 6</a>
       
     </div>
   
