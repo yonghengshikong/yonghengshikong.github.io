@@ -24,7 +24,7 @@
 <meta property="og:description" content="深入理解浏览器原理与 DOM一、什么是浏览器？浏览器是用户访问互联网的工具，它负责请求网页内容、解析网页、展示内容并处理用户与网页的互动。现代浏览器如 Chrome、Firefox 和 Safari 不仅支持 HTML、CSS 和 JavaScript，还集成了许多功能来优化用户体验和安全性。 二、浏览器的工作过程浏览器的工作过程可以分为多个步骤，每个步骤都有其重要性。让我们逐步深入了解。 1.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-09-19T09:34:03.000Z">
-<meta property="article:modified_time" content="2024-09-19T09:37:15.891Z">
+<meta property="article:modified_time" content="2024-09-19T09:49:14.311Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="Web">
 <meta name="twitter:card" content="summary_large_image">
@@ -220,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.9k 字
+          1.8k 字
         
       </span>
     
@@ -325,23 +325,25 @@
 <h2 id="10-DOM-的详细解析"><a href="#10-DOM-的详细解析" class="headerlink" title="10. DOM 的详细解析"></a>10. DOM 的详细解析</h2><p>DOM（文档对象模型）是浏览器用来表示和操作 HTML 和 XML 文档的编程接口。以下是对 DOM 的详细讲解：</p>
 <h3 id="1-DOM-的结构"><a href="#1-DOM-的结构" class="headerlink" title="1. DOM 的结构"></a>1. DOM 的结构</h3><p>DOM 树的根节点是 <code>document</code>，它表示整个文档。树的每个节点都是一个对象，代表文档中的元素、属性或文本。DOM 树结构如下：</p>
 <ul>
-<li><pre><code class="hljs">document
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><br>- ```<br>  html<br></code></pre></td></tr></table></figure>
-
-  - ```
-    head
-    <figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><br>  - `title`<br>  - `meta`<br><br>- ```<br>  body<br></code></pre></td></tr></table></figure>
-
-    - `h1`
-
-    - `p`
-
-    - ```
-      div
-      ```
-
-      - `span`
-</code></pre>
+<li>document<ul>
+<li>html<ul>
+<li>head<ul>
+<li>title</li>
+<li>meta</li>
+</ul>
+</li>
+<li>body<ul>
+<li>h1</li>
+<li>p</li>
+<li>div<ul>
+<li>span</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 <h3 id="2-DOM-节点类型"><a href="#2-DOM-节点类型" class="headerlink" title="2. DOM 节点类型"></a>2. DOM 节点类型</h3><p>DOM 中的节点可以分为几种类型：</p>
