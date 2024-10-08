@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、Node.js是什么Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. 1、特性Node.js 可以解析JS代码（没有浏览器安全级别的限制）提供很多系统级别的API，如：  文件的读写 (File System) 进程的管理 (Process) 网络通信 (HTTP&#x2F;HTTPS) ……  2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NodeJs基础">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/31322/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、Node.js是什么Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. 1、特性Node.js 可以解析JS代码（没有浏览器安全级别的限制）提供很多系统级别的API，如：  文件的读写 (File System) 进程的管理 (Process) 网络通信 (HTTP&#x2F;HTTPS) ……  2">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-10-08T08:29:16.763Z">
+<meta property="article:modified_time" content="2024-10-08T09:29:33.866Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="NodeJs">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>NodeJs基础 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NodeJs基础"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-08 16:29" pubdate>
+          2024年10月8日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NodeJs基础</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、Node-js是什么"><a href="#一、Node-js是什么" class="headerlink" title="一、Node.js是什么"></a>一、Node.js是什么</h1><p>Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine.</p>
+<h3 id="1、特性"><a href="#1、特性" class="headerlink" title="1、特性"></a>1、特性</h3><p>Node.js 可以解析JS代码（没有浏览器安全级别的限制）提供很多系统级别的API，如：</p>
+<ul>
+<li>文件的读写 (File System)</li>
+<li>进程的管理 (Process)</li>
+<li>网络通信 (HTTP&#x2F;HTTPS)</li>
+<li>……</li>
+</ul>
+<h3 id="2、举例"><a href="#2、举例" class="headerlink" title="2、举例"></a>2、举例</h3><h4 id="2-1-浏览器安全级别的限制"><a href="#2-1-浏览器安全级别的限制" class="headerlink" title="2.1 浏览器安全级别的限制"></a>2.1 浏览器安全级别的限制</h4><p><strong>Ajax测试</strong></p>
+<p>浏览器访问存在跨域问题，所以以下的get请求无法成功！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>browser-safe-sandbox<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>browser-safe-sandbox<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">    <span class="hljs-keyword">const</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>()</span><br><span class="language-javascript">    xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;get&#x27;</span>, <span class="hljs-string">&#x27;https://m.maoyan.com/ajax/moreClassicList?sortId=1&amp;showType=3&amp;limit=10&amp;offset=30&amp;optimus_uuid=A5518FF0AFEC11EAAB158D7AB0D05BBBD74C9789D9F649898982E6542C7DD479&amp;optimus_risk_level=71&amp;optimus_code=10&#x27;</span>, <span class="hljs-literal">false</span>)</span><br><span class="language-javascript">    xhr.<span class="hljs-title function_">send</span>()</span><br><span class="language-javascript">  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>浏览器预览</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">browser-sync start --server --files **/* --directory<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-文件的读写-File-System"><a href="#2-2-文件的读写-File-System" class="headerlink" title="2.2 文件的读写 (File System)"></a>2.2 文件的读写 (File System)</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><br>fs.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;./ajax.png&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err, content</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(content)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-进程的管理（Process）"><a href="#2-3-进程的管理（Process）" class="headerlink" title="2.3 进程的管理（Process）"></a>2.3 进程的管理（Process）</h4><p><strong>NodeJs可以通过process来获取执行命令中传入的参数</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">main</span>(<span class="hljs-params">argv</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(argv)<br>&#125;<br><br><span class="hljs-title function_">main</span>(process.<span class="hljs-property">argv</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">2</span>))<br></code></pre></td></tr></table></figure>
+<p><strong>运行结果</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">node 2.3-process.js argv1 argv2<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-4-网络通信（HTTP-HTTPS）"><a href="#2-4-网络通信（HTTP-HTTPS）" class="headerlink" title="2.4 网络通信（HTTP&#x2F;HTTPS）"></a>2.4 网络通信（HTTP&#x2F;HTTPS）</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;http&quot;</span>)<br><br>http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">req,res</span>) =&gt;</span> &#123;<br>  res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, &#123;<br>    <span class="hljs-string">&quot;content-type&quot;</span>: <span class="hljs-string">&quot;text/plain&quot;</span><br>  &#125;)<br>  res.<span class="hljs-title function_">write</span>(<span class="hljs-string">&quot;hello nodejs&quot;</span>)<br>  res.<span class="hljs-title function_">end</span>()<br>&#125;).<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>)<br></code></pre></td></tr></table></figure>
+
+<h1 id="二、Node-相关工具"><a href="#二、Node-相关工具" class="headerlink" title="二、Node 相关工具"></a>二、Node 相关工具</h1><h3 id="1、NVM-Node-Version-Manager"><a href="#1、NVM-Node-Version-Manager" class="headerlink" title="1、NVM: Node Version Manager"></a>1、NVM: Node Version Manager</h3><p><strong>1.1 Mac 安装 nvm</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://github.com/nvm-sh/nvm/blob/master/README.md<br></code></pre></td></tr></table></figure>
+
+<p><strong>1.2 Windows 安装 nvm</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">nvm-windows<br>nodist<br></code></pre></td></tr></table></figure>
+
+<h3 id="2、NPM-Node-Package-Manager"><a href="#2、NPM-Node-Package-Manager" class="headerlink" title="2、NPM: Node Package Manager"></a>2、NPM: Node Package Manager</h3><h4 id="2-1-全局安装package"><a href="#2-1-全局安装package" class="headerlink" title="2.1 全局安装package"></a>2.1 全局安装package</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm install forever --global (-g)<br>$ forever<br>$ npm uninstall forever --global<br>$ forever<br></code></pre></td></tr></table></figure>
+
+<p><strong>全局安装包的目录</strong></p>
+<ul>
+<li>Mac<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">/Users/felix/.nvm/versions/node/nvm各个版本/bin/<br></code></pre></td></tr></table></figure></li>
+<li>Windows<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">C:\Users\你的用户名\AppData\Roaming\npm\node_modules<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-2-本地安装package"><a href="#2-2-本地安装package" class="headerlink" title="2.2 本地安装package"></a>2.2 本地安装package</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> ~/desktop<br>$ <span class="hljs-built_in">mkdir</span> gp-project<br>$ <span class="hljs-built_in">cd</span> gp-project<br>$ npm install underscore<br>$ npm list (<span class="hljs-built_in">ls</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-package-json初始化"><a href="#2-3-package-json初始化" class="headerlink" title="2.3 package.json初始化"></a>2.3 package.json初始化</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">pwd</span><br>$ npm init -y<br>$ <span class="hljs-built_in">ls</span><br>$ <span class="hljs-built_in">cat</span> package.json<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-4-使用package-json"><a href="#2-4-使用package-json" class="headerlink" title="2.4 使用package.json"></a>2.4 使用package.json</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm install underscore --save<br>$ <span class="hljs-built_in">cat</span> package.json<br>$ npm install lodash --save-dev<br>$ <span class="hljs-built_in">cat</span> package.json<br>$ <span class="hljs-built_in">rm</span> -rf node_modules<br>$ <span class="hljs-built_in">ls</span><br>$ npm install<br>$ npm uninstall underscore --save<br>$ npm list | grep underscore<br>$ <span class="hljs-built_in">cat</span> package.json<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-5-安装指定版本的包"><a href="#2-5-安装指定版本的包" class="headerlink" title="2.5 安装指定版本的包"></a>2.5 安装指定版本的包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">pwd</span><br>$ npm list<br>$ npm info underscore<br>$ npm view underscore versions<br>$ npm install underscore@1.8.0<br>$ npm list<br>$ npm uninstall underscore<br>$ npm list<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-6-更新本地安装的包"><a href="#2-6-更新本地安装的包" class="headerlink" title="2.6 更新本地安装的包"></a>2.6 更新本地安装的包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm info underscore<br>$ npm view underscore versions<br>$ npm install underscore@1.4.4 --save-dev<br>$ npm list | grep gulp<br>$ npm outdated //~2.0.0表示patch, ^2.0.0表示minor * 表示xx最新版本<br>$ npm list | grep gulp<br>$ npm update<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-7-清除缓存"><a href="#2-7-清除缓存" class="headerlink" title="2.7 清除缓存"></a>2.7 清除缓存</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm cache clean --force<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-8-上传自己的包"><a href="#2-8-上传自己的包" class="headerlink" title="2.8 上传自己的包"></a>2.8 上传自己的包</h4><h6 id="2-8-1-编写模块"><a href="#2-8-1-编写模块" class="headerlink" title="2.8.1 编写模块"></a>2.8.1 编写模块</h6><p>保存为index.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">exports</span>.<span class="hljs-property">sayHello</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123; <br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;Hello World&#x27;</span>; <br>&#125; <br></code></pre></td></tr></table></figure>
+
+<h6 id="2-8-2-初始化包描述文件"><a href="#2-8-2-初始化包描述文件" class="headerlink" title="2.8.2 初始化包描述文件"></a>2.8.2 初始化包描述文件</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm init <br></code></pre></td></tr></table></figure>
+
+<p>package.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span> <br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;gp19-npm&quot;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0.1&quot;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;gp19 self module&quot;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;main&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;index.js&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <br>    <span class="hljs-attr">&quot;test&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;make test&quot;</span> <br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;repository&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Git&quot;</span><span class="hljs-punctuation">,</span> <br>    <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;git+https://github.com/lurongtao/gp19-npm.git&quot;</span> <br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;keywords&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span> <br>    <span class="hljs-string">&quot;demo&quot;</span> <br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Felixlu&quot;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;license&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ISC&quot;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;bugs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <br>    <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://github.com/lurongtao/gp19-npm/issues&quot;</span> <br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;homepage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://github.com/lurongtao/gp19-npm#readme&quot;</span><span class="hljs-punctuation">,</span> <br><span class="hljs-punctuation">&#125;</span> <br></code></pre></td></tr></table></figure>
+
+<h6 id="2-8-3-注册npm仓库账号"><a href="#2-8-3-注册npm仓库账号" class="headerlink" title="2.8.3 注册npm仓库账号"></a>2.8.3 注册npm仓库账号</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://www.npmjs.com 上面的账号<br>felix_lurt/qqmko09ijn<br>$ npm adduser<br></code></pre></td></tr></table></figure>
+
+<h6 id="2-8-4-上传包"><a href="#2-8-4-上传包" class="headerlink" title="2.8.4 上传包"></a>2.8.4 上传包</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm publish<br></code></pre></td></tr></table></figure>
+<p>坑：403 Forbidden</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">查看npm源：npm config get registry<br>切换npm源方法一：npm config <span class="hljs-built_in">set</span> registry http://registry.npmjs.org<br>切换npm源方法二：nrm use npm<br></code></pre></td></tr></table></figure>
+
+<h6 id="2-8-5-安装包"><a href="#2-8-5-安装包" class="headerlink" title="2.8.5 安装包"></a>2.8.5 安装包</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm install gp19-npm<br></code></pre></td></tr></table></figure>
+
+<h6 id="2-8-6-卸载包"><a href="#2-8-6-卸载包" class="headerlink" title="2.8.6 卸载包"></a>2.8.6 卸载包</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">查看当前项目引用了哪些包 ：<br>npm <span class="hljs-built_in">ls</span><br>卸载包：<br>npm unpublish --force<br></code></pre></td></tr></table></figure>
+
+<h6 id="2-8-7-使用引入包"><a href="#2-8-7-使用引入包" class="headerlink" title="2.8.7 使用引入包"></a>2.8.7 使用引入包</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> hello = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gp19-npm&#x27;</span>)<br>hello.<span class="hljs-title function_">sayHello</span>()<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-9-npm-脚本"><a href="#2-9-npm-脚本" class="headerlink" title="2.9 npm 脚本"></a>2.9 npm 脚本</h4><p>Node 开发离不开 npm，而脚本功能是 npm 最强大、最常用的功能之一。</p>
+<p><strong>一、什么是 npm 脚本？</strong></p>
+<p>npm 允许在 package.json 文件里面，使用 scripts 字段定义脚本命令。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node build.js&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>二、执行顺序</strong></p>
+<p>如果 npm 脚本里面需要执行多个任务，那么需要明确它们的执行顺序。</p>
+<p>script1.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(x)<br></code></pre></td></tr></table></figure>
+
+<p>script2.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> y = <span class="hljs-number">0</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(y)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;script1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node script1.js&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;script2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node script2.js&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果是并行执行（即同时的平行执行），可以使用 <code>&amp;</code> 符号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm run script1 &amp; npm run script2<br></code></pre></td></tr></table></figure>
+
+<p>如果是继发执行（即只有前一个任务成功，才执行下一个任务），可以使用 <code>&amp;&amp;</code> 符号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm run script1 &amp;&amp; npm run script2<br></code></pre></td></tr></table></figure>
+
+<p><strong>三、简写形式</strong></p>
+<p>常用的 npm 脚本简写形式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm start 是 npm run start<br></code></pre></td></tr></table></figure>
+
+<p><strong>四、变量</strong></p>
+<p>npm 脚本有一个非常强大的功能，就是可以使用 npm 的内部变量。</p>
+<p>首先，通过 <code>npm_package_</code> 前缀，npm 脚本可以拿到 package.json 里面的字段。比如，下面是一个 package.json。</p>
+<blockquote>
+<p>注意：一定要在 npm 脚本中运行（如：npm run view）才可以，直接在命令行中运行JS（如：node view.js）是拿不到值的</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;foo&quot;</span><span class="hljs-punctuation">,</span> <br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.2.5&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;view&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node view.js&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>那么，变量 npm_package_name 返回 foo，变量 npm_package_version 返回 1.2.5。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// view.js</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">npm_package_name</span>); <span class="hljs-comment">// foo</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">npm_package_version</span>); <span class="hljs-comment">// 1.2.5</span><br></code></pre></td></tr></table></figure>
+
+<p>上面代码中，我们通过环境变量 process.env 对象，拿到 package.json 的字段值。如果是 Bash 脚本，可以用$npm_package_name 和 $npm_package_version 取到这两个值。</p>
+<p>npm_package_前缀也支持嵌套的package.json字段。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;repository&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;git&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;xxx&quot;</span><br><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>scripts<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;view&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;echo $npm_package_repository_type&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>上面代码中，repository 字段的 type 属性，可以通过 npm_package_repository_type 取到。</p>
+<p>下面是另外一个例子。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;install&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;foo.js&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>上面代码中，npm_package_scripts_install 变量的值等于 foo.js。</p>
+<p>然后，npm 脚本还可以通过 npm_config_ 前缀，拿到 npm 的配置变量，即 npm config get xxx 命令返回的值。比如，当前模块的发行标签，可以通过 npm_config_tag 取到。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;view&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;echo $npm_config_tag&quot;</span><span class="hljs-punctuation">,</span><br></code></pre></td></tr></table></figure>
+
+<p>注意，package.json 里面的 config 对象，可以被环境变量覆盖。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span> <br>  <span class="hljs-attr">&quot;name&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;foo&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;config&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <span class="hljs-attr">&quot;port&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;8080&quot;</span> <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <span class="hljs-attr">&quot;start&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node server.js&quot;</span> <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>上面代码中，npm_package_config_port 变量返回的是 8080。这个值可以用下面的方法覆盖。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm config <span class="hljs-built_in">set</span> foo:port 80<br></code></pre></td></tr></table></figure>
+
+<p>最后，env命令可以列出所有环境变量。</p>
+<p>“env”: “env”</p>
+<h4 id="2-10-npm-安装-git-上发布的包"><a href="#2-10-npm-安装-git-上发布的包" class="headerlink" title="2.10 npm 安装 git 上发布的包"></a>2.10 npm 安装 git 上发布的包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 这样适合安装公司内部的git服务器上的项目</span><br>npm install git+https://git@github.com:lurongtao/gp-project.git<br><br><span class="hljs-comment"># 或者以ssh的方式</span><br>npm install git+ssh://git@github.com:lurongtao/gp-project.git<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-11-cross-env-使用"><a href="#2-11-cross-env-使用" class="headerlink" title="2.11 cross-env 使用"></a>2.11 cross-env 使用</h4><h5 id="2-11-1-cross-env是什么"><a href="#2-11-1-cross-env是什么" class="headerlink" title="2.11.1 cross-env是什么"></a>2.11.1 cross-env是什么</h5><p>运行跨平台设置和使用环境变量的脚本</p>
+<h5 id="2-11-2-出现原因"><a href="#2-11-2-出现原因" class="headerlink" title="2.11.2 出现原因"></a>2.11.2 出现原因</h5><p>当您使用 NODE_ENV&#x3D;production, 来设置环境变量时，大多数 Windows 命令提示将会阻塞(报错)。（异常是Windows上的Bash，它使用本机Bash。）换言之，Windows 不支持 NODE_ENV&#x3D;production 的设置方式。</p>
+<h5 id="2-11-3-解决"><a href="#2-11-3-解决" class="headerlink" title="2.11.3 解决"></a>2.11.3 解决</h5><p>cross-env 使得您可以使用单个命令，而不必担心为平台正确设置或使用环境变量。这个迷你的包(cross-env)能够提供一个设置环境变量的 scripts，让你能够以 Unix 方式设置环境变量，然后在 Windows 上也能兼容运行。</p>
+<h5 id="2-11-4-安装"><a href="#2-11-4-安装" class="headerlink" title="2.11.4 安装"></a>2.11.4 安装</h5><p>npm install –save-dev cross-env</p>
+<h5 id="2-11-5-使用"><a href="#2-11-5-使用" class="headerlink" title="2.11.5 使用"></a>2.11.5 使用</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cross-env NODE_ENV=production webpack --config build/webpack.config.js&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>NODE_ENV环境变量将由 cross-env 设置<br>打印 process.env.NODE_ENV &#x3D;&#x3D;&#x3D; ‘production’</p>
+<h3 id="3、NRM-npm-registry-manager"><a href="#3、NRM-npm-registry-manager" class="headerlink" title="3、NRM: npm registry manager"></a>3、NRM: npm registry manager</h3><h4 id="3-1-手工切换源"><a href="#3-1-手工切换源" class="headerlink" title="3.1 手工切换源"></a>3.1 手工切换源</h4><h5 id="3-1-1-查看当前源"><a href="#3-1-1-查看当前源" class="headerlink" title="3.1.1 查看当前源"></a>3.1.1 查看当前源</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm config get registry<br></code></pre></td></tr></table></figure>
+<h5 id="3-1-2-切换淘宝源"><a href="#3-1-2-切换淘宝源" class="headerlink" title="3.1.2 切换淘宝源"></a>3.1.2 切换淘宝源</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm config <span class="hljs-built_in">set</span> registry https://registry.npm.taobao.org<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-NRM-管理源"><a href="#3-2-NRM-管理源" class="headerlink" title="3.2 NRM 管理源"></a>3.2 NRM 管理源</h4><p>NRM (npm registry manager)是npm的镜像源管理工具，有时候国外资源太慢，使用这个就可以快速地在 npm 源间切换。</p>
+<h5 id="3-2-1-安装-nrm"><a href="#3-2-1-安装-nrm" class="headerlink" title="3.2.1 安装 nrm"></a>3.2.1 安装 nrm</h5><p>在命令行执行命令，npm install -g nrm，全局安装nrm。</p>
+<h5 id="3-2-2-使用-nrm"><a href="#3-2-2-使用-nrm" class="headerlink" title="3.2.2 使用 nrm"></a>3.2.2 使用 nrm</h5><p>执行命令 nrm ls 查看可选的源。<br>其中，带*的是当前使用的源，上面的输出表明当前源是官方源。</p>
+<h5 id="3-2-3-切换-nrm"><a href="#3-2-3-切换-nrm" class="headerlink" title="3.2.3 切换 nrm"></a>3.2.3 切换 nrm</h5><p>如果要切换到taobao源，执行命令nrm use taobao。</p>
+<h5 id="3-2-4-测试速度"><a href="#3-2-4-测试速度" class="headerlink" title="3.2.4 测试速度"></a>3.2.4 测试速度</h5><p>你还可以通过 nrm test 测试相应源的响应时间。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nrm <span class="hljs-built_in">test</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4、NPX-npm-package-extention"><a href="#4、NPX-npm-package-extention" class="headerlink" title="4、NPX: npm package extention"></a>4、NPX: npm package extention</h3><p>npm 从5.2版开始，增加了 npx 命令。它有很多用处，本文介绍该命令的主要使用场景。</p>
+<p>Node 自带 npm 模块，所以可以直接使用 npx 命令。万一不能用，就要手动安装一下。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">$ npm <span class="hljs-keyword">install</span> -g npx<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-1-调用项目安装的模块"><a href="#4-1-调用项目安装的模块" class="headerlink" title="4.1 调用项目安装的模块"></a>4.1 调用项目安装的模块</h4><p>npx 想要解决的主要问题，就是调用项目内部安装的模块。比如，项目内部安装了Mocha。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">$ npm <span class="hljs-keyword">install</span> -D mocha<br></code></pre></td></tr></table></figure>
+
+<p>一般来说，调用 Mocha ，只能在项目脚本和 package.json 的scripts字段里面，如果想在命令行下调用，必须像下面这样。</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-comment"># 项目的根目录下执行</span><br>$ <span class="hljs-keyword">node</span><span class="hljs-title">-modules</span>/.bin/mocha --<span class="hljs-keyword">version</span><br></code></pre></td></tr></table></figure>
+
+<p>npx 就是想解决这个问题，让项目内部安装的模块用起来更方便，只要像下面这样调用就行了。</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">$ npx mocha <span class="hljs-comment">--version</span><br></code></pre></td></tr></table></figure>
+
+<p>npx 的原理很简单，就是运行的时候，会到node_modules&#x2F;.bin路径和环境变量$PATH里面，检查命令是否存在。</p>
+<p>由于 npx 会检查环境变量$PATH，所以系统命令也可以调用。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">等同于 <span class="hljs-built_in">ls</span></span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">npx <span class="hljs-built_in">ls</span></span><br></code></pre></td></tr></table></figure>
+
+<p>注意，Bash 内置的命令不在$PATH里面，所以不能用。比如，cd是 Bash 命令，因此就不能用npx cd。</p>
+<h4 id="4-2-避免全局安装模块"><a href="#4-2-避免全局安装模块" class="headerlink" title="4.2 避免全局安装模块"></a>4.2 避免全局安装模块</h4><p>除了调用项目内部模块，npx 还能避免全局安装的模块。比如，create-react-app 这个模块是全局安装，npx 可以运行它，而且不进行全局安装。</p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig">$ <span class="hljs-string">npx</span> <span class="hljs-built_in">create-react-app</span> <span class="hljs-string">my-react-app</span><br></code></pre></td></tr></table></figure>
+
+<p>上面代码运行时，npx 将 create-react-app 下载到一个临时目录，使用以后再删除。所以，以后再次执行上面的命令，会重新下载 create-react-app。</p>
+<p>注意，只要 npx 后面的模块无法在本地发现，就会下载同名模块。比如，本地没有安装http-server模块，下面的命令会自动下载该模块，在当前目录启动一个 Web 服务。</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">$ npx http-<span class="hljs-keyword">server</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-3-–no-install-参数和-–ignore-existing-参数"><a href="#4-3-–no-install-参数和-–ignore-existing-参数" class="headerlink" title="4.3 –no-install 参数和 –ignore-existing 参数"></a>4.3 –no-install 参数和 –ignore-existing 参数</h4><p>如果想让 npx 强制使用本地模块，不下载远程模块，可以使用–no-install参数。如果本地不存在该模块，就会报错。</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-symbol">$</span> npx --<span class="hljs-keyword">no</span>-install http-server<br></code></pre></td></tr></table></figure>
+
+<p>反过来，如果忽略本地的同名模块，强制安装使用远程模块，可以使用–ignore-existing参数。比如，本地已经安装了http-server，但还是想使用远程模块，就用这个参数。</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">$ npx <span class="hljs-comment">--ignore-existing http-server</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="三、模块-包-与-CommonJS"><a href="#三、模块-包-与-CommonJS" class="headerlink" title="三、模块&#x2F;包 与 CommonJS"></a>三、模块&#x2F;包 与 CommonJS</h1><h3 id="1、模块-包分类"><a href="#1、模块-包分类" class="headerlink" title="1、模块&#x2F;包分类"></a>1、模块&#x2F;包分类</h3><p>Node.js 有三类模块，即内置的模块、第三方的模块、自定义的模块。</p>
+<h4 id="1-1-内置的模块"><a href="#1-1-内置的模块" class="headerlink" title="1.1 内置的模块"></a>1.1 内置的模块</h4><p>Node.js 内置模块又叫核心模块，Node.js安装完成可直接使用。如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)<br><span class="hljs-keyword">var</span> extname = path.<span class="hljs-title function_">extname</span>(<span class="hljs-string">&#x27;index.html&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(extname)<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-2-第三方的Node-js模块"><a href="#1-2-第三方的Node-js模块" class="headerlink" title="1.2 第三方的Node.js模块"></a>1.2 第三方的Node.js模块</h4><p>第三方的Node.js模块指的是为了实现某些功能，发布的npmjs.org上的模块，按照一定的开源协议供社群使用。如：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> chalk<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> chalk = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;chalk&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(chalk.<span class="hljs-title function_">blue</span>(<span class="hljs-string">&#x27;Hello world!&#x27;</span>))<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-3-自定义的Node-js模块"><a href="#1-3-自定义的Node-js模块" class="headerlink" title="1.3 自定义的Node.js模块"></a>1.3 自定义的Node.js模块</h4><p>自定义的Node.js模块，也叫文件模块，是我们自己写的供自己使用的模块。同时，这类模块发布到npmjs.org上就成了开源的第三方模块。</p>
+<p>自定义模块是在运行时动态加载，需要完整的路径分析、文件定位、编译执行过程、速度相比核心模块稍微慢一些，但是用的非常多。</p>
+<h5 id="1-3-1-模块定义、接口暴露和引用接口"><a href="#1-3-1-模块定义、接口暴露和引用接口" class="headerlink" title="1.3.1 模块定义、接口暴露和引用接口"></a>1.3.1 模块定义、接口暴露和引用接口</h5><p>我们可以把公共的功能 抽离成为一个单独的 js  文件 作为一个模块，默认情况下面这个模块里面的方法或者属性，外面是没法访问的。如果要让外部可以访问模块里面的方法或者属性，就必须在模块里面通过 exports 或者 module.exports 暴露属性或者方法。</p>
+<p>m1.js：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> name = <span class="hljs-string">&#x27;gp19&#x27;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">sayName</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name)<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;module 1&#x27;</span>)<br><br><span class="hljs-comment">// 接口暴露方法一：</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">say</span>: sayName<br>&#125;<br><br><span class="hljs-comment">// 接口暴露方法二：</span><br><span class="hljs-built_in">exports</span>.<span class="hljs-property">say</span> = sayName<br><br><span class="hljs-comment">// 错误！</span><br><span class="hljs-built_in">exports</span> = &#123;<br>  <span class="hljs-attr">say</span>: sayName<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>main.js：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> m1 = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./m1&#x27;</span>)<br>m1.<span class="hljs-title function_">say</span>()<br></code></pre></td></tr></table></figure>
+
+<h5 id="1-3-2-模块的循环引用"><a href="#1-3-2-模块的循环引用" class="headerlink" title="1.3.2 模块的循环引用"></a>1.3.2 模块的循环引用</h5><p>由于 exports 使用方式方式不对，会在两个不同 js 循环引用的情况下，导致其中一个 js 无法获取另外一个 js 的方法，从而导致执行报错。如：</p>
+<ul>
+<li>a.js</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-built_in">exports</span>.<span class="hljs-property">done</span> = <span class="hljs-literal">false</span><br><span class="hljs-keyword">const</span> b = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./b.js&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;in a, b.done = %j&#x27;</span>, b.<span class="hljs-property">done</span>)<br><span class="hljs-built_in">exports</span>.<span class="hljs-property">done</span> = <span class="hljs-literal">true</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;a done&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>b.js</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;b starting&#x27;</span>)<br><span class="hljs-built_in">exports</span>.<span class="hljs-property">done</span> = <span class="hljs-literal">false</span><br><span class="hljs-keyword">const</span> a = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./a.js&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;in b, a.done = %j&#x27;</span>, a.<span class="hljs-property">done</span>)<br><span class="hljs-built_in">exports</span>.<span class="hljs-property">done</span> = <span class="hljs-literal">true</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;b done&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>main.js</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;main starting&#x27;</span>)<br><span class="hljs-keyword">const</span> a = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./a.js&#x27;</span>)<br><span class="hljs-keyword">const</span> b = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./b.js&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;in main, a.done = %j, b.done = %j&#x27;</span>, a.<span class="hljs-property">done</span>, b.<span class="hljs-property">done</span>)<br></code></pre></td></tr></table></figure>
+
+<p>main.js 首先会 load a.js, 此时执行到const b &#x3D; require(‘.&#x2F;b.js’);的时候，程序会转去loadb.js, 在b.js中执行到const a &#x3D; require(‘.&#x2F;a.js’); 为了防止无限循环，将a.jsexports的未完成副本返回到b.js模块。然后b.js完成加载，并将其导出对象提供给a.js模块。</p>
+<p>我们知道nodeJs的对每个js文件进行了一层包装称为module，module中有一个属性exports，当调用require(‘a.js’)的时候其实返回的是module.exports对象，module.exports初始化为一个{}空的object，所以在上面的例子中，执行到b.js中const a &#x3D; require(‘.&#x2F;a.js’);时不会load新的a module, 而是将已经load但是还未完成的a module的exports属性返回给b module，所以b.js拿到的是a module的exports对象，即：{done:false}, 虽然在a.js中exports.done被修改成了true，但是由于此时a.js未load完成，所以在b.js输出的a module的属性done为false，而在main.js中输出的a module的属性done为true. Nodejs通过上面这种返回未完成exports对象来解决循环引用的问题。 </p>
+<h1 id="四、常用内置模块"><a href="#四、常用内置模块" class="headerlink" title="四、常用内置模块"></a>四、常用内置模块</h1><p>这里介绍几个常用的内置模块：url, querystring, http, events, fs, stream, readline, crypto, zlib</p>
+<h3 id="1、url"><a href="#1、url" class="headerlink" title="1、url"></a>1、url</h3><h4 id="1-1-parse"><a href="#1-1-parse" class="headerlink" title="1.1 parse"></a>1.1 parse</h4><p>url.parse(urlString[, parseQueryString[, slashesDenoteHost]])</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;url&#x27;</span>)<br><span class="hljs-keyword">const</span> urlString = <span class="hljs-string">&#x27;https://www.baidu.com:443/ad/index.html?id=8&amp;name=mouse#tag=110&#x27;</span><br><span class="hljs-keyword">const</span> parsedStr = url.<span class="hljs-title function_">parse</span>(urlString)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(parsedStr)<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-2-format"><a href="#1-2-format" class="headerlink" title="1.2 format"></a>1.2 format</h4><p>url.format(urlObject)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;url&#x27;</span>)<br><span class="hljs-keyword">const</span> urlObject = &#123;<br>  <span class="hljs-attr">protocol</span>: <span class="hljs-string">&#x27;https:&#x27;</span>,<br>  <span class="hljs-attr">slashes</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">auth</span>: <span class="hljs-literal">null</span>,<br>  <span class="hljs-attr">host</span>: <span class="hljs-string">&#x27;www.baidu.com:443&#x27;</span>,<br>  <span class="hljs-attr">port</span>: <span class="hljs-string">&#x27;443&#x27;</span>,<br>  <span class="hljs-attr">hostname</span>: <span class="hljs-string">&#x27;www.baidu.com&#x27;</span>,<br>  <span class="hljs-attr">hash</span>: <span class="hljs-string">&#x27;#tag=110&#x27;</span>,<br>  <span class="hljs-attr">search</span>: <span class="hljs-string">&#x27;?id=8&amp;name=mouse&#x27;</span>,<br>  <span class="hljs-attr">query</span>: &#123; <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;8&#x27;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;mouse&#x27;</span> &#125;,<br>  <span class="hljs-attr">pathname</span>: <span class="hljs-string">&#x27;/ad/index.html&#x27;</span>,<br>  <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/ad/index.html?id=8&amp;name=mouse&#x27;</span>,<br>  <span class="hljs-attr">href</span>: <span class="hljs-string">&#x27;https://www.baidu.com:443/ad/index.html?id=8&amp;name=mouse#tag=110&#x27;</span><br>&#125;<br><span class="hljs-keyword">const</span> parsedObj = url.<span class="hljs-title function_">format</span>(urlObject)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(parsedObj)<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-3-resolve"><a href="#1-3-resolve" class="headerlink" title="1.3 resolve"></a>1.3 resolve</h4><p>url.resolve(from, to)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;url&#x27;</span>)<br><span class="hljs-keyword">var</span> a = url.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;/one/two/three&#x27;</span>, <span class="hljs-string">&#x27;four&#x27;</span>)<br><span class="hljs-keyword">var</span> b = url.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;http://example.com/&#x27;</span>, <span class="hljs-string">&#x27;/one&#x27;</span>)<br><span class="hljs-keyword">var</span> c = url.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;http://example.com/one&#x27;</span>, <span class="hljs-string">&#x27;/two&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a + <span class="hljs-string">&quot;,&quot;</span> + b + <span class="hljs-string">&quot;,&quot;</span> + c)<br></code></pre></td></tr></table></figure>
+
+<h3 id="2、querystring"><a href="#2、querystring" class="headerlink" title="2、querystring"></a>2、querystring</h3><h4 id="2-1-parse"><a href="#2-1-parse" class="headerlink" title="2.1 parse"></a>2.1 parse</h4><p>querystring.parse(str[, sep[, eq[, options]]])</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>)<br><span class="hljs-keyword">var</span> qs = <span class="hljs-string">&#x27;x=3&amp;y=4&#x27;</span><br><span class="hljs-keyword">var</span> parsed = querystring.<span class="hljs-title function_">parse</span>(qs)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(parsed)<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-stringify"><a href="#2-2-stringify" class="headerlink" title="2.2 stringify"></a>2.2 stringify</h4><p>querystring.stringify(obj[, sep[, eq[, options]]])</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>)<br><span class="hljs-keyword">var</span> qo = &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">3</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">4</span><br>&#125;<br><span class="hljs-keyword">var</span> parsed = querystring.<span class="hljs-title function_">stringify</span>(qo)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(parsed)<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-escape-unescape"><a href="#2-3-escape-unescape" class="headerlink" title="2.3 escape&#x2F;unescape"></a>2.3 escape&#x2F;unescape</h4><p>querystring.escape(str)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>)<br><span class="hljs-keyword">var</span> str = <span class="hljs-string">&#x27;id=3&amp;city=北京&amp;url=https://www.baidu.com&#x27;</span><br><span class="hljs-keyword">var</span> escaped = querystring.<span class="hljs-built_in">escape</span>(str)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(escaped)<br></code></pre></td></tr></table></figure>
+
+<p>querystring.unescape(str)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>)<br><span class="hljs-keyword">var</span> str = <span class="hljs-string">&#x27;id%3D3%26city%3D%E5%8C%97%E4%BA%AC%26url%3Dhttps%3A%2F%2Fwww.baidu.com&#x27;</span><br><span class="hljs-keyword">var</span> unescaped = querystring.<span class="hljs-built_in">unescape</span>(str)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(unescaped)<br></code></pre></td></tr></table></figure>
+
+<h3 id="3、http-https"><a href="#3、http-https" class="headerlink" title="3、http&#x2F;https"></a>3、http&#x2F;https</h3><h4 id="3-1-get"><a href="#3-1-get" class="headerlink" title="3.1 get"></a>3.1 get</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-keyword">var</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;https&#x27;</span>)<br><br><span class="hljs-comment">// 1、接口 2、跨域</span><br><span class="hljs-keyword">const</span> server = http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">var</span> url = request.<span class="hljs-property">url</span>.<span class="hljs-title function_">substr</span>(<span class="hljs-number">1</span>)<br>  <br>  <span class="hljs-keyword">var</span> data = <span class="hljs-string">&#x27;&#x27;</span><br><br>  response.<span class="hljs-title function_">writeHeader</span>(<span class="hljs-number">200</span>, &#123;<br>    <span class="hljs-string">&#x27;content-type&#x27;</span>: <span class="hljs-string">&#x27;application/json;charset=utf-8&#x27;</span>,<br>    <span class="hljs-string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="hljs-string">&#x27;*&#x27;</span><br>  &#125;)<br><br>  https.<span class="hljs-title function_">get</span>(<span class="hljs-string">`https://m.lagou.com/listmore.json<span class="hljs-subst">$&#123;url&#125;</span>`</span>, <span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br><br>    res.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">chunk</span>) =&gt;</span> &#123;<br>      data += chunk<br>    &#125;)<br><br>    res.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;end&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>      response.<span class="hljs-title function_">end</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(&#123;<br>        <span class="hljs-attr">ret</span>: <span class="hljs-literal">true</span>,<br>        data<br>      &#125;))<br>    &#125;)<br>  &#125;)<br><br>&#125;)<br><br>server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">8080</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;localhost:8080&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-post：服务器提交（攻击）"><a href="#3-2-post：服务器提交（攻击）" class="headerlink" title="3.2 post：服务器提交（攻击）"></a>3.2 post：服务器提交（攻击）</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;https&#x27;</span>)<br><span class="hljs-keyword">const</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>)<br><br><span class="hljs-keyword">const</span> postData = querystring.<span class="hljs-title function_">stringify</span>(&#123;<br>  <span class="hljs-attr">province</span>: <span class="hljs-string">&#x27;上海&#x27;</span>,<br>  <span class="hljs-attr">city</span>: <span class="hljs-string">&#x27;上海&#x27;</span>,<br>  <span class="hljs-attr">district</span>: <span class="hljs-string">&#x27;宝山区&#x27;</span>,<br>  <span class="hljs-attr">address</span>: <span class="hljs-string">&#x27;同济支路199号智慧七立方3号楼2-4层&#x27;</span>,<br>  <span class="hljs-attr">latitude</span>: <span class="hljs-number">43.0</span>,<br>  <span class="hljs-attr">longitude</span>: <span class="hljs-number">160.0</span>,<br>  <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;求购一条小鱼&#x27;</span>,<br>  <span class="hljs-attr">contact</span>: <span class="hljs-string">&#x27;13666666&#x27;</span>,<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;sell&#x27;</span>,<br>  <span class="hljs-attr">time</span>: <span class="hljs-number">1571217561</span><br>&#125;)<br><br><span class="hljs-keyword">const</span> options = &#123;<br>  <span class="hljs-attr">protocol</span>: <span class="hljs-string">&#x27;https:&#x27;</span>,<br>  <span class="hljs-attr">hostname</span>: <span class="hljs-string">&#x27;ik9hkddr.qcloud.la&#x27;</span>,<br>  <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,<br>  <span class="hljs-attr">port</span>: <span class="hljs-number">443</span>,<br>  <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/index.php/trade/add_item&#x27;</span>,<br>  <span class="hljs-attr">headers</span>: &#123;<br>    <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/x-www-form-urlencoded&#x27;</span>,<br>    <span class="hljs-string">&#x27;Content-Length&#x27;</span>: <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">byteLength</span>(postData)<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">doPost</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">let</span> data<br>  <br>  <span class="hljs-keyword">let</span> req = https.<span class="hljs-title function_">request</span>(options, <span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>    res.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function"><span class="hljs-params">chunk</span> =&gt;</span> data += chunk)<br>    res.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;end&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data)<br>    &#125;)<br>  &#125;)<br>  <br>  req.<span class="hljs-title function_">write</span>(postData)<br>  req.<span class="hljs-title function_">end</span>()<br>&#125;<br><br><span class="hljs-comment">// setInterval(() =&gt; &#123;</span><br><span class="hljs-comment">//   doPost()</span><br><span class="hljs-comment">// &#125;, 1000)</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-3-跨域：jsonp"><a href="#3-3-跨域：jsonp" class="headerlink" title="3.3 跨域：jsonp"></a>3.3 跨域：jsonp</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-keyword">const</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;url&#x27;</span>)<br><br><span class="hljs-keyword">const</span> app = http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">let</span> urlObj = url.<span class="hljs-title function_">parse</span>(req.<span class="hljs-property">url</span>, <span class="hljs-literal">true</span>)<br><br>  <span class="hljs-keyword">switch</span> (urlObj.<span class="hljs-property">pathname</span>) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/api/user&#x27;</span>:<br>      res.<span class="hljs-title function_">end</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;urlObj.query.cb&#125;</span>(&#123;&quot;name&quot;: &quot;gp145&quot;&#125;)`</span>)<br>      <span class="hljs-keyword">break</span><br>    <span class="hljs-attr">default</span>:<br>      res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;404.&#x27;</span>)<br>      <span class="hljs-keyword">break</span><br>  &#125;<br>&#125;)<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">8080</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;localhost:8080&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-4-跨域：CORS"><a href="#3-4-跨域：CORS" class="headerlink" title="3.4 跨域：CORS"></a>3.4 跨域：CORS</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-keyword">const</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;url&#x27;</span>)<br><span class="hljs-keyword">const</span> querystring = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>)<br><br><span class="hljs-keyword">const</span> app = http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">let</span> data = <span class="hljs-string">&#x27;&#x27;</span><br>  <span class="hljs-keyword">let</span> urlObj = url.<span class="hljs-title function_">parse</span>(req.<span class="hljs-property">url</span>, <span class="hljs-literal">true</span>)<br><br>  res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, &#123;<br>    <span class="hljs-string">&#x27;content-type&#x27;</span>: <span class="hljs-string">&#x27;application/json;charset=utf-8&#x27;</span>,<br>    <span class="hljs-string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="hljs-string">&#x27;*&#x27;</span><br>  &#125;)<br><br>  req.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">chunk</span>) =&gt;</span> &#123;<br>    data += chunk<br>  &#125;)<br><br>  req.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;end&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-title function_">responseResult</span>(querystring.<span class="hljs-title function_">parse</span>(data))<br>  &#125;)<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">responseResult</span>(<span class="hljs-params">data</span>) &#123;<br>    <span class="hljs-keyword">switch</span> (urlObj.<span class="hljs-property">pathname</span>) &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/api/login&#x27;</span>:<br>        res.<span class="hljs-title function_">end</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(&#123;<br>          <span class="hljs-attr">message</span>: data<br>        &#125;))<br>        <span class="hljs-keyword">break</span><br>      <span class="hljs-attr">default</span>:<br>        res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;404.&#x27;</span>)<br>        <span class="hljs-keyword">break</span><br>    &#125;<br>  &#125;<br>&#125;)<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">8080</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;localhost:8080&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-5-跨域：middleware（http-proxy-middware）"><a href="#3-5-跨域：middleware（http-proxy-middware）" class="headerlink" title="3.5 跨域：middleware（http-proxy-middware）"></a>3.5 跨域：middleware（http-proxy-middware）</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-keyword">const</span> proxy = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http-proxy-middleware&#x27;</span>)<br><br>http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">let</span> url = req.<span class="hljs-property">url</span><br><br>  res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, &#123;<br>    <span class="hljs-string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="hljs-string">&#x27;*&#x27;</span><br>  &#125;)<br><br>  <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^\/api/</span>.<span class="hljs-title function_">test</span>(url)) &#123;<br>    <span class="hljs-keyword">let</span> apiProxy = <span class="hljs-title function_">proxy</span>(<span class="hljs-string">&#x27;/api&#x27;</span>, &#123; <br>      <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;https://m.lagou.com&#x27;</span>,<br>      <span class="hljs-attr">changeOrigin</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">pathRewrite</span>: &#123;<br>        <span class="hljs-string">&#x27;^/api&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span><br>      &#125;<br>    &#125;)<br>  <br>    <span class="hljs-comment">// http-proy-middleware 在Node.js中使用的方法</span><br>    <span class="hljs-title function_">apiProxy</span>(req, res)<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">switch</span> (url) &#123;<br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/index.html&#x27;</span>:<br>        res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;index.html&#x27;</span>)<br>        <span class="hljs-keyword">break</span><br>      <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/search.html&#x27;</span>:<br>        res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;search.html&#x27;</span>)<br>        <span class="hljs-keyword">break</span><br>      <span class="hljs-attr">default</span>:<br>        res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;[404]page not found.&#x27;</span>)<br>    &#125;<br>  &#125;<br>&#125;).<span class="hljs-title function_">listen</span>(<span class="hljs-number">8080</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-6-爬虫"><a href="#3-6-爬虫" class="headerlink" title="3.6 爬虫"></a>3.6 爬虫</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;https&#x27;</span>)<br><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-keyword">const</span> cheerio = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;cheerio&#x27;</span>)<br><br>http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> &#123;<br>  response.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, &#123;<br>    <span class="hljs-string">&#x27;content-type&#x27;</span>: <span class="hljs-string">&#x27;application/json;charset=utf-8&#x27;</span><br>  &#125;)<br><br>  <span class="hljs-keyword">const</span> options = &#123;<br>    <span class="hljs-attr">protocol</span>: <span class="hljs-string">&#x27;https:&#x27;</span>,<br>    <span class="hljs-attr">hostname</span>: <span class="hljs-string">&#x27;maoyan.com&#x27;</span>,<br>    <span class="hljs-attr">port</span>: <span class="hljs-number">443</span>,<br>    <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/&#x27;</span>,<br>    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;GET&#x27;</span><br>  &#125;<br>  <br>  <span class="hljs-keyword">const</span> req = https.<span class="hljs-title function_">request</span>(options, <span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">let</span> data = <span class="hljs-string">&#x27;&#x27;</span><br>    res.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">chunk</span>) =&gt;</span> &#123;<br>      data += chunk<br>    &#125;)<br>  <br>    res.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;end&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-title function_">filterData</span>(data)<br>    &#125;)<br>  &#125;)<br>  <br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">filterData</span>(<span class="hljs-params">data</span>) &#123;<br>    <span class="hljs-keyword">let</span> $ = cheerio.<span class="hljs-title function_">load</span>(data)<br>    <span class="hljs-keyword">let</span> $movieList = $(<span class="hljs-string">&#x27;.movie-item&#x27;</span>)<br>    <span class="hljs-keyword">let</span> movies = []<br>    $movieList.<span class="hljs-title function_">each</span>(<span class="hljs-function">(<span class="hljs-params">index, value</span>) =&gt;</span> &#123;<br>      movies.<span class="hljs-title function_">push</span>(&#123;<br>        <span class="hljs-attr">title</span>: $(value).<span class="hljs-title function_">find</span>(<span class="hljs-string">&#x27;.movie-title&#x27;</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;title&#x27;</span>),<br>        <span class="hljs-attr">score</span>: $(value).<span class="hljs-title function_">find</span>(<span class="hljs-string">&#x27;.movie-score i&#x27;</span>).<span class="hljs-title function_">text</span>(),<br>      &#125;)<br>    &#125;)<br>    <br>    response.<span class="hljs-title function_">end</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(movies))<br>  &#125;<br>  <br>  req.<span class="hljs-title function_">end</span>()<br>&#125;).<span class="hljs-title function_">listen</span>(<span class="hljs-number">9000</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="4、Events"><a href="#4、Events" class="headerlink" title="4、Events"></a>4、Events</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title class_">EventEmitter</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;events&#x27;</span>)<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyEventEmitter</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">EventEmitter</span> &#123;&#125;<br><br><span class="hljs-keyword">const</span> event = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyEventEmitter</span>()<br><br>event.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;play&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">movie</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(movie)<br>&#125;)<br><br>event.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&#x27;play&#x27;</span>, <span class="hljs-string">&#x27;我和我的祖国&#x27;</span>)<br>event.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&#x27;play&#x27;</span>, <span class="hljs-string">&#x27;中国机长&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="5、File-System"><a href="#5、File-System" class="headerlink" title="5、File System"></a>5、File System</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><span class="hljs-keyword">const</span> fsP = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>).<span class="hljs-property">promises</span><br><br><span class="hljs-comment">// 创建文件夹</span><br>fs.<span class="hljs-title function_">mkdir</span>(<span class="hljs-string">&#x27;./logs&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;done.&#x27;</span>)<br>&#125;)<br><br><span class="hljs-comment">// 文件夹改名</span><br>fs.<span class="hljs-title function_">rename</span>(<span class="hljs-string">&#x27;./logs&#x27;</span>, <span class="hljs-string">&#x27;./log&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;done&#x27;</span>)<br>&#125;)<br><br><span class="hljs-comment">// 删除文件夹</span><br>fs.<span class="hljs-title function_">rmdir</span>(<span class="hljs-string">&#x27;./log&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;done.&#x27;</span>)<br>&#125;)<br><br><span class="hljs-comment">// 写内容到文件里</span><br>fs.<span class="hljs-title function_">writeFile</span>(<br>  <span class="hljs-string">&#x27;./logs/log1.txt&#x27;</span>,<br>  <span class="hljs-string">&#x27;hello&#x27;</span>,<br>  <span class="hljs-comment">// 错误优先的回调函数</span><br>  <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (err) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err.<span class="hljs-property">message</span>)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;文件创建成功&#x27;</span>)<br>    &#125;<br>  &#125;<br>)<br><br><span class="hljs-comment">// 给文件追加内容</span><br>fs.<span class="hljs-title function_">appendFile</span>(<span class="hljs-string">&#x27;./logs/log1.txt&#x27;</span>, <span class="hljs-string">&#x27;\nworld&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;done.&#x27;</span>)<br>&#125;)<br><br><span class="hljs-comment">// 读取文件内容</span><br>fs.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;./logs/log1.txt&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err, data</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data)<br>&#125;)<br><br><span class="hljs-comment">// 删除文件</span><br>fs.<span class="hljs-title function_">unlink</span>(<span class="hljs-string">&#x27;./logs/log1.txt&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;done.&#x27;</span>)<br>&#125;)<br><br><span class="hljs-comment">// 批量写文件</span><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>  fs.<span class="hljs-title function_">writeFile</span>(<span class="hljs-string">`./logs/log-<span class="hljs-subst">$&#123;i&#125;</span>.txt`</span>, <span class="hljs-string">`log-<span class="hljs-subst">$&#123;i&#125;</span>`</span>, <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;done.&#x27;</span>)<br>  &#125;)<br>&#125;<br><br><span class="hljs-comment">// 读取文件/目录信息</span><br>fs.<span class="hljs-title function_">readdir</span>(<span class="hljs-string">&#x27;./&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err, data</span>) =&gt;</span> &#123;<br>  data.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">value, index</span>) =&gt;</span> &#123;<br>    fs.<span class="hljs-title function_">stat</span>(<span class="hljs-string">`./<span class="hljs-subst">$&#123;value&#125;</span>`</span>, <span class="hljs-function">(<span class="hljs-params">err, stats</span>) =&gt;</span> &#123;<br>      <span class="hljs-comment">// console.log(value + &#x27;:&#x27; + stats.size)</span><br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value + <span class="hljs-string">&#x27; is &#x27;</span> + (stats.<span class="hljs-title function_">isDirectory</span>() ? <span class="hljs-string">&#x27;directory&#x27;</span> : <span class="hljs-string">&#x27;file&#x27;</span>))<br>    &#125;)<br>  &#125;)<br>&#125;)<br><br><span class="hljs-comment">// 同步读取文件</span><br><span class="hljs-keyword">try</span> &#123;<br>  <span class="hljs-keyword">const</span> content = fs.<span class="hljs-title function_">readFileSync</span>(<span class="hljs-string">&#x27;./logs/log-1.txt&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(content)<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>)<br>&#125; <span class="hljs-keyword">catch</span> (e) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">message</span>)<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)<br><br><span class="hljs-comment">// 异步读取文件：方法一</span><br>fs.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;./logs/log-0.txt&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err, content</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(content)<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>)<br>&#125;)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)<br><br><span class="hljs-comment">// 异步读取文件：方法二</span><br>fs.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;./logs/log-0.txt&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result)<br>&#125;)<br><br><span class="hljs-comment">// 异步读取文件：方法三</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getFile</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> &#123;<br>    fs.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;./logs/log-0.txt&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err, data</span>) =&gt;</span> &#123;<br>      <span class="hljs-title function_">resolve</span>(data)<br>    &#125;)<br>  &#125;)<br>&#125;<br><br>;(<span class="hljs-keyword">async</span> () =&gt; &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-keyword">await</span> <span class="hljs-title function_">getFile</span>())<br>&#125;)()<br><br><span class="hljs-comment">// 异步读取文件：方法四</span><br><span class="hljs-keyword">const</span> fsp = fsP.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;./logs/log-1.txt&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">result</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result)<br>&#125;)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(fsP)<br><br><span class="hljs-comment">// watch 监测文件变化</span><br>fs.<span class="hljs-title function_">watch</span>(<span class="hljs-string">&#x27;./logs/log-0.txt&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h3 id="6、Stream"><a href="#6、Stream" class="headerlink" title="6、Stream"></a>6、Stream</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><br><span class="hljs-keyword">const</span> readstream = fs.<span class="hljs-title function_">createReadStream</span>(<span class="hljs-string">&#x27;./note.txt&#x27;</span>)<br><span class="hljs-keyword">const</span> writestream = fs.<span class="hljs-title function_">createWriteStream</span>(<span class="hljs-string">&#x27;./note2.txt&#x27;</span>)<br><br>writestream.<span class="hljs-title function_">write</span>(readstream)<br></code></pre></td></tr></table></figure>
+
+<h3 id="7、Zlib"><a href="#7、Zlib" class="headerlink" title="7、Zlib"></a>7、Zlib</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><span class="hljs-keyword">const</span> zlib = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;zlib&#x27;</span>)<br><br><span class="hljs-keyword">const</span> gzip = zlib.<span class="hljs-title function_">createGzip</span>()<br><br><span class="hljs-keyword">const</span> readstream = fs.<span class="hljs-title function_">createReadStream</span>(<span class="hljs-string">&#x27;./note.txt&#x27;</span>)<br><span class="hljs-keyword">const</span> writestream = fs.<span class="hljs-title function_">createWriteStream</span>(<span class="hljs-string">&#x27;./note2.txt&#x27;</span>)<br><br>readstream<br>  .<span class="hljs-title function_">pipe</span>(gzip)<br>  .<span class="hljs-title function_">pipe</span>(writestream)<br><br>writestream.<span class="hljs-title function_">write</span>(readstream)<br></code></pre></td></tr></table></figure>
+
+<h3 id="8、ReadLine"><a href="#8、ReadLine" class="headerlink" title="8、ReadLine"></a>8、ReadLine</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> readline = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;readline&#x27;</span>)<br><br><span class="hljs-keyword">const</span> rl = readline.<span class="hljs-title function_">createInterface</span>(&#123;<br>  <span class="hljs-attr">input</span>: process.<span class="hljs-property">stdin</span>,<br>  <span class="hljs-attr">output</span>: process.<span class="hljs-property">stdout</span><br>&#125;)<br><br>rl.<span class="hljs-title function_">question</span>(<span class="hljs-string">&#x27;What do you think of Node.js? &#x27;</span>, <span class="hljs-function">(<span class="hljs-params">answer</span>) =&gt;</span> &#123;<br>  <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> Log the answer in a database</span><br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Thank you for your valuable feedback: <span class="hljs-subst">$&#123;answer&#125;</span>`</span>)<br><br>  rl.<span class="hljs-title function_">close</span>()<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h3 id="9、Crypto"><a href="#9、Crypto" class="headerlink" title="9、Crypto"></a>9、Crypto</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> crypto = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto&#x27;</span>)<br><br><span class="hljs-keyword">const</span> secret = <span class="hljs-string">&#x27;abcdefg&#x27;</span><br><span class="hljs-keyword">const</span> hash = crypto.<span class="hljs-title function_">createHmac</span>(<span class="hljs-string">&#x27;sha256&#x27;</span>, secret)<br>                   .<span class="hljs-title function_">update</span>(<span class="hljs-string">&#x27;I love you&#x27;</span>)<br>                   .<span class="hljs-title function_">digest</span>(<span class="hljs-string">&#x27;hex&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(hash)<br></code></pre></td></tr></table></figure>
+
+<h1 id="四、路由"><a href="#四、路由" class="headerlink" title="四、路由"></a>四、路由</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><br>http.<span class="hljs-title function_">createServer</span>( <span class="hljs-keyword">function</span> (<span class="hljs-params"> req, res </span>) &#123;<br><br>  <span class="hljs-keyword">switch</span> ( req.<span class="hljs-property">url</span> ) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/home&#x27;</span>:<br>      res.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;home&#x27;</span>)<br>      res.<span class="hljs-title function_">end</span>()<br>      <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/mine&#x27;</span>:<br>      res.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;mine&#x27;</span>)<br>      res.<span class="hljs-title function_">end</span>()<br>      <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/login&#x27;</span>: <br>      fs.<span class="hljs-title function_">readFile</span>( <span class="hljs-string">&#x27;./static/login.html&#x27;</span>,<span class="hljs-keyword">function</span> (<span class="hljs-params"> error , data </span>) &#123;<br>        <span class="hljs-keyword">if</span> ( error ) <span class="hljs-keyword">throw</span> error  <br>        res.<span class="hljs-title function_">write</span>( data )<br>        res.<span class="hljs-title function_">end</span>()<br>      &#125;)<br>      <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;/fulian.jpg&#x27;</span>:<br>      fs.<span class="hljs-title function_">readFile</span>( <span class="hljs-string">&#x27;./static/fulian.jpg&#x27;</span>, <span class="hljs-string">&#x27;binary&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"> error , data </span>) &#123;<br>        <span class="hljs-keyword">if</span>( error ) <span class="hljs-keyword">throw</span> error <br>        res.<span class="hljs-title function_">write</span>( data, <span class="hljs-string">&#x27;binary&#x27;</span> )<br>        res.<span class="hljs-title function_">end</span>()<br>      &#125;)<br>      <span class="hljs-keyword">break</span><br>    <span class="hljs-attr">default</span>: <br>      <span class="hljs-keyword">break</span><br>   &#125;<br><br> &#125;).<span class="hljs-title function_">listen</span>( <span class="hljs-number">8000</span>, <span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( <span class="hljs-string">&#x27;服务器运行在： http://localhost:8000&#x27;</span> )<br> &#125;)<br></code></pre></td></tr></table></figure>
+
+<h1 id="五、静态资源服务"><a href="#五、静态资源服务" class="headerlink" title="五、静态资源服务"></a>五、静态资源服务</h1><h3 id="5-1-readStaticFile"><a href="#5-1-readStaticFile" class="headerlink" title="5.1 readStaticFile"></a>5.1 readStaticFile</h3><p>&#x2F;modules&#x2F;readStaticFile.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 引入依赖的模块</span><br><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)<br><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><span class="hljs-keyword">var</span> mime = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mime&#x27;</span>)<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">readStaticFile</span>(<span class="hljs-params">res, filePathname</span>) &#123;<br><br>  <span class="hljs-keyword">var</span> ext = path.<span class="hljs-title function_">parse</span>(filePathname).<span class="hljs-property">ext</span><br>  <span class="hljs-keyword">var</span> mimeType = mime.<span class="hljs-title function_">getType</span>(ext)<br><br>  <span class="hljs-comment">// 判断路径是否有后缀, 有的话则说明客户端要请求的是一个文件 </span><br>  <span class="hljs-keyword">if</span> (ext) &#123;<br>    <span class="hljs-comment">// 根据传入的目标文件路径来读取对应文件</span><br>    fs.<span class="hljs-title function_">readFile</span>(filePathname, <span class="hljs-function">(<span class="hljs-params">err, data</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 错误处理</span><br>      <span class="hljs-keyword">if</span> (err) &#123;<br>        res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">404</span>, &#123; <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;text/plain&quot;</span> &#125;)<br>        res.<span class="hljs-title function_">write</span>(<span class="hljs-string">&quot;404 - NOT FOUND&quot;</span>)<br>        res.<span class="hljs-title function_">end</span>()<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, &#123; <span class="hljs-string">&quot;Content-Type&quot;</span>: mimeType &#125;)<br>        res.<span class="hljs-title function_">write</span>(data)<br>        res.<span class="hljs-title function_">end</span>()<br>      &#125;<br>    &#125;);<br>    <span class="hljs-comment">// 返回 true 表示, 客户端想要的 是 静态文件</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 返回 false 表示, 客户端想要的 不是 静态文件</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 导出函数</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = readStaticFile<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-server"><a href="#5-2-server" class="headerlink" title="5.2 server"></a>5.2 server</h3><p>&#x2F;server.js </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 引入相关模块</span><br><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>);<br><span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;url&#x27;</span>);<br><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);<br><span class="hljs-keyword">var</span> readStaticFile = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./modules/readStaticFile&#x27;</span>);<br><br><span class="hljs-comment">// 搭建 HTTP 服务器</span><br><span class="hljs-keyword">var</span> server = http.<span class="hljs-title function_">createServer</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) &#123;<br>  <span class="hljs-keyword">var</span> urlObj = url.<span class="hljs-title function_">parse</span>(req.<span class="hljs-property">url</span>);<br>  <span class="hljs-keyword">var</span> urlPathname = urlObj.<span class="hljs-property">pathname</span>;<br>  <span class="hljs-keyword">var</span> filePathname = path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;/public&quot;</span>, urlPathname);<br><br>  <span class="hljs-comment">// 读取静态文件</span><br>  <span class="hljs-title function_">readStaticFile</span>(res, filePathname);<br>&#125;);<br><br><span class="hljs-comment">// 在 3000 端口监听请求</span><br>server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;服务器运行中.&quot;</span>);<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;正在监听 3000 端口:&quot;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NodeJs/" class="category-chain-item">NodeJs</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NodeJs/" class="print-no-link">#NodeJs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NodeJs基础</div>
+      <div>https://yonghengshikong.github.io/posts/31322/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/46482/" title="NPM详解-从基础到高级的全面教程">
+                        <span class="hidden-mobile">NPM详解-从基础到高级的全面教程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
