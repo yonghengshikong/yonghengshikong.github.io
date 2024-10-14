@@ -16,30 +16,30 @@
   <meta name="author" content="YongHengShiKong">
   <meta name="keywords" content="">
   
-    <meta name="description" content="七、NodeJs http协议一、概念HTTP（hypertext transport protocol）协议；中文叫超文本传输协议 是一种基于TCP&#x2F;IP的应用层通信协议 这个协议详细规定了 浏览器 和万维网 服务器 之间互相通信的规则。 协议中主要规定了两个方面的内容  客户端：用来向服务器发送数据，可以被称之为请求报文  服务端：向客户端返回数据，可以被称之为响应报文   报文：可">
+    <meta name="description" content="七、NodeJs HTTP协议一、概念HTTP（hypertext transport protocol）协议；中文叫超文本传输协议 是一种基于TCP&#x2F;IP的应用层通信协议 这个协议详细规定了 浏览器 和万维网 服务器 之间互相通信的规则。 协议中主要规定了两个方面的内容  客户端:用来向服务器发送数据，可以被称之为请求报文  服务端:向客户端返回数据，可以被称之为响应报文   报文:可">
 <meta property="og:type" content="article">
-<meta property="og:title" content="七、NodeJs http协议">
-<meta property="og:url" content="https://yonghengshikong.github.io/posts/5655/index.html">
+<meta property="og:title" content="七、NodeJs HTTP协议">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/5656/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="七、NodeJs http协议一、概念HTTP（hypertext transport protocol）协议；中文叫超文本传输协议 是一种基于TCP&#x2F;IP的应用层通信协议 这个协议详细规定了 浏览器 和万维网 服务器 之间互相通信的规则。 协议中主要规定了两个方面的内容  客户端：用来向服务器发送数据，可以被称之为请求报文  服务端：向客户端返回数据，可以被称之为响应报文   报文：可">
+<meta property="og:description" content="七、NodeJs HTTP协议一、概念HTTP（hypertext transport protocol）协议；中文叫超文本传输协议 是一种基于TCP&#x2F;IP的应用层通信协议 这个协议详细规定了 浏览器 和万维网 服务器 之间互相通信的规则。 协议中主要规定了两个方面的内容  客户端:用来向服务器发送数据，可以被称之为请求报文  服务端:向客户端返回数据，可以被称之为响应报文   报文:可">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014173924293.png">
-<meta property="og:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174034947.png">
-<meta property="og:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174143907.png">
-<meta property="og:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174204151.png">
-<meta property="og:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174335095.png">
-<meta property="og:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174400437.png">
-<meta property="og:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014175420098.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014173924293.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014174034947.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014174143907.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014174204151.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014174335095.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014174400437.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014175420098.png">
 <meta property="article:published_time" content="2024-10-14T09:05:33.000Z">
-<meta property="article:modified_time" content="2024-10-14T10:01:27.713Z">
+<meta property="article:modified_time" content="2024-10-14T10:48:31.634Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="NodeJs">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://yonghengshikong.github.io/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014173924293.png">
+<meta name="twitter:image" content="https://yonghengshikong.github.io/posts/5656/image-20241014173924293.png">
   
   
   
-  <title>七、NodeJs http协议 - Hexo</title>
+  <title>七、NodeJs HTTP协议 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -205,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="七、NodeJs http协议"></span>
+            <span id="subtitle" data-typed-text="七、NodeJs HTTP协议"></span>
           
         </div>
 
@@ -239,7 +239,7 @@
         
         
         
-          27 分钟
+          28 分钟
         
       </span>
     
@@ -276,22 +276,22 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">七、NodeJs http协议</h1>
+            <h1 id="seo-header">七、NodeJs HTTP协议</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="七、NodeJs-http协议"><a href="#七、NodeJs-http协议" class="headerlink" title="七、NodeJs http协议"></a>七、NodeJs http协议</h1><h1 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h1><p>HTTP（hypertext transport protocol）协议；中文叫超文本传输协议</p>
+                <h1 id="七、NodeJs-HTTP协议"><a href="#七、NodeJs-HTTP协议" class="headerlink" title="七、NodeJs HTTP协议"></a>七、NodeJs HTTP协议</h1><h1 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h1><p>HTTP（hypertext transport protocol）协议；中文叫超文本传输协议</p>
 <p>是一种基于TCP&#x2F;IP的应用层通信协议</p>
 <p>这个协议详细规定了 浏览器 和万维网 服务器 之间互相通信的规则。</p>
 <p>协议中主要规定了两个方面的内容</p>
 <ul>
-<li><p>客户端：用来向服务器发送数据，可以被称之为请求报文</p>
+<li><p>客户端:用来向服务器发送数据，可以被称之为请求报文</p>
 </li>
-<li><p>服务端：向客户端返回数据，可以被称之为响应报文</p>
+<li><p>服务端:向客户端返回数据，可以被称之为响应报文</p>
 </li>
 </ul>
-<p>报文：可以简单理解为就是一堆字符串</p>
+<p>报文:可以简单理解为就是一堆字符串</p>
 <h1 id="二、请求报文的组成"><a href="#二、请求报文的组成" class="headerlink" title="二、请求报文的组成"></a>二、请求报文的组成</h1><ul>
 <li><p>请求行</p>
 </li>
@@ -308,7 +308,7 @@
 <li><p>请求URL（统一资源定位器）</p>
 </li>
 </ul>
-<p>例如：<a target="_blank" rel="noopener" href="http://www.baidu.com/index.html?a%EF%BC%9D100&b%EF%BC%9D200#logo">http://www.baidu.com:80/index.html?a＝100&amp;b＝200#logo</a></p>
+<p>例如:<a target="_blank" rel="noopener" href="http://www.baidu.com/index.html?a%EF%BC%9D100&b%EF%BC%9D200#logo">http://www.baidu.com:80/index.html?a＝100&amp;b＝200#logo</a></p>
 <ul>
 <li><p>http: 协议（https、ftp、ssh等）</p>
 </li>
@@ -324,49 +324,60 @@
 </li>
 </ul>
 <p>HTTP协议版本号</p>
-<h1 id="四、HTTP请求头"><a href="#四、HTTP请求头" class="headerlink" title="四、HTTP请求头"></a>四、HTTP请求头</h1><p>格式：『头名：头值』</p>
-<p>常见的请求头有：</p>
-<table border="1"><tr>
-<td colspan="1" rowspan="1">请求头</td>
-<td colspan="1" rowspan="1">解释</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Host</td>
-<td colspan="1" rowspan="1">主机名</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Connection</td>
-<td colspan="1" rowspan="1">连接的设置keep-alive（保持连接）；close（关闭连接）</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Cache-Control</td>
-<td colspan="1" rowspan="1">缓存控制 max-age＝0 （没有缓存）</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Upgrade-Insecure-Requests</td>
-<td colspan="1" rowspan="1">将网页中的http请求转化为https请求（很少用）老网站升级</td>
-</tr><tr>
-<td colspan="1" rowspan="1">User-Agent</td>
-<td colspan="1" rowspan="1">用户代理，客户端字符串标识，服务器可以通过这个标识来识别这个请求来自哪个客户端，一般在PC端和手机端的区分</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Accept</td>
-<td colspan="1" rowspan="1">设置浏览器接收的数据类型</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Accept-Encoding</td>
-<td colspan="1" rowspan="1">设置接收的压缩方式</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Accept-Language</td>
-<td colspan="1" rowspan="1">设置接收的语言q＝0.7为喜好系数，满分为1</td>
-</tr><tr>
-<td colspan="1" rowspan="1">Cookie</td>
-<td colspan="1" rowspan="1">后面单独讲</td>
-</tr></table>
-
-
+<h1 id="四、HTTP请求头"><a href="#四、HTTP请求头" class="headerlink" title="四、HTTP请求头"></a>四、HTTP请求头</h1><p>格式:『头名:头值』</p>
+<p>常见的请求头有:</p>
+<table>
+<thead>
+<tr>
+<th>请求头</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Host</td>
+<td>主机名</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>连接的设置keep-alive（保持连接）；close（关闭连接）</td>
+</tr>
+<tr>
+<td>Cache-Control</td>
+<td>缓存控制 max-age＝0 （没有缓存）</td>
+</tr>
+<tr>
+<td>Upgrade-Insecure-Requests</td>
+<td>将网页中的http请求转化为https请求（很少用）老网站升级</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>用户代理，客户端字符串标识，服务器可以通过这个标识来识别这个请求来自哪个客户端，一般在PC端和手机端的区分</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>设置浏览器接收的数据类型</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>设置接收的压缩方式</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>设置接收的语言q＝0.7为喜好系数，满分为1</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>后面单独讲</td>
+</tr>
+</tbody></table>
 <h1 id="五、HTTP的请求体"><a href="#五、HTTP的请求体" class="headerlink" title="五、HTTP的请求体"></a>五、HTTP的请求体</h1><p>请求体内容的格式是非常灵活的，</p>
 <p>（可以是空）⇒GET请求，</p>
 <p>（也可以是字符串，还可以是JSON)⇒POST请求</p>
-<p>例如：</p>
+<p>例如:</p>
 <ul>
-<li><p>字符串：keywords&#x3D;手机8price&#x3D;2000</p>
+<li><p>字符串:keywords&#x3D;手机8price&#x3D;2000</p>
 </li>
-<li><p>JSON:｛＂keywords＂：＂手机＂，＂price＂：2000｝</p>
+<li><p>JSON:｛＂keywords＂:＂手机＂，＂price＂:2000｝</p>
 </li>
 </ul>
 <h1 id="六、响应报文的组成"><a href="#六、响应报文的组成" class="headerlink" title="六、响应报文的组成"></a>六、响应报文的组成</h1><ul>
@@ -375,11 +386,11 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">HTTP/1.1 200 OK<br></code></pre></td></tr></table></figure>
 
 <ul>
-<li><p>HTTP&#x2F;1.1：HTTP协议版本号</p>
+<li><p>HTTP&#x2F;1.1:HTTP协议版本号</p>
 </li>
-<li><p>200：响应状态码 404 Not Found 500 Internal Server Error 还有一些状态码，参考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status</a></p>
+<li><p>200:响应状态码 404 Not Found 500 Internal Server Error 还有一些状态码，参考:<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status</a></p>
 </li>
-<li><p>OK：响应状态描述</p>
+<li><p>OK:响应状态描述</p>
 </li>
 </ul>
 <p><span style="background:#e5eecc">响应状态码和响应字符串关系是–对应的。</span></p>
@@ -387,11 +398,11 @@
 <li><strong>响应头</strong></li>
 </ul>
 <table border="1"><tr>
-<td colspan="1" rowspan="1">Cache-Control：缓存控制 private 私有的，只允许客户端缓存数据Connection 链接设置</td>
+<td colspan="1" rowspan="1">Cache-Control:缓存控制 private 私有的，只允许客户端缓存数据Connection 链接设置</td>
 </tr><tr>
 <td colspan="1" rowspan="1">Content-Type:text/html;charset=utf-8 设置响应体的数据类型以及字符集，响应体为html，字符集utf-8</td>
 </tr><tr>
-<td colspan="1" rowspan="1">Content-Length：响应体的长度，单位为字节</td>
+<td colspan="1" rowspan="1">Content-Length:响应体的长度，单位为字节</td>
 </tr></table>
 
 <ul>
@@ -404,106 +415,123 @@
 <h1 id="七、创建HTTP服务"><a href="#七、创建HTTP服务" class="headerlink" title="七、创建HTTP服务"></a>七、创建HTTP服务</h1><p>使用nodejs 创建 HTTP服务</p>
 <h2 id="7-1-操作步骤"><a href="#7-1-操作步骤" class="headerlink" title="7.1 操作步骤"></a>7.1 操作步骤</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//1. 导入 http 模块</span><br><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>);<br><span class="hljs-comment">//2. 创建服务对象 create 创建 server 服务</span><br><span class="hljs-comment">// request 意为请求. 是对请求报文的封装对象, 通过 request 对象可以获得请求报文的数据</span><br><span class="hljs-comment">// response 意为响应. 是对响应报文的封装对象, 通过 response 对象可以设置响应报文</span><br><span class="hljs-keyword">const</span> server = http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> &#123;<br>    response.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;Hello HTTP server&#x27;</span>);<br>&#125;);<br><span class="hljs-comment">//3. 监听端口, 启动服务</span><br>server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">9000</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;服务已经启动, 端口 9000 监听中...&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
 
-<p><strong>http.createServer 里的回调函数的执行时机： 当接收到 HTTP 请求的时候，就会执行</strong></p>
+<p><strong>http.createServer 里的回调函数的执行时机: 当接收到 HTTP 请求的时候，就会执行</strong></p>
 <h2 id="7-2-测试"><a href="#7-2-测试" class="headerlink" title="7.2 测试"></a>7.2 测试</h2><p>浏览器请求对应端口</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">http://127.0.0.1:9000<br></code></pre></td></tr></table></figure>
 
-<h2 id="7-3-注意事项"><a href="#7-3-注意事项" class="headerlink" title="7.3 注意事项"></a>7.3 注意事项</h2><h3 id="1．命令行-ctrl＋c停止服务"><a href="#1．命令行-ctrl＋c停止服务" class="headerlink" title="1．命令行 ctrl＋c停止服务"></a>1．命令行 <strong>ctrl＋c</strong>停止服务</h3><h3 id="2．当服务启动后，更新代码-必须重启服务才能生效"><a href="#2．当服务启动后，更新代码-必须重启服务才能生效" class="headerlink" title="2．当服务启动后，更新代码 必须重启服务才能生效"></a>2．当服务启动后，更新代码 必须重启服务才能生效</h3><h3 id="3．响应内容中文乱码的解决办法"><a href="#3．响应内容中文乱码的解决办法" class="headerlink" title="3．响应内容中文乱码的解决办法"></a>3．响应内容中文乱码的解决办法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">response.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;content-type&#x27;</span>,<span class="hljs-string">&#x27;text/html;charset=utf-8&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h2 id="7-3-注意事项"><a href="#7-3-注意事项" class="headerlink" title="7.3 注意事项"></a>7.3 注意事项</h2><h3 id="1-命令行-ctrl＋c停止服务"><a href="#1-命令行-ctrl＋c停止服务" class="headerlink" title="1.命令行 ctrl＋c停止服务"></a>1.命令行 <strong>ctrl＋c</strong>停止服务</h3><h3 id="2-当服务启动后，更新代码-必须重启服务才能生效"><a href="#2-当服务启动后，更新代码-必须重启服务才能生效" class="headerlink" title="2.当服务启动后，更新代码 必须重启服务才能生效"></a>2.当服务启动后，更新代码 必须重启服务才能生效</h3><h3 id="3-响应内容中文乱码的解决办法"><a href="#3-响应内容中文乱码的解决办法" class="headerlink" title="3.响应内容中文乱码的解决办法"></a>3.响应内容中文乱码的解决办法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">response.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;content-type&#x27;</span>,<span class="hljs-string">&#x27;text/html;charset=utf-8&#x27;</span>);<br></code></pre></td></tr></table></figure>
 
-<h3 id="4．端口号被占用"><a href="#4．端口号被占用" class="headerlink" title="4．端口号被占用"></a>4．端口号被占用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">Error: listen EADDRINUSE: address already <span class="hljs-keyword">in</span> use :::9000<br></code></pre></td></tr></table></figure>
+<h3 id="4-端口号被占用"><a href="#4-端口号被占用" class="headerlink" title="4.端口号被占用"></a>4.端口号被占用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">Error: listen EADDRINUSE: address already <span class="hljs-keyword">in</span> use :::9000<br></code></pre></td></tr></table></figure>
 
 <p>1）关闭当前正在运行监听端口的服务（使用较多）</p>
 <p>2）修改其他端口号</p>
-<p>5．HTTP协议默认端口是80。HTTPS协议的默认端口是443，HTTP服务开发常用端口有3000，8080,8090,9000等</p>
+<p>5.HTTP协议默认端口是80。HTTPS协议的默认端口是443，HTTP服务开发常用端口有3000，8080,8090,9000等</p>
 <p><strong>如果端口被其他程序占用，可以使用资源监视器 找到占用端口的程序，然后使用 任务管理器 关闭对应的程序</strong></p>
 <h1 id="八、浏览器查看HTTP报文"><a href="#八、浏览器查看HTTP报文" class="headerlink" title="八、浏览器查看HTTP报文"></a>八、浏览器查看HTTP报文</h1><p><strong>点击步骤</strong></p>
-<p><img src="/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014173924293.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="8-1查看请求行与请求头"><a href="#8-1查看请求行与请求头" class="headerlink" title="8.1查看请求行与请求头"></a>8.1查看请求行与请求头</h2><h2 id><a href="#" class="headerlink" title></a><img src="/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174034947.png" srcset="/img/loading.gif" lazyload></h2><h2 id="8-2查看请求体"><a href="#8-2查看请求体" class="headerlink" title="8.2查看请求体"></a>8.2查看请求体</h2><p><img src="/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174143907.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="8-3查看URL查询字符串"><a href="#8-3查看URL查询字符串" class="headerlink" title="8.3查看URL查询字符串"></a>8.3查看URL查询字符串</h2><p><img src="/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174204151.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="8-4查看响应行与响应头"><a href="#8-4查看响应行与响应头" class="headerlink" title="8.4查看响应行与响应头"></a>8.4查看响应行与响应头</h2><p><img src="/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174335095.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="8-5查看响应体"><a href="#8-5查看响应体" class="headerlink" title="8.5查看响应体"></a>8.5查看响应体</h2><p><img src="/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014174400437.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/posts/5656/image-20241014173924293.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="8-1查看请求行与请求头"><a href="#8-1查看请求行与请求头" class="headerlink" title="8.1查看请求行与请求头"></a>8.1查看请求行与请求头</h2><h2 id><a href="#" class="headerlink" title></a><img src="/posts/5656/image-20241014174034947.png" srcset="/img/loading.gif" lazyload></h2><h2 id="8-2查看请求体"><a href="#8-2查看请求体" class="headerlink" title="8.2查看请求体"></a>8.2查看请求体</h2><p><img src="/posts/5656/image-20241014174143907.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="8-3查看URL查询字符串"><a href="#8-3查看URL查询字符串" class="headerlink" title="8.3查看URL查询字符串"></a>8.3查看URL查询字符串</h2><p><img src="/posts/5656/image-20241014174204151.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="8-4查看响应行与响应头"><a href="#8-4查看响应行与响应头" class="headerlink" title="8.4查看响应行与响应头"></a>8.4查看响应行与响应头</h2><p><img src="/posts/5656/image-20241014174335095.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="8-5查看响应体"><a href="#8-5查看响应体" class="headerlink" title="8.5查看响应体"></a>8.5查看响应体</h2><p><img src="/posts/5656/image-20241014174400437.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="九、获取HTTP请求报文"><a href="#九、获取HTTP请求报文" class="headerlink" title="九、获取HTTP请求报文"></a>九、获取HTTP请求报文</h1><p>想要获取请求的数据，需要通过request 对象</p>
-<table border="1"><tr>
-<td colspan="1" rowspan="1">含义</td>
-<td colspan="1" rowspan="1">语法</td>
-<td colspan="1" rowspan="1">重点掌握</td>
-</tr><tr>
-<td colspan="1" rowspan="1">请求方法</td>
-<td colspan="1" rowspan="1">request.method</td>
-<td colspan="1" rowspan="1">*</td>
-</tr><tr>
-<td colspan="1" rowspan="1">请求版本</td>
-<td colspan="1" rowspan="1">request.httpVersion</td>
-<td colspan="1" rowspan="1"></td>
-</tr><tr>
-<td colspan="1" rowspan="1">请求路径</td>
-<td colspan="1" rowspan="1">request.url</td>
-<td colspan="1" rowspan="1">*</td>
-</tr><tr>
-<td colspan="1" rowspan="1">URL 路径</td>
-<td colspan="1" rowspan="1">require('url').parse(request.url).pathname</td>
-<td colspan="1" rowspan="1">*</td>
-</tr><tr>
-<td colspan="1" rowspan="1">URL查询字符串</td>
-<td colspan="1" rowspan="1">require('url').parse(request.url, true).query</td>
-<td colspan="1" rowspan="1">*</td>
-</tr><tr>
-<td colspan="1" rowspan="1">请求头</td>
-<td colspan="1" rowspan="1">request.headers</td>
-<td colspan="1" rowspan="1">*</td>
-</tr><tr>
-<td colspan="1" rowspan="1">请求体</td>
-<td colspan="1" rowspan="1">
-    request.on('data, function(chunk){});
-    request.on('end', function(){});
-</td>
-<td colspan="1" rowspan="1"></td>
-</tr></table>
-
-<p><strong>注意事项：</strong></p>
-<p>1．request．url只能获取路径以及查询字符串，无法获取URL中的域名以及协议的内容</p>
-<p>2．request．headers将请求信息转化成一个对象，并将属性名都转化成了『小写』</p>
-<p>3．关于路径：如果访问网站的时候，只填写了IP地址或者是域名信息，此时请求的路径为『&#x2F;』</p>
-<p>4．关于favicon．ico：这个请求是属于浏览器自动发送的请求</p>
+<table>
+<thead>
+<tr>
+<th>含义</th>
+<th>语法</th>
+<th>重点掌握</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>请求方法</td>
+<td>request.method</td>
+<td>*</td>
+</tr>
+<tr>
+<td>请求版本</td>
+<td>request.httpVersion</td>
+<td></td>
+</tr>
+<tr>
+<td>请求路径</td>
+<td>request.url</td>
+<td>*</td>
+</tr>
+<tr>
+<td>URL 路径</td>
+<td>require(‘url’).parse(request.url).pathname</td>
+<td>*</td>
+</tr>
+<tr>
+<td>URL查询字符串</td>
+<td>require(‘url’).parse(request.url, true).query</td>
+<td>*</td>
+</tr>
+<tr>
+<td>请求头</td>
+<td>request.headers</td>
+<td>*</td>
+</tr>
+<tr>
+<td>请求体</td>
+<td>request.on(‘data, function(chunk){}); request.on(‘end’, function(){});</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>注意事项:</strong></p>
+<p>1.request.url只能获取路径以及查询字符串，无法获取URL中的域名以及协议的内容</p>
+<p>2.request.headers将请求信息转化成一个对象，并将属性名都转化成了『小写』</p>
+<p>3.关于路径:如果访问网站的时候，只填写了IP地址或者是域名信息，此时请求的路径为『&#x2F;』</p>
+<p>4.关于favicon.ico:这个请求是属于浏览器自动发送的请求</p>
 <h2 id="9-1-搭建HTTP服务"><a href="#9-1-搭建HTTP服务" class="headerlink" title="9.1 搭建HTTP服务"></a>9.1 搭建HTTP服务</h2><p>按照以下要求搭建HTTP服务</p>
-<table border="1"><tr>
-<td colspan="1" rowspan="1">请求类型（方法）</td>
-<td colspan="1" rowspan="1">请求地址</td>
-<td colspan="1" rowspan="1">响应体结果</td>
-</tr><tr>
-<td colspan="1" rowspan="1">get</td>
-<td colspan="1" rowspan="1">/login</td>
-<td colspan="1" rowspan="1">登录页面</td>
-</tr><tr>
-<td colspan="1" rowspan="1">get</td>
-<td colspan="1" rowspan="1">/reg</td>
-<td colspan="1" rowspan="1">注册页面</td>
-</tr></table>
-
+<table>
+<thead>
+<tr>
+<th>请求类型（方法）</th>
+<th>请求地址</th>
+<th>响应体结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>get</td>
+<td>&#x2F;login</td>
+<td>登录页面</td>
+</tr>
+<tr>
+<td>get</td>
+<td>&#x2F;reg</td>
+<td>注册页面</td>
+</tr>
+</tbody></table>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//1、引入http模块</span><br><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;http&quot;</span>);<br><span class="hljs-comment">//2、建立服务</span><br><span class="hljs-keyword">const</span> server = http.<span class="hljs-title function_">createServer</span>(<span class="hljs-function">(<span class="hljs-params">request, response</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">let</span> &#123; url, method &#125; = request; <span class="hljs-comment">//对象的解构赋值</span><br>    <span class="hljs-comment">//设置响应头信息</span><br>    <span class="hljs-comment">//解决中文乱码</span><br>    response.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;text/html;charset=utf-8&quot;</span>)<br>    <span class="hljs-keyword">if</span> (url == <span class="hljs-string">&quot;/register&quot;</span> &amp;&amp; method == <span class="hljs-string">&quot;GET&quot;</span>) &#123;<br>        response.<span class="hljs-title function_">end</span>(<span class="hljs-string">&quot;注册页面&quot;</span>);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (url == <span class="hljs-string">&quot;/login&quot;</span> &amp;&amp; method == <span class="hljs-string">&quot;GET&quot;</span>) &#123;<br>        response.<span class="hljs-title function_">end</span>(<span class="hljs-string">&quot;登录页面&quot;</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        response.<span class="hljs-title function_">end</span>(<span class="hljs-string">&quot;&lt;h1&gt;404 Not Found&lt;/h1&gt;&quot;</span>)<br>    &#125;<br>&#125;)<br><span class="hljs-comment">//3、监听端口</span><br>server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">8000</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;服务启动中....&#x27;</span>);<br>&#125;)<br></code></pre></td></tr></table></figure>
 
 
 
-<h1 id="十、设置HTTP响应报文"><a href="#十、设置HTTP响应报文" class="headerlink" title="十、设置HTTP响应报文"></a>十、设置HTTP响应报文</h1><table border="1"><tr>
-<td colspan="1" rowspan="1">作用</td>
-<td colspan="1" rowspan="1">语法</td>
-</tr><tr>
-<td colspan="1" rowspan="1">设置响应状态码</td>
-<td colspan="1" rowspan="1">response.statusCode</td>
-</tr><tr>
-<td colspan="1" rowspan="1">设置响应状态描述</td>
-<td colspan="1" rowspan="1">response.statusMessage（用的非常少）</td>
-</tr><tr>
-<td colspan="1" rowspan="1">设置响应头信息</td>
-<td colspan="1" rowspan="1">response.setHeader（＇头名，＇头值）</td>
-</tr><tr>
-<td colspan="1" rowspan="1">设置响应体</td>
-<td colspan="1" rowspan="1">response.write('xx')
-response.end('xxx')
-</td>
-</tr></table>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//write 和 end 的两种使用情况：</span><br><span class="hljs-comment">//1. write 和 end 的结合使用 响应体相对分散</span><br>response.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;xx&#x27;</span>);<br>response.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;xx&#x27;</span>);<br>response.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;xx&#x27;</span>);<br>response.<span class="hljs-title function_">end</span>(); <span class="hljs-comment">//每一个请求，在处理的时候必须要执行 end 方法的</span><br><span class="hljs-comment">//2. 单独使用 end 方法 响应体相对集中</span><br>response.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;xxx&#x27;</span>);<br><br></code></pre></td></tr></table></figure>
+<h1 id="十、设置HTTP响应报文"><a href="#十、设置HTTP响应报文" class="headerlink" title="十、设置HTTP响应报文"></a>十、设置HTTP响应报文</h1><table>
+<thead>
+<tr>
+<th>作用</th>
+<th>语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设置响应状态码</td>
+<td>response.statusCode</td>
+</tr>
+<tr>
+<td>设置响应状态描述</td>
+<td>response.statusMessage（用的非常少）</td>
+</tr>
+<tr>
+<td>设置响应头信息</td>
+<td>response.setHeader（＇头名，＇头值）</td>
+</tr>
+<tr>
+<td>设置响应体</td>
+<td>response.write(‘xx’) response.end(‘xxx’)</td>
+</tr>
+</tbody></table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//write 和 end 的两种使用情况:</span><br><span class="hljs-comment">//1. write 和 end 的结合使用 响应体相对分散</span><br>response.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;xx&#x27;</span>);<br>response.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;xx&#x27;</span>);<br>response.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;xx&#x27;</span>);<br>response.<span class="hljs-title function_">end</span>(); <span class="hljs-comment">//每一个请求，在处理的时候必须要执行 end 方法的</span><br><span class="hljs-comment">//2. 单独使用 end 方法 响应体相对集中</span><br>response.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;xxx&#x27;</span>);<br><br></code></pre></td></tr></table></figure>
 
 
 
@@ -512,49 +540,61 @@ response.end('xxx')
 
 
 
-<h1 id="十一、网页资源的基本加载过程"><a href="#十一、网页资源的基本加载过程" class="headerlink" title="十一、网页资源的基本加载过程"></a>十一、网页资源的基本加载过程</h1><p><img src="/7.NodeJs-http%E5%8D%8F%E8%AE%AE/image-20241014175420098.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="十一、网页资源的基本加载过程"><a href="#十一、网页资源的基本加载过程" class="headerlink" title="十一、网页资源的基本加载过程"></a>十一、网页资源的基本加载过程</h1><p><img src="/posts/5656/image-20241014175420098.png" srcset="/img/loading.gif" lazyload></p>
 <p>网页资源的加载都是循序渐进的，首先获取HTML的内容，然后解析HTML在发送其他资源的请求，如CSS， Javascript，图片等。理解了这个内容对于后续的学习与成长有非常大的帮助</p>
 <h1 id="十二、静态资源服务"><a href="#十二、静态资源服务" class="headerlink" title="十二、静态资源服务"></a>十二、静态资源服务</h1><p>静态资源是指内容长时间不发生改变的资源，例如图片，视频，cSS文件，JS文件，HTML文件，字体文件等</p>
 <p>动态资源是指内容经常更新的资源，例如百度首页，网易首页，京东搜索列表页面等</p>
 <h2 id="12-1-网站根目录或静态资源目录"><a href="#12-1-网站根目录或静态资源目录" class="headerlink" title="12.1 网站根目录或静态资源目录"></a>12.1 网站根目录或静态资源目录</h2><p>HTTP服务在哪个文件夹中寻找静态资源，那个文件夹就是静态资源目录，也称之为 网站根目录</p>
-<p>思考：vscode 中使用live-server访问HTML时，它启动的服务中网站根目录是谁？</p>
-<h2 id="12-2-网页中的URL"><a href="#12-2-网页中的URL" class="headerlink" title="12.2 网页中的URL"></a>12.2 网页中的URL</h2><p>网页中的URL主要分为两大类：相对路径与绝对路径</p>
+<p>思考:vscode 中使用live-server访问HTML时，它启动的服务中网站根目录是谁？</p>
+<h2 id="12-2-网页中的URL"><a href="#12-2-网页中的URL" class="headerlink" title="12.2 网页中的URL"></a>12.2 网页中的URL</h2><p>网页中的URL主要分为两大类:相对路径与绝对路径</p>
 <h3 id="12-2-1-绝对路径"><a href="#12-2-1-绝对路径" class="headerlink" title="12.2.1 绝对路径"></a>12.2.1 绝对路径</h3><p>绝对路径可靠性强，而且相对容易理解，在项目中运用较多</p>
-<table border="1"><tr>
-<td colspan="1" rowspan="1">形式</td>
-<td colspan="1" rowspan="1">特点</td>
-</tr><tr>
-<td colspan="1" rowspan="1">http://atguigu.com/web</td>
-<td colspan="1" rowspan="1">直接向目标资源发送请求，容易理解。网站的外链会用到此形式</td>
-</tr><tr>
-<td colspan="1" rowspan="1">//atguigu.com/web</td>
-<td colspan="1" rowspan="1">与页面URL的协议拼接形成完整URL再发送请求。大型网站用的比较多</td>
-</tr><tr>
-<td colspan="1" rowspan="1">/web</td>
-<td colspan="1" rowspan="1">与页面URL的协议、主机名、端口拼接形成完整URL再发送请求。中小型网站</td>
-</tr></table>
-
+<table>
+<thead>
+<tr>
+<th>形式</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="http://atguigu.com/web">http://atguigu.com/web</a></td>
+<td>直接向目标资源发送请求，容易理解。网站的外链会用到此形式</td>
+</tr>
+<tr>
+<td>&#x2F;&#x2F;atguigu.com&#x2F;web</td>
+<td>与页面URL的协议拼接形成完整URL再发送请求。大型网站用的比较多</td>
+</tr>
+<tr>
+<td>&#x2F;web</td>
+<td>与页面URL的协议、主机名、端口拼接形成完整URL再发送请求。中小型网站</td>
+</tr>
+</tbody></table>
 <h3 id="12-2-2-相对路径"><a href="#12-2-2-相对路径" class="headerlink" title="12.2.2 相对路径"></a>12.2.2 相对路径</h3><p>相对路径在发送请求时，需要与当前页面URL路径进行计算，得到完整URL后，再发送请求，学习阶段用的较多</p>
-<p>例如当前网页url为http：&#x2F;&#x2F;www．atguigu．com&#x2F;course&#x2F;h5．html</p>
-<table border="1"><tr>
-<td colspan="1" rowspan="1">形式</td>
-<td colspan="1" rowspan="1">最终的URL</td>
-</tr><tr>
-<td colspan="1" rowspan="1">./css/app.css</td>
-<td colspan="1" rowspan="1">http://www.atguigu.com/course/css/app.css</td>
-</tr><tr>
-<td colspan="1" rowspan="1">js/app.js</td>
-<td colspan="1" rowspan="1">http://www.atguigu.com/course/js/app.js</td>
-</tr><tr>
-<td colspan="1" rowspan="1">../img/logo.png</td>
-<td colspan="1" rowspan="1">http://www.atguigu.com/img/logo.png</td>
-</tr><tr>
-<td colspan="1" rowspan="1">../../mp4/show.mp4</td>
-<td colspan="1" rowspan="1">http://www.atguigu.com/mp4/show.mp4</td>
-</tr></table>
-
-
-<h3 id="12-2-3-网页中使用URL的场景小结"><a href="#12-2-3-网页中使用URL的场景小结" class="headerlink" title="12.2.3 网页中使用URL的场景小结"></a>12.2.3 网页中使用URL的场景小结</h3><p>包括但不限于如下场景：</p>
+<p>例如当前网页url为<a target="_blank" rel="noopener" href="http://www.atguigu.com/course/h5.html">http://www.atguigu.com/course/h5.html</a></p>
+<table>
+<thead>
+<tr>
+<th>形式</th>
+<th>最终的URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.&#x2F;css&#x2F;app.css</td>
+<td><a target="_blank" rel="noopener" href="http://www.atguigu.com/course/css/app.css">http://www.atguigu.com/course/css/app.css</a></td>
+</tr>
+<tr>
+<td>js&#x2F;app.js</td>
+<td><a target="_blank" rel="noopener" href="http://www.atguigu.com/course/js/app.js">http://www.atguigu.com/course/js/app.js</a></td>
+</tr>
+<tr>
+<td>..&#x2F;img&#x2F;logo.png</td>
+<td><a target="_blank" rel="noopener" href="http://www.atguigu.com/img/logo.png">http://www.atguigu.com/img/logo.png</a></td>
+</tr>
+<tr>
+<td>..&#x2F;..&#x2F;mp4&#x2F;show.mp4</td>
+<td><a target="_blank" rel="noopener" href="http://www.atguigu.com/mp4/show.mp4">http://www.atguigu.com/mp4/show.mp4</a></td>
+</tr>
+</tbody></table>
+<h3 id="12-2-3-网页中使用URL的场景小结"><a href="#12-2-3-网页中使用URL的场景小结" class="headerlink" title="12.2.3 网页中使用URL的场景小结"></a>12.2.3 网页中使用URL的场景小结</h3><p>包括但不限于如下场景:</p>
 <ul>
 <li><p>a标签href</p>
 </li>
@@ -572,8 +612,8 @@ response.end('xxx')
 </li>
 </ul>
 <h2 id="12-3-设置资源类型（mime类型）"><a href="#12-3-设置资源类型（mime类型）" class="headerlink" title="12.3 设置资源类型（mime类型）"></a>12.3 设置资源类型（mime类型）</h2><p>媒体类型（通常称为 Multipurpose Internet Mail Extensions 或MIME 类型）是一种标准，用来表示文档、文件或字节流的性质和格式。</p>
-<p><code>mime 类型结构：［type］/［subType］</code></p>
-<p><code>例如：text/html text/css image/jpeg image/png application/json</code></p>
+<p><code>mime 类型结构:［type］/［subType］</code></p>
+<p><code>例如:text/html text/css image/jpeg image/png application/json</code></p>
 <p>HTTP服务可以设置响应头Content-Type 来表明响应体的MIME类型，浏览器会根据该类型决定如何处理资源</p>
 <p>下面是常见文件对应的mime类型</p>
 <ul>
@@ -604,7 +644,7 @@ response.end('xxx')
 
 
 
-<h2 id="12-4-GET和POST请求场景小结"><a href="#12-4-GET和POST请求场景小结" class="headerlink" title="12.4 GET和POST请求场景小结"></a>12.4 GET和POST请求场景小结</h2><h3 id="12-4-1-GET-请求的情况："><a href="#12-4-1-GET-请求的情况：" class="headerlink" title="12.4.1 GET 请求的情况："></a>12.4.1 <strong>GET 请求的情况：</strong></h3><p>在地址栏直接输入url访问</p>
+<h2 id="12-4-GET和POST请求场景小结"><a href="#12-4-GET和POST请求场景小结" class="headerlink" title="12.4 GET和POST请求场景小结"></a>12.4 GET和POST请求场景小结</h2><h3 id="12-4-1-GET-请求的情况"><a href="#12-4-1-GET-请求的情况" class="headerlink" title="12.4.1 GET 请求的情况:"></a>12.4.1 <strong>GET 请求的情况:</strong></h3><p>在地址栏直接输入url访问</p>
 <ul>
 <li><p>点击a链接</p>
 </li>
@@ -619,7 +659,7 @@ response.end('xxx')
 <li><p>ajax中的get请求</p>
 </li>
 </ul>
-<h3 id="12-4-2-POST-请求的情况："><a href="#12-4-2-POST-请求的情况：" class="headerlink" title="12.4.2 POST 请求的情况："></a>12.4.2 <strong>POST 请求的情况：</strong></h3><ul>
+<h3 id="12-4-2-POST-请求的情况"><a href="#12-4-2-POST-请求的情况" class="headerlink" title="12.4.2 POST 请求的情况:"></a>12.4.2 <strong>POST 请求的情况:</strong></h3><ul>
 <li><p>form标签中的method为post（不区分大小写）</p>
 </li>
 <li><p>AJAX的post请求</p>
@@ -681,8 +721,8 @@ response.end('xxx')
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>七、NodeJs http协议</div>
-      <div>https://yonghengshikong.github.io/posts/5655/</div>
+      <div>七、NodeJs HTTP协议</div>
+      <div>https://yonghengshikong.github.io/posts/5656/</div>
     </div>
     <div class="license-meta">
       

@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yonghengshikong.github.io/posts/56695/nodejs-require.jpg">
 <meta property="article:published_time" content="2024-10-14T10:03:02.000Z">
-<meta property="article:modified_time" content="2024-10-14T10:07:01.123Z">
+<meta property="article:modified_time" content="2024-10-14T10:09:24.825Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="NodeJs">
 <meta name="twitter:card" content="summary_large_image">
@@ -304,7 +304,7 @@
 <p>这把我们的本地变量变成了一个拥有所有 http 模块所提供的公共方法的对象。</p>
 <p>Node.js 的 require 方法中的文件查找策略如下：</p>
 <p>由于 Node.js 中存在 4 类模块（原生模块和3种文件模块），尽管 require 方法极其简单，但是内部的加载却是十分复杂的，其加载优先级也各自不同。如下图所示：</p>
-<p><img src="/posts/56695/nodejs-require.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="/posts/56695/nodejs-require.jpg" srcset="/img/loading.gif" lazyload></p>
 <h3 id="从文件模块缓存中加载"><a href="#从文件模块缓存中加载" class="headerlink" title="从文件模块缓存中加载"></a>从文件模块缓存中加载</h3><p>尽管原生模块与文件模块的优先级不同，但是都会优先从文件模块的缓存中加载已经存在的模块。</p>
 <h3 id="从原生模块加载"><a href="#从原生模块加载" class="headerlink" title="从原生模块加载"></a>从原生模块加载</h3><p>原生模块的优先级仅次于文件模块缓存的优先级。require 方法在解析文件名之后，优先检查模块是否在原生模块列表中。以http模块为例，尽管在目录下存在一个 http&#x2F;http.js&#x2F;http.node&#x2F;http.json 文件，require(“http”) 都不会从这些文件中加载，而是从原生模块中加载。</p>
 <p>原生模块也有一个缓存区，同样也是优先从缓存区加载。如果缓存区没有被加载过，则调用原生模块的加载方式进行加载和执行。</p>
@@ -417,8 +417,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/5655/" title="七、NodeJs http协议">
-                        <span class="hidden-mobile">七、NodeJs http协议</span>
+                      <a href="/posts/5656/" title="七、NodeJs HTTP协议">
+                        <span class="hidden-mobile">七、NodeJs HTTP协议</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
