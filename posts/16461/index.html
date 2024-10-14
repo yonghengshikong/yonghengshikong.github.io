@@ -1,0 +1,1001 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="NodeJs Buffer(缓冲区)JavaScript 语言自身只有字符串数据类型，没有二进制数据类型。 但在处理像TCP流或文件流时，必须使用到二进制数据。因此在 Node.js中，定义了一个 Buffer 类，该类用来创建一个专门存放二进制数据的缓存区。 在 Node.js 中，Buffer 类是随 Node 内核一起发布的核心库。Buffer 库为 Node.js 带来了一种存储原始数据的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三、NodeJs Buffer(缓冲区)">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/16461/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="NodeJs Buffer(缓冲区)JavaScript 语言自身只有字符串数据类型，没有二进制数据类型。 但在处理像TCP流或文件流时，必须使用到二进制数据。因此在 Node.js中，定义了一个 Buffer 类，该类用来创建一个专门存放二进制数据的缓存区。 在 Node.js 中，Buffer 类是随 Node 内核一起发布的核心库。Buffer 库为 Node.js 带来了一种存储原始数据的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-10-14T06:52:39.000Z">
+<meta property="article:modified_time" content="2024-10-14T07:50:15.084Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="NodeJs">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>三、NodeJs Buffer(缓冲区) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="三、NodeJs Buffer(缓冲区)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-14 14:52" pubdate>
+          2024年10月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">三、NodeJs Buffer(缓冲区)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="NodeJs-Buffer-缓冲区"><a href="#NodeJs-Buffer-缓冲区" class="headerlink" title="NodeJs Buffer(缓冲区)"></a>NodeJs Buffer(缓冲区)</h1><p>JavaScript 语言自身只有字符串数据类型，没有二进制数据类型。</p>
+<p>但在处理像TCP流或文件流时，必须使用到二进制数据。因此在 Node.js中，定义了一个 Buffer 类，该类用来创建一个专门存放二进制数据的缓存区。</p>
+<p>在 Node.js 中，Buffer 类是随 Node 内核一起发布的核心库。Buffer 库为 Node.js 带来了一种存储原始数据的方法，可以让 Node.js 处理二进制数据，每当需要在 Node.js 中处理I&#x2F;O操作中移动的数据时，就有可能使用 Buffer 库。原始数据存储在 Buffer 类的实例中。一个 Buffer 类似于一个整数数组，但它对应于 V8 堆内存之外的一块原始内存。</p>
+<blockquote>
+<p>在v6.0之前创建Buffer对象直接使用new Buffer()构造函数来创建对象实例，但是Buffer对内存的权限操作相比很大，可以直接捕获一些敏感信息，所以在v6.0以后，官方文档里面建议使用 <strong>Buffer.from()</strong> 接口去创建Buffer对象。</p>
+</blockquote>
+<hr>
+<h2 id="Buffer-与字符编码"><a href="#Buffer-与字符编码" class="headerlink" title="Buffer 与字符编码"></a>Buffer 与字符编码</h2><p>Buffer 实例一般用于表示编码字符的序列，比如 UTF-8 、 UCS2 、 Base64 、或十六进制编码的数据。 通过使用显式的字符编码，就可以在 Buffer 实例与普通的 JavaScript 字符串之间进行相互转换。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> buf = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;runoob&#x27;</span>, <span class="hljs-string">&#x27;ascii&#x27;</span>);<br><br><span class="hljs-comment">// 输出 72756e6f6f62</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(buf.<span class="hljs-title function_">toString</span>(<span class="hljs-string">&#x27;hex&#x27;</span>));<br><br><span class="hljs-comment">// 输出 cnVub29i</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(buf.<span class="hljs-title function_">toString</span>(<span class="hljs-string">&#x27;base64&#x27;</span>));<br></code></pre></td></tr></table></figure>
+
+<p><strong>Node.js 目前支持的字符编码包括：</strong></p>
+<ul>
+<li><strong>ascii</strong> - 仅支持 7 位 ASCII 数据。如果设置去掉高位的话，这种编码是非常快的。</li>
+<li><strong>utf8</strong> - 多字节编码的 Unicode 字符。许多网页和其他文档格式都使用 UTF-8 。</li>
+<li><strong>utf16le</strong> - 2 或 4 个字节，小字节序编码的 Unicode 字符。支持代理对（U+10000 至 U+10FFFF）。</li>
+<li><strong>ucs2</strong> - <strong>utf16le</strong> 的别名。</li>
+<li><strong>base64</strong> - Base64 编码。</li>
+<li><strong>latin1</strong> - 一种把 <strong>Buffer</strong> 编码成一字节编码的字符串的方式。</li>
+<li><strong>binary</strong> - <strong>latin1</strong> 的别名。</li>
+<li><strong>hex</strong> - 将每个字节编码为两个十六进制字符。</li>
+</ul>
+<hr>
+<h2 id="创建-Buffer-类"><a href="#创建-Buffer-类" class="headerlink" title="创建 Buffer 类"></a>创建 Buffer 类</h2><p>Buffer 提供了以下 API 来创建 Buffer 类：</p>
+<ul>
+<li><strong>Buffer.alloc(size[, fill[, encoding]])：</strong> 返回一个指定大小的 Buffer 实例，如果没有设置 fill，则默认填满 0</li>
+<li><strong>Buffer.allocUnsafe(size)：</strong> 返回一个指定大小的 Buffer 实例，但是它不会被初始化，所以它可能包含敏感的数据</li>
+<li><strong>Buffer.allocUnsafeSlow(size)</strong></li>
+<li><strong>Buffer.from(array)：</strong> 返回一个被 array 的值初始化的新的 Buffer 实例（传入的 array 的元素只能是数字，不然就会自动被 0 覆盖）</li>
+<li><strong>Buffer.from(arrayBuffer[, byteOffset[, length]])：</strong> 返回一个新建的与给定的 ArrayBuffer 共享同一内存的 Buffer。</li>
+<li><strong>Buffer.from(buffer)：</strong> 复制传入的 Buffer 实例的数据，并返回一个新的 Buffer 实例</li>
+<li><strong>Buffer.from(string[, encoding])：</strong> 返回一个被 string 的值初始化的新的 Buffer 实例</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 创建一个长度为 10、且用 0 填充的 Buffer。</span><br><span class="hljs-keyword">const</span> buf1 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">alloc</span>(<span class="hljs-number">10</span>);<br><br><span class="hljs-comment">// 创建一个长度为 10、且用 0x1 填充的 Buffer。 </span><br><span class="hljs-keyword">const</span> buf2 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">alloc</span>(<span class="hljs-number">10</span>, <span class="hljs-number">1</span>);<br><br><span class="hljs-comment">// 创建一个长度为 10、且未初始化的 Buffer。</span><br><span class="hljs-comment">// 这个方法比调用 Buffer.alloc() 更快，</span><br><span class="hljs-comment">// 但返回的 Buffer 实例可能包含旧数据，</span><br><span class="hljs-comment">// 因此需要使用 fill() 或 write() 重写。</span><br><span class="hljs-keyword">const</span> buf3 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">allocUnsafe</span>(<span class="hljs-number">10</span>);<br><br><span class="hljs-comment">// 创建一个包含 [0x1, 0x2, 0x3] 的 Buffer。</span><br><span class="hljs-keyword">const</span> buf4 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);<br><br><span class="hljs-comment">// 创建一个包含 UTF-8 字节 [0x74, 0xc3, 0xa9, 0x73, 0x74] 的 Buffer。</span><br><span class="hljs-keyword">const</span> buf5 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;tést&#x27;</span>);<br><br><span class="hljs-comment">// 创建一个包含 Latin-1 字节 [0x74, 0xe9, 0x73, 0x74] 的 Buffer。</span><br><span class="hljs-keyword">const</span> buf6 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;tést&#x27;</span>, <span class="hljs-string">&#x27;latin1&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="写入缓冲区"><a href="#写入缓冲区" class="headerlink" title="写入缓冲区"></a>写入缓冲区</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>写入 Node 缓冲区的语法如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">buf.<span class="hljs-title function_">write</span>(string[, offset[, length]][, encoding])<br></code></pre></td></tr></table></figure>
+
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>参数描述如下：</p>
+<ul>
+<li><strong>string</strong> - 写入缓冲区的字符串。</li>
+<li><strong>offset</strong> - 缓冲区开始写入的索引值，默认为 0 。</li>
+<li><strong>length</strong> - 写入的字节数，默认为 buffer.length</li>
+<li><strong>encoding</strong> - 使用的编码。默认为 ‘utf8’ 。</li>
+</ul>
+<p>根据 encoding 的字符编码写入 string 到 buf 中的 offset 位置。 length 参数是写入的字节数。 如果 buf 没有足够的空间保存整个字符串，则只会写入 string 的一部分。 只部分解码的字符不会被写入。</p>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p>返回实际写入的大小。如果 buffer 空间不足， 则只会写入部分字符串。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js">buf = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">alloc</span>(<span class="hljs-number">256</span>);<br>len = buf.<span class="hljs-title function_">write</span>(<span class="hljs-string">&quot;www.runoob.com&quot;</span>);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;写入字节数 : &quot;</span>+  len);<br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$node</span> main.js<br>写入字节数 : 14<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="从缓冲区读取数据"><a href="#从缓冲区读取数据" class="headerlink" title="从缓冲区读取数据"></a>从缓冲区读取数据</h2><h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><p>读取 Node 缓冲区数据的语法如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">buf.<span class="hljs-title function_">toString</span>([encoding[, start[, end]]])<br></code></pre></td></tr></table></figure>
+
+<h3 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h3><p>参数描述如下：</p>
+<ul>
+<li><strong>encoding</strong> - 使用的编码。默认为 ‘utf8’ 。</li>
+<li><strong>start</strong> - 指定开始读取的索引位置，默认为 0。</li>
+<li><strong>end</strong> - 结束位置，默认为缓冲区的末尾。</li>
+</ul>
+<h3 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h3><p>解码缓冲区数据并使用指定的编码返回字符串。</p>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js">buf = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">alloc</span>(<span class="hljs-number">26</span>);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span> ; i &lt; <span class="hljs-number">26</span> ; i++) &#123;<br>  buf[i] = i + <span class="hljs-number">97</span>;<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( buf.<span class="hljs-title function_">toString</span>(<span class="hljs-string">&#x27;ascii&#x27;</span>));       <span class="hljs-comment">// 输出: abcdefghijklmnopqrstuvwxyz</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( buf.<span class="hljs-title function_">toString</span>(<span class="hljs-string">&#x27;ascii&#x27;</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>));   <span class="hljs-comment">//使用 &#x27;ascii&#x27; 编码, 并输出: abcde</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( buf.<span class="hljs-title function_">toString</span>(<span class="hljs-string">&#x27;utf8&#x27;</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>));    <span class="hljs-comment">// 使用 &#x27;utf8&#x27; 编码, 并输出: abcde</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>( buf.<span class="hljs-title function_">toString</span>(<span class="hljs-literal">undefined</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>)); <span class="hljs-comment">// 使用默认的 &#x27;utf8&#x27; 编码, 并输出: abcde</span><br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ node main.js<br>abcdefghijklmnopqrstuvwxyz<br>abcde<br>abcde<br>abcde<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="将-Buffer-转换为-JSON-对象"><a href="#将-Buffer-转换为-JSON-对象" class="headerlink" title="将 Buffer 转换为 JSON 对象"></a>将 Buffer 转换为 JSON 对象</h2><h3 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h3><p>将 Node Buffer 转换为 JSON 对象的函数语法格式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">buf.<span class="hljs-title function_">toJSON</span>()<br></code></pre></td></tr></table></figure>
+
+<p>当字符串化一个 Buffer 实例时，<a target="_blank" rel="noopener" href="https://www.runoob.com/js/javascript-json-stringify.html">JSON.stringify()</a> 会隐式地调用该 **toJSON()**。</p>
+<h3 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h3><p>返回 JSON 对象。</p>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> buf = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>([<span class="hljs-number">0x1</span>, <span class="hljs-number">0x2</span>, <span class="hljs-number">0x3</span>, <span class="hljs-number">0x4</span>, <span class="hljs-number">0x5</span>]);<br><span class="hljs-keyword">const</span> json = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(buf);<br><br><span class="hljs-comment">// 输出: &#123;&quot;type&quot;:&quot;Buffer&quot;,&quot;data&quot;:[1,2,3,4,5]&#125;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(json);<br><br><span class="hljs-keyword">const</span> copy = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(json, <span class="hljs-function">(<span class="hljs-params">key, value</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> value &amp;&amp; value.<span class="hljs-property">type</span> === <span class="hljs-string">&#x27;Buffer&#x27;</span> ?<br>    <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(value.<span class="hljs-property">data</span>) :<br>    value;<br>&#125;);<br><br><span class="hljs-comment">// 输出: &lt;Buffer 01 02 03 04 05&gt;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(copy);<br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">&#123;<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;Buffer&quot;</span>,<span class="hljs-string">&quot;data&quot;</span>:[1,2,3,4,5]&#125;<br>&lt;Buffer 01 02 03 04 05&gt;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="缓冲区合并"><a href="#缓冲区合并" class="headerlink" title="缓冲区合并"></a>缓冲区合并</h2><h3 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h3><p>Node 缓冲区合并的语法如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">concat</span>(list[, totalLength])<br></code></pre></td></tr></table></figure>
+
+<h3 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h3><p>参数描述如下：</p>
+<ul>
+<li><strong>list</strong> - 用于合并的 Buffer 对象数组列表。</li>
+<li><strong>totalLength</strong> - 指定合并后Buffer对象的总长度。</li>
+</ul>
+<h3 id="返回值-3"><a href="#返回值-3" class="headerlink" title="返回值"></a>返回值</h3><p>返回一个多个成员合并的新 Buffer 对象。</p>
+<h3 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> buffer1 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>((<span class="hljs-string">&#x27;菜鸟教程&#x27;</span>));<br><span class="hljs-keyword">var</span> buffer2 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>((<span class="hljs-string">&#x27;www.runoob.com&#x27;</span>));<br><span class="hljs-keyword">var</span> buffer3 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">concat</span>([buffer1,buffer2]);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;buffer3 内容: &quot;</span> + buffer3.<span class="hljs-title function_">toString</span>());<br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">buffer3 内容: 菜鸟教程www.runoob.com<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="缓冲区比较"><a href="#缓冲区比较" class="headerlink" title="缓冲区比较"></a>缓冲区比较</h2><h3 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h3><p>Node Buffer 比较的函数语法如下所示, 该方法在 Node.js v0.12.2 版本引入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">buf.<span class="hljs-title function_">compare</span>(otherBuffer);<br></code></pre></td></tr></table></figure>
+
+<h3 id="参数-3"><a href="#参数-3" class="headerlink" title="参数"></a>参数</h3><p>参数描述如下：</p>
+<ul>
+<li><strong>otherBuffer</strong> - 与 <strong>buf</strong> 对象比较的另外一个 Buffer 对象。</li>
+</ul>
+<h3 id="返回值-4"><a href="#返回值-4" class="headerlink" title="返回值"></a>返回值</h3><p>返回一个数字，表示 <strong>buf</strong> 在 <strong>otherBuffer</strong> 之前，之后或相同。</p>
+<h3 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> buffer1 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;ABC&#x27;</span>);<br><span class="hljs-keyword">var</span> buffer2 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;ABCD&#x27;</span>);<br><span class="hljs-keyword">var</span> result = buffer1.<span class="hljs-title function_">compare</span>(buffer2);<br><br><span class="hljs-keyword">if</span>(result &lt; <span class="hljs-number">0</span>) &#123;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(buffer1 + <span class="hljs-string">&quot; 在 &quot;</span> + buffer2 + <span class="hljs-string">&quot;之前&quot;</span>);<br>&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(result == <span class="hljs-number">0</span>)&#123;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(buffer1 + <span class="hljs-string">&quot; 与 &quot;</span> + buffer2 + <span class="hljs-string">&quot;相同&quot;</span>);<br>&#125;<span class="hljs-keyword">else</span> &#123;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(buffer1 + <span class="hljs-string">&quot; 在 &quot;</span> + buffer2 + <span class="hljs-string">&quot;之后&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ABC在ABCD之前<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="拷贝缓冲区"><a href="#拷贝缓冲区" class="headerlink" title="拷贝缓冲区"></a>拷贝缓冲区</h2><h3 id="语法-5"><a href="#语法-5" class="headerlink" title="语法"></a>语法</h3><p>Node 缓冲区拷贝语法如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">buf.<span class="hljs-title function_">copy</span>(targetBuffer[, targetStart[, sourceStart[, sourceEnd]]])<br></code></pre></td></tr></table></figure>
+
+<h3 id="参数-4"><a href="#参数-4" class="headerlink" title="参数"></a>参数</h3><p>参数描述如下：</p>
+<ul>
+<li><strong>targetBuffer</strong> - 要拷贝的 Buffer 对象。</li>
+<li><strong>targetStart</strong> - 数字, 可选, 默认: 0</li>
+<li><strong>sourceStart</strong> - 数字, 可选, 默认: 0</li>
+<li><strong>sourceEnd</strong> - 数字, 可选, 默认: buffer.length</li>
+</ul>
+<h3 id="返回值-5"><a href="#返回值-5" class="headerlink" title="返回值"></a>返回值</h3><p>没有返回值。</p>
+<h3 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> buf1 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;abcdefghijkl&#x27;</span>);<br><span class="hljs-keyword">var</span> buf2 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;RUNOOB&#x27;</span>);<br><br><span class="hljs-comment">//将 buf2 插入到 buf1 指定位置上</span><br>buf2.<span class="hljs-title function_">copy</span>(buf1, <span class="hljs-number">2</span>);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(buf1.<span class="hljs-title function_">toString</span>());<br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">abRUNOOBijkl<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="缓冲区裁剪"><a href="#缓冲区裁剪" class="headerlink" title="缓冲区裁剪"></a>缓冲区裁剪</h2><p>Node 缓冲区裁剪语法如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">buf.<span class="hljs-title function_">slice</span>([start[, end]])<br></code></pre></td></tr></table></figure>
+
+<h3 id="参数-5"><a href="#参数-5" class="headerlink" title="参数"></a>参数</h3><p>参数描述如下：</p>
+<ul>
+<li><strong>start</strong> - 数字, 可选, 默认: 0</li>
+<li><strong>end</strong> - 数字, 可选, 默认: buffer.length</li>
+</ul>
+<h3 id="返回值-6"><a href="#返回值-6" class="headerlink" title="返回值"></a>返回值</h3><p>返回一个新的缓冲区，它和旧缓冲区指向同一块内存，但是从索引 start 到 end 的位置剪切。</p>
+<h3 id="实例-6"><a href="#实例-6" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> buffer1 = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;runoob&#x27;</span>);<br><span class="hljs-comment">// 剪切缓冲区</span><br><span class="hljs-keyword">var</span> buffer2 = buffer1.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;buffer2 content: &quot;</span> + buffer2.<span class="hljs-title function_">toString</span>());<br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">buffer2 content: ru<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="缓冲区长度"><a href="#缓冲区长度" class="headerlink" title="缓冲区长度"></a>缓冲区长度</h2><h3 id="语法-6"><a href="#语法-6" class="headerlink" title="语法"></a>语法</h3><p>Node 缓冲区长度计算语法如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">buf.<span class="hljs-property">length</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="返回值-7"><a href="#返回值-7" class="headerlink" title="返回值"></a>返回值</h3><p>返回 Buffer 对象所占据的内存长度。</p>
+<h3 id="实例-7"><a href="#实例-7" class="headerlink" title="实例"></a>实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> buffer = <span class="hljs-title class_">Buffer</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&#x27;www.runoob.com&#x27;</span>);<br><span class="hljs-comment">//  缓冲区长度</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;buffer length: &quot;</span> + buffer.<span class="hljs-property">length</span>);<br></code></pre></td></tr></table></figure>
+
+<p>执行以上代码，输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">buffer length: 14<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="方法参考手册"><a href="#方法参考手册" class="headerlink" title="方法参考手册"></a>方法参考手册</h2><p>以下列出了 Node.js Buffer 模块常用的方法（注意有些方法在旧版本是没有的）：</p>
+<table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th align="left">方法 &amp; 描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><strong>new Buffer(size)</strong> 分配一个新的 size 大小单位为8位字节的 buffer。 注意, size 必须小于 kMaxLength，否则，将会抛出异常 RangeError。废弃的: 使用 Buffer.alloc() 代替（或 Buffer.allocUnsafe()）。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><strong>new Buffer(buffer)</strong> 拷贝参数 buffer 的数据到 Buffer 实例。废弃的: 使用 Buffer.from(buffer) 代替。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><strong>new Buffer(str[, encoding])</strong> 分配一个新的 buffer ，其中包含着传入的 str 字符串。 encoding 编码方式默认为 ‘utf8’。 废弃的: 使用 Buffer.from(string[, encoding]) 代替。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><strong>buf.length</strong> 返回这个 buffer 的 bytes 数。注意这未必是 buffer 里面内容的大小。length 是 buffer 对象所分配的内存数，它不会随着这个 buffer 对象内容的改变而改变。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><strong>buf.write(string[, offset[, length]][, encoding])</strong> 根据参数 offset 偏移量和指定的 encoding 编码方式，将参数 string 数据写入buffer。 offset 偏移量默认值是 0, encoding 编码方式默认是 utf8。 length 长度是将要写入的字符串的 bytes 大小。 返回 number 类型，表示写入了多少 8 位字节流。如果 buffer 没有足够的空间来放整个 string，它将只会只写入部分字符串。 length 默认是 buffer.length - offset。 这个方法不会出现写入部分字符。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left"><strong>buf.writeUIntLE(value, offset, byteLength[, noAssert])</strong> 将 value 写入到 buffer 里， 它由 offset 和 byteLength 决定，最高支持 48 位无符号整数，小端对齐，例如： <code>const buf = Buffer.allocUnsafe(6); buf.writeUIntLE(0x1234567890ab, 0, 6); // 输出: &lt;Buffer ab 90 78 56 34 12&gt; console.log(buf);</code>noAssert 值为 true 时，不再验证 value 和 offset 的有效性。 默认是 false。</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left"><strong>buf.writeUIntBE(value, offset, byteLength[, noAssert])</strong> 将 value 写入到 buffer 里， 它由 offset 和 byteLength 决定，最高支持 48 位无符号整数，大端对齐。noAssert 值为 true 时，不再验证 value 和 offset 的有效性。 默认是 false。<code>const buf = Buffer.allocUnsafe(6); buf.writeUIntBE(0x1234567890ab, 0, 6); // 输出: &lt;Buffer 12 34 56 78 90 ab&gt; console.log(buf);</code></td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left"><strong>buf.writeIntLE(value, offset, byteLength[, noAssert])</strong> 将value 写入到 buffer 里， 它由offset 和 byteLength 决定，最高支持48位有符号整数，小端对齐。noAssert 值为 true 时，不再验证 value 和 offset 的有效性。 默认是 false。</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="left"><strong>buf.writeIntBE(value, offset, byteLength[, noAssert])</strong> 将value 写入到 buffer 里， 它由offset 和 byteLength 决定，最高支持48位有符号整数，大端对齐。noAssert 值为 true 时，不再验证 value 和 offset 的有效性。 默认是 false。</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left"><strong>buf.readUIntLE(offset, byteLength[, noAssert])</strong> 支持读取 48 位以下的无符号数字，小端对齐。noAssert 值为 true 时， offset 不再验证是否超过 buffer 的长度，默认为 false。</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left"><strong>buf.readUIntBE(offset, byteLength[, noAssert])</strong> 支持读取 48 位以下的无符号数字，大端对齐。noAssert 值为 true 时， offset 不再验证是否超过 buffer 的长度，默认为 false。</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td align="left"><strong>buf.readIntLE(offset, byteLength[, noAssert])</strong> 支持读取 48 位以下的有符号数字，小端对齐。noAssert 值为 true 时， offset 不再验证是否超过 buffer 的长度，默认为 false。</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td align="left"><strong>buf.readIntBE(offset, byteLength[, noAssert])</strong> 支持读取 48 位以下的有符号数字，大端对齐。noAssert 值为 true 时， offset 不再验证是否超过 buffer 的长度，默认为 false。</td>
+</tr>
+<tr>
+<td align="left">14</td>
+<td align="left"><strong>buf.toString([encoding[, start[, end]]])</strong> 根据 encoding 参数（默认是 ‘utf8’）返回一个解码过的 string 类型。还会根据传入的参数 start (默认是 0) 和 end (默认是 buffer.length)作为取值范围。</td>
+</tr>
+<tr>
+<td align="left">15</td>
+<td align="left"><strong>buf.toJSON()</strong> 将 Buffer 实例转换为 JSON 对象。</td>
+</tr>
+<tr>
+<td align="left">16</td>
+<td align="left"><strong>buf[index]</strong> 获取或设置指定的字节。返回值代表一个字节，所以返回值的合法范围是十六进制0x00到0xFF 或者十进制0至 255。</td>
+</tr>
+<tr>
+<td align="left">17</td>
+<td align="left"><strong>buf.equals(otherBuffer)</strong> 比较两个缓冲区是否相等，如果是返回 true，否则返回 false。</td>
+</tr>
+<tr>
+<td align="left">18</td>
+<td align="left"><strong>buf.compare(otherBuffer)</strong> 比较两个 Buffer 对象，返回一个数字，表示 buf 在 otherBuffer 之前，之后或相同。</td>
+</tr>
+<tr>
+<td align="left">19</td>
+<td align="left"><strong>buf.copy(targetBuffer[, targetStart[, sourceStart[, sourceEnd]]])</strong> buffer 拷贝，源和目标可以相同。 targetStart 目标开始偏移和 sourceStart 源开始偏移默认都是 0。 sourceEnd 源结束位置偏移默认是源的长度 buffer.length 。</td>
+</tr>
+<tr>
+<td align="left">20</td>
+<td align="left"><strong>buf.slice([start[, end]])</strong> 剪切 Buffer 对象，根据 start(默认是 0 ) 和 end (默认是 buffer.length ) 偏移和裁剪了索引。 负的索引是从 buffer 尾部开始计算的。</td>
+</tr>
+<tr>
+<td align="left">21</td>
+<td align="left"><strong>buf.readUInt8(offset[, noAssert])</strong> 根据指定的偏移量，读取一个无符号 8 位整数。若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 如果这样 offset 可能会超出buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">22</td>
+<td align="left"><strong>buf.readUInt16LE(offset[, noAssert])</strong> 根据指定的偏移量，使用特殊的 endian 字节序格式读取一个无符号 16 位整数。若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出 buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">23</td>
+<td align="left"><strong>buf.readUInt16BE(offset[, noAssert])</strong> 根据指定的偏移量，使用特殊的 endian 字节序格式读取一个无符号 16 位整数，大端对齐。若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出 buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">24</td>
+<td align="left"><strong>buf.readUInt32LE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian 字节序格式读取一个无符号 32 位整数，小端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">25</td>
+<td align="left"><strong>buf.readUInt32BE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian 字节序格式读取一个无符号 32 位整数，大端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">26</td>
+<td align="left"><strong>buf.readInt8(offset[, noAssert])</strong> 根据指定的偏移量，读取一个有符号 8 位整数。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出 buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">27</td>
+<td align="left"><strong>buf.readInt16LE(offset[, noAssert])</strong> 根据指定的偏移量，使用特殊的 endian 格式读取一个 有符号 16 位整数，小端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出 buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">28</td>
+<td align="left"><strong>buf.readInt16BE(offset[, noAssert])</strong> 根据指定的偏移量，使用特殊的 endian 格式读取一个 有符号 16 位整数，大端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出 buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">29</td>
+<td align="left"><strong>buf.readInt32LE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian 字节序格式读取一个有符号 32 位整数，小端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">30</td>
+<td align="left"><strong>buf.readInt32BE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian 字节序格式读取一个有符号 32 位整数，大端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">31</td>
+<td align="left"><strong>buf.readFloatLE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian 字节序格式读取一个 32 位双浮点数，小端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">32</td>
+<td align="left"><strong>buf.readFloatBE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian 字节序格式读取一个 32 位双浮点数，大端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">33</td>
+<td align="left"><strong>buf.readDoubleLE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian字节序格式读取一个 64 位双精度数，小端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">34</td>
+<td align="left"><strong>buf.readDoubleBE(offset[, noAssert])</strong> 根据指定的偏移量，使用指定的 endian字节序格式读取一个 64 位双精度数，大端对齐。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 offset 可能会超出buffer 的末尾。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">35</td>
+<td align="left"><strong>buf.writeUInt8(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量将 value 写入 buffer。注意：value 必须是一个合法的无符号 8 位整数。 若参数 noAssert 为 true 将不会验证 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出 buffer 的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">36</td>
+<td align="left"><strong>buf.writeUInt16LE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个合法的无符号 16 位整数，小端对齐。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出buffer的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">37</td>
+<td align="left"><strong>buf.writeUInt16BE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个合法的无符号 16 位整数，大端对齐。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出buffer的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">38</td>
+<td align="left"><strong>buf.writeUInt32LE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式(LITTLE-ENDIAN:小字节序)将 value 写入buffer。注意：value 必须是一个合法的无符号 32 位整数，小端对齐。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着value 可能过大，或者offset可能会超出buffer的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">39</td>
+<td align="left"><strong>buf.writeUInt32BE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式(Big-Endian:大字节序)将 value 写入buffer。注意：value 必须是一个合法的有符号 32 位整数。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者offset可能会超出buffer的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">40</td>
+<td align="left"><strong>buf.writeInt8(value, offset[, noAssert])</strong></td>
+</tr>
+<tr>
+<td align="left">41</td>
+<td align="left"><strong>buf.writeInt16LE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个合法的 signed 16 位整数。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出 buffer 的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false 。</td>
+</tr>
+<tr>
+<td align="left">42</td>
+<td align="left"><strong>buf.writeInt16BE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个合法的 signed 16 位整数。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出 buffer 的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false 。</td>
+</tr>
+<tr>
+<td align="left">43</td>
+<td align="left"><strong>buf.writeInt32LE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个合法的 signed 32 位整数。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出 buffer 的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">44</td>
+<td align="left"><strong>buf.writeInt32BE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个合法的 signed 32 位整数。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出 buffer 的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">45</td>
+<td align="left"><strong>buf.writeFloatLE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer 。注意：当 value 不是一个 32 位浮点数类型的值时，结果将是不确定的。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value可能过大，或者 offset 可能会超出 buffer 的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">46</td>
+<td align="left"><strong>buf.writeFloatBE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer 。注意：当 value 不是一个 32 位浮点数类型的值时，结果将是不确定的。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value可能过大，或者 offset 可能会超出 buffer 的末尾从而造成 value 被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">47</td>
+<td align="left"><strong>buf.writeDoubleLE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个有效的 64 位double 类型的值。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出 buffer 的末尾从而造成value被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">48</td>
+<td align="left"><strong>buf.writeDoubleBE(value, offset[, noAssert])</strong> 根据传入的 offset 偏移量和指定的 endian 格式将 value 写入 buffer。注意：value 必须是一个有效的 64 位double 类型的值。 若参数 noAssert 为 true 将不会验证 value 和 offset 偏移量参数。 这意味着 value 可能过大，或者 offset 可能会超出 buffer 的末尾从而造成value被丢弃。 除非你对这个参数非常有把握，否则尽量不要使用。默认是 false。</td>
+</tr>
+<tr>
+<td align="left">49</td>
+<td align="left"><strong>buf.fill(value[, offset][, end])</strong> 使用指定的 value 来填充这个 buffer。如果没有指定 offset (默认是 0) 并且 end (默认是 buffer.length) ，将会填充整个buffer。</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NodeJs/" class="category-chain-item">NodeJs</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NodeJs/" class="print-no-link">#NodeJs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>三、NodeJs Buffer(缓冲区)</div>
+      <div>https://yonghengshikong.github.io/posts/16461/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/6344/" title="四、NodeJs-Stream(流)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">四、NodeJs-Stream(流)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/42651/" title="二、NodeJs EventEmitter">
+                        <span class="hidden-mobile">二、NodeJs EventEmitter</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
