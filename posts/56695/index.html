@@ -16,24 +16,24 @@
   <meta name="author" content="YongHengShiKong">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、NodeJs 事件循环Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。 Node.js 几乎每一个 API 都是支持回调函数的。 Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。 Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一">
+    <meta name="description" content="八、NodeJs 模块系统为了让Node.js的文件可以相互调用，Node.js提供了一个简单的模块系统。 模块是Node.js 应用程序的基本组成部分，文件和模块是一一对应的。换言之，一个 Node.js 文件就是一个模块，这个文件可能是JavaScript 代码、JSON 或者编译过的C&#x2F;C++ 扩展。 引入模块在 Node.js 中，引入一个模块非常简单，如下我们创建一个 main">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一、NodeJs 事件循环">
-<meta property="og:url" content="https://yonghengshikong.github.io/posts/17687/index.html">
+<meta property="og:title" content="八、NodeJs 模块系统">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/56695/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="一、NodeJs 事件循环Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。 Node.js 几乎每一个 API 都是支持回调函数的。 Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。 Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一">
+<meta property="og:description" content="八、NodeJs 模块系统为了让Node.js的文件可以相互调用，Node.js提供了一个简单的模块系统。 模块是Node.js 应用程序的基本组成部分，文件和模块是一一对应的。换言之，一个 Node.js 文件就是一个模块，这个文件可能是JavaScript 代码、JSON 或者编译过的C&#x2F;C++ 扩展。 引入模块在 Node.js 中，引入一个模块非常简单，如下我们创建一个 main">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yonghengshikong.github.io/posts/17687/event_loop.jpg">
-<meta property="article:published_time" content="2024-10-14T06:30:49.000Z">
-<meta property="article:modified_time" content="2024-10-14T08:06:06.544Z">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/56695/nodejs-require.jpg">
+<meta property="article:published_time" content="2024-10-14T10:03:02.000Z">
+<meta property="article:modified_time" content="2024-10-14T10:07:01.123Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="NodeJs">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://yonghengshikong.github.io/posts/17687/event_loop.jpg">
+<meta name="twitter:image" content="https://yonghengshikong.github.io/posts/56695/nodejs-require.jpg">
   
   
   
-  <title>一、NodeJs 事件循环 - Hexo</title>
+  <title>八、NodeJs 模块系统 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="一、NodeJs 事件循环"></span>
+            <span id="subtitle" data-typed-text="八、NodeJs 模块系统"></span>
           
         </div>
 
@@ -210,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-14 14:30" pubdate>
-          2024年10月14日 下午
+        <time datetime="2024-10-14 18:03" pubdate>
+          2024年10月14日 晚上
         </time>
       </span>
     
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          942 字
+          1.4k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          8 分钟
+          12 分钟
         
       </span>
     
@@ -270,53 +270,59 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">一、NodeJs 事件循环</h1>
+            <h1 id="seo-header">八、NodeJs 模块系统</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="一、NodeJs-事件循环"><a href="#一、NodeJs-事件循环" class="headerlink" title="一、NodeJs 事件循环"></a>一、NodeJs 事件循环</h1><p>Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。</p>
-<p>Node.js 几乎每一个 API 都是支持回调函数的。</p>
-<p>Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。</p>
-<p>Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数.</p>
+                <h1 id="八、NodeJs-模块系统"><a href="#八、NodeJs-模块系统" class="headerlink" title="八、NodeJs 模块系统"></a>八、NodeJs 模块系统</h1><p>为了让Node.js的文件可以相互调用，Node.js提供了一个简单的模块系统。</p>
+<p>模块是Node.js 应用程序的基本组成部分，文件和模块是一一对应的。换言之，一个 Node.js 文件就是一个模块，这个文件可能是JavaScript 代码、JSON 或者编译过的C&#x2F;C++ 扩展。</p>
+<h2 id="引入模块"><a href="#引入模块" class="headerlink" title="引入模块"></a>引入模块</h2><p>在 Node.js 中，引入一个模块非常简单，如下我们创建一个 <strong>main.js</strong> 文件并引入 hello 模块，代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> hello = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./hello&#x27;</span>);<br>hello.<span class="hljs-title function_">world</span>();<br></code></pre></td></tr></table></figure>
+
+<p>以上实例中，代码 require(‘.&#x2F;hello’) 引入了当前目录下的 hello.js 文件（.&#x2F; 为当前目录，node.js 默认后缀为 js）。</p>
+<p>Node.js 提供了 exports 和 require 两个对象，其中 exports 是模块公开的接口，require 用于从外部获取一个模块的接口，即所获取模块的 exports 对象。</p>
+<p>接下来我们就来创建 hello.js 文件，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-built_in">exports</span>.<span class="hljs-property">world</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Hello World&#x27;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在以上示例中，hello.js 通过 exports 对象把 world 作为模块的访问接口，在 main.js 中通过 require(‘.&#x2F;hello’) 加载这个模块，然后就可以直接访 问 hello.js 中 exports 对象的成员函数了。</p>
+<p>有时候我们只是想把一个对象封装到模块中，格式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>例如:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//hello.js </span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Hello</span>(<span class="hljs-params"></span>) &#123; <br>    <span class="hljs-keyword">var</span> name; <br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">setName</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">thyName</span>) &#123; <br>        name = thyName; <br>    &#125;; <br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sayHello</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123; <br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Hello &#x27;</span> + name); <br>    &#125;; <br>&#125;; <br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-title class_">Hello</span>;<br></code></pre></td></tr></table></figure>
+
+<p>这样就可以直接获得这个对象了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//main.js </span><br><span class="hljs-keyword">var</span> <span class="hljs-title class_">Hello</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./hello&#x27;</span>); <br>hello = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Hello</span>(); <br>hello.<span class="hljs-title function_">setName</span>(<span class="hljs-string">&#x27;BYVoid&#x27;</span>); <br>hello.<span class="hljs-title function_">sayHello</span>(); <br></code></pre></td></tr></table></figure>
+
+<p>模块接口的唯一变化是使用 module.exports &#x3D; Hello 代替了exports.world &#x3D; function(){}。 在外部引用该模块时，其接口对象就是要输出的 Hello 对象本身，而不是原先的 exports。</p>
 <hr>
-<h2 id="事件驱动程序"><a href="#事件驱动程序" class="headerlink" title="事件驱动程序"></a>事件驱动程序</h2><p>Node.js 使用事件驱动模型，当web server接收到请求，就把它关闭然后进行处理，然后去服务下一个web请求。</p>
-<p>当这个请求完成，它被放回处理队列，当到达队列开头，这个结果被返回给用户。</p>
-<p>这个模型非常高效可扩展性非常强，因为 webserver 一直接受请求而不等待任何读写操作。（这也称之为非阻塞式IO或者事件驱动IO）</p>
-<p>在事件驱动模型中，会生成一个主循环来监听事件，当检测到事件时触发回调函数。</p>
-<p><img src="/posts/17687/event_loop.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>整个事件驱动的流程就是这么实现的，非常简洁。有点类似于观察者模式，事件相当于一个主题(Subject)，而所有注册到这个事件上的处理函数相当于观察者(Observer)。</p>
-<p>Node.js 有多个内置的事件，我们可以通过引入 events 模块，并通过实例化 EventEmitter 类来绑定和监听事件，如下实例：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 引入 events 模块</span><br><span class="hljs-keyword">var</span> events = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;events&#x27;</span>);<br><span class="hljs-comment">// 创建 eventEmitter 对象</span><br><span class="hljs-keyword">var</span> eventEmitter = <span class="hljs-keyword">new</span> events.<span class="hljs-title class_">EventEmitter</span>();<br></code></pre></td></tr></table></figure>
+<h2 id="服务端的模块放在哪里"><a href="#服务端的模块放在哪里" class="headerlink" title="服务端的模块放在哪里"></a>服务端的模块放在哪里</h2><p>也许你已经注意到，我们已经在代码中使用了模块了。像这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;http&quot;</span>);<br><br>...<br><br>http.<span class="hljs-title function_">createServer</span>(...);<br></code></pre></td></tr></table></figure>
 
-<p>以下程序绑定事件处理程序：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 绑定事件及事件的处理程序</span><br>eventEmitter.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;eventName&#x27;</span>, eventHandler);<br></code></pre></td></tr></table></figure>
+<p>Node.js 中自带了一个叫做 <strong>http</strong> 的模块，在我们的代码中请求它并把返回值赋给一个本地变量。</p>
+<p>这把我们的本地变量变成了一个拥有所有 http 模块所提供的公共方法的对象。</p>
+<p>Node.js 的 require 方法中的文件查找策略如下：</p>
+<p>由于 Node.js 中存在 4 类模块（原生模块和3种文件模块），尽管 require 方法极其简单，但是内部的加载却是十分复杂的，其加载优先级也各自不同。如下图所示：</p>
+<p><img src="/posts/56695/nodejs-require.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="从文件模块缓存中加载"><a href="#从文件模块缓存中加载" class="headerlink" title="从文件模块缓存中加载"></a>从文件模块缓存中加载</h3><p>尽管原生模块与文件模块的优先级不同，但是都会优先从文件模块的缓存中加载已经存在的模块。</p>
+<h3 id="从原生模块加载"><a href="#从原生模块加载" class="headerlink" title="从原生模块加载"></a>从原生模块加载</h3><p>原生模块的优先级仅次于文件模块缓存的优先级。require 方法在解析文件名之后，优先检查模块是否在原生模块列表中。以http模块为例，尽管在目录下存在一个 http&#x2F;http.js&#x2F;http.node&#x2F;http.json 文件，require(“http”) 都不会从这些文件中加载，而是从原生模块中加载。</p>
+<p>原生模块也有一个缓存区，同样也是优先从缓存区加载。如果缓存区没有被加载过，则调用原生模块的加载方式进行加载和执行。</p>
+<h3 id="从文件加载"><a href="#从文件加载" class="headerlink" title="从文件加载"></a>从文件加载</h3><p>当文件模块缓存中不存在，而且不是原生模块的时候，Node.js 会解析 require 方法传入的参数，并从文件系统中加载实际的文件，加载过程中的包装和编译细节在前一节中已经介绍过，这里我们将详细描述查找文件模块的过程，其中，也有一些细节值得知晓。</p>
+<p>require方法接受以下几种参数的传递：</p>
+<ul>
+<li>http、fs、path等，原生模块。</li>
+<li>.&#x2F;mod或..&#x2F;mod，相对路径的文件模块。</li>
+<li>&#x2F;pathtomodule&#x2F;mod，绝对路径的文件模块。</li>
+<li>mod，非原生模块的文件模块。</li>
+</ul>
+<p>在路径 Y 下执行 require(X) 语句执行顺序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs bash">1. 如果 X 是内置模块<br>   a. 返回内置模块<br>   b. 停止执行<br>2. 如果 X 以 <span class="hljs-string">&#x27;/&#x27;</span> 开头<br>   a. 设置 Y 为文件根路径<br>3. 如果 X 以 <span class="hljs-string">&#x27;./&#x27;</span> 或 <span class="hljs-string">&#x27;/&#x27;</span> or <span class="hljs-string">&#x27;../&#x27;</span> 开头<br>   a. LOAD_AS_FILE(Y + X)<br>   b. LOAD_AS_DIRECTORY(Y + X)<br>4. LOAD_NODE_MODULES(X, <span class="hljs-built_in">dirname</span>(Y))<br>5. 抛出异常 <span class="hljs-string">&quot;not found&quot;</span><br><br>LOAD_AS_FILE(X)<br>1. 如果 X 是一个文件, 将 X 作为 JavaScript 文本载入并停止执行。<br>2. 如果 X.js 是一个文件, 将 X.js 作为 JavaScript 文本载入并停止执行。<br>3. 如果 X.json 是一个文件, 解析 X.json 为 JavaScript 对象并停止执行。<br>4. 如果 X.node 是一个文件, 将 X.node 作为二进制插件载入并停止执行。<br><br>LOAD_INDEX(X)<br>1. 如果 X/index.js 是一个文件,  将 X/index.js 作为 JavaScript 文本载入并停止执行。<br>2. 如果 X/index.json 是一个文件, 解析 X/index.json 为 JavaScript 对象并停止执行。<br>3. 如果 X/index.node 是一个文件,  将 X/index.node 作为二进制插件载入并停止执行。<br><br>LOAD_AS_DIRECTORY(X)<br>1. 如果 X/package.json 是一个文件,<br>   a. 解析 X/package.json, 并查找 <span class="hljs-string">&quot;main&quot;</span> 字段。<br>   b. <span class="hljs-built_in">let</span> M = X + (json main 字段)<br>   c. LOAD_AS_FILE(M)<br>   d. LOAD_INDEX(M)<br>2. LOAD_INDEX(X)<br><br>LOAD_NODE_MODULES(X, START)<br>1. <span class="hljs-built_in">let</span> DIRS=NODE_MODULES_PATHS(START)<br>2. <span class="hljs-keyword">for</span> each DIR <span class="hljs-keyword">in</span> DIRS:<br>   a. LOAD_AS_FILE(DIR/X)<br>   b. LOAD_AS_DIRECTORY(DIR/X)<br><br>NODE_MODULES_PATHS(START)<br>1. <span class="hljs-built_in">let</span> PARTS = path <span class="hljs-built_in">split</span>(START)<br>2. <span class="hljs-built_in">let</span> I = count of PARTS - 1<br>3. <span class="hljs-built_in">let</span> DIRS = []<br>4. <span class="hljs-keyword">while</span> I &gt;= 0,<br>   a. <span class="hljs-keyword">if</span> PARTS[I] = <span class="hljs-string">&quot;node_modules&quot;</span> CONTINUE<br>   b. DIR = path <span class="hljs-built_in">join</span>(PARTS[0 .. I] + <span class="hljs-string">&quot;node_modules&quot;</span>)<br>   c. DIRS = DIRS + DIR<br>   d. <span class="hljs-built_in">let</span> I = I - 1<br>5. <span class="hljs-built_in">return</span> DIRS<br></code></pre></td></tr></table></figure>
 
-<p>我们可以通过程序触发事件：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 触发事件</span><br>eventEmitter.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&#x27;eventName&#x27;</span>);<br></code></pre></td></tr></table></figure>
-
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>创建 main.js 文件，代码如下所示：</p>
-<h2 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h2><p>&#x2F;&#x2F; 引入 events 模块 var events &#x3D; require(‘events’); &#x2F;&#x2F; 创建 eventEmitter 对象 var eventEmitter &#x3D; new events.EventEmitter();  &#x2F;&#x2F; 创建事件处理程序 var connectHandler &#x3D; function connected() {   console.log(‘连接成功。’);     &#x2F;&#x2F; 触发 data_received 事件    eventEmitter.emit(‘data_received’); }  &#x2F;&#x2F; 绑定 connection 事件处理程序 eventEmitter.on(‘connection’, connectHandler);  &#x2F;&#x2F; 使用匿名函数绑定 data_received 事件 eventEmitter.on(‘data_received’, function(){   console.log(‘数据接收成功。’); });  &#x2F;&#x2F; 触发 connection 事件  eventEmitter.emit(‘connection’);  console.log(“程序执行完毕。”);</p>
-<p>接下来让我们执行以上代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ node main.js<br>连接成功。<br>数据接收成功。<br>程序执行完毕。<br></code></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="Node-应用程序是如何工作的？"><a href="#Node-应用程序是如何工作的？" class="headerlink" title="Node 应用程序是如何工作的？"></a>Node 应用程序是如何工作的？</h2><p>在 Node 应用程序中，执行异步操作的函数将回调函数作为最后一个参数， 回调函数接收错误对象作为第一个参数。</p>
-<p>接下来让我们来重新看下前面的实例，创建一个 input.txt ,文件内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">菜鸟教程官网地址：www.runoob.com<br></code></pre></td></tr></table></figure>
-
-<p>创建 main.js 文件，代码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><br>fs.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;input.txt&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">err, data</span>) &#123;<br>   <span class="hljs-keyword">if</span> (err)&#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err.<span class="hljs-property">stack</span>);<br>      <span class="hljs-keyword">return</span>;<br>   &#125;<br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data.<span class="hljs-title function_">toString</span>());<br>&#125;);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;程序执行完毕&quot;</span>);<br></code></pre></td></tr></table></figure>
-
-<p>以上程序中 fs.readFile() 是异步函数用于读取文件。 如果在读取文件过程中发生错误，错误 err 对象就会输出错误信息。</p>
-<p>如果没发生错误，readFile 跳过 err 对象的输出，文件内容就通过回调函数输出。</p>
-<p>执行以上代码，执行结果如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">程序执行完毕<br>菜鸟教程官网地址：www.runoob.com<br></code></pre></td></tr></table></figure>
-
-<p>接下来我们删除 input.txt 文件，执行结果如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">程序执行完毕<br>Error: ENOENT, open <span class="hljs-string">&#x27;input.txt&#x27;</span><br></code></pre></td></tr></table></figure>
-
-<p>因为文件 input.txt 不存在，所以输出了错误信息。</p>
+<blockquote>
+<p><strong>exports 和 module.exports 的使用</strong></p>
+<p>如果要对外暴露属性或方法，就用 <strong>exports</strong> 就行，要暴露对象(类似class，包含了很多属性和方法)，就用 <strong>module.exports</strong>。</p>
+</blockquote>
 
                 
               </div>
@@ -362,8 +368,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>一、NodeJs 事件循环</div>
-      <div>https://yonghengshikong.github.io/posts/17687/</div>
+      <div>八、NodeJs 模块系统</div>
+      <div>https://yonghengshikong.github.io/posts/56695/</div>
     </div>
     <div class="license-meta">
       
@@ -407,18 +413,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/42651/" title="二、NodeJs EventEmitter">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">二、NodeJs EventEmitter</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/31322/" title="NodeJs基础">
-                        <span class="hidden-mobile">NodeJs基础</span>
+                      <a href="/posts/5655/" title="七、NodeJs http协议">
+                        <span class="hidden-mobile">七、NodeJs http协议</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
