@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ECMAScript 2018（ES9）新特性详解ECMAScript 2018（也称为 ES9）引入了一些新的特性和改进，使得 JavaScript 更加强大和灵活。下面将详细介绍 ES9 的主要新特性，包括：异步迭代器（Async Iterators）、Promise.prototype.finally()、扩展对象（Spread Properties） 和 正则表达式的改进。每个特性都会包含">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ECMAScript9新特性详解">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/29004/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="ECMAScript 2018（ES9）新特性详解ECMAScript 2018（也称为 ES9）引入了一些新的特性和改进，使得 JavaScript 更加强大和灵活。下面将详细介绍 ES9 的主要新特性，包括：异步迭代器（Async Iterators）、Promise.prototype.finally()、扩展对象（Spread Properties） 和 正则表达式的改进。每个特性都会包含">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-10-28T09:11:32.000Z">
+<meta property="article:modified_time" content="2024-10-28T09:53:06.228Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="ECMAScript">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>ECMAScript9新特性详解 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ECMAScript9新特性详解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-28 17:11" pubdate>
+          2024年10月28日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ECMAScript9新特性详解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ECMAScript-2018（ES9）新特性详解"><a href="#ECMAScript-2018（ES9）新特性详解" class="headerlink" title="ECMAScript 2018（ES9）新特性详解"></a>ECMAScript 2018（ES9）新特性详解</h1><p>ECMAScript 2018（也称为 ES9）引入了一些新的特性和改进，使得 JavaScript 更加强大和灵活。下面将详细介绍 ES9 的主要新特性，包括：<strong>异步迭代器（Async Iterators）</strong>、<strong>Promise.prototype.finally()<strong>、</strong>扩展对象（Spread Properties）</strong> 和 <strong>正则表达式的改进</strong>。每个特性都会包含 API 说明、参数、返回值及用法示例。</p>
+<h1 id="1-异步迭代器（Async-Iterators）"><a href="#1-异步迭代器（Async-Iterators）" class="headerlink" title="1. 异步迭代器（Async Iterators）"></a>1. 异步迭代器（Async Iterators）</h1><p>异步迭代器允许你在处理异步数据时使用 <code>for await...of</code> 循环。这样可以方便地处理异步操作，尤其是在处理网络请求、文件读取等场景中。</p>
+<ul>
+<li><p><strong>语法</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span> <span class="hljs-keyword">await</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> asyncIterable) &#123;<br>    <span class="hljs-comment">// 处理每个 item</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>返回值</strong>:</p>
+<ul>
+<li>没有返回值。</li>
+</ul>
+</li>
+<li><p><strong>用法示例</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span>* <span class="hljs-title function_">asyncGenerator</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> data = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> data) &#123;<br>        <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, <span class="hljs-number">1000</span>)); <span class="hljs-comment">// 模拟异步操作</span><br>        <span class="hljs-keyword">yield</span> item;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">processAsyncData</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">for</span> <span class="hljs-keyword">await</span> (<span class="hljs-keyword">const</span> value <span class="hljs-keyword">of</span> <span class="hljs-title function_">asyncGenerator</span>()) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value); <span class="hljs-comment">// 输出 &#x27;a&#x27;，&#x27;b&#x27;，&#x27;c&#x27; 每隔 1 秒</span><br>    &#125;<br>&#125;<br><br><span class="hljs-title function_">processAsyncData</span>();<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="1-1-示例剖析"><a href="#1-1-示例剖析" class="headerlink" title="1.1 示例剖析"></a>1.1 <strong>示例剖析</strong></h2><h3 id="1-异步生成器函数"><a href="#1-异步生成器函数" class="headerlink" title="1. 异步生成器函数"></a>1. 异步生成器函数</h3><p>首先，异步生成器是一个函数，可以使用 <code>async function*</code> 声明。异步生成器的特点是可以使用 <code>await</code> 关键字，并且使用 <code>yield</code> 返回多个值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span>* <span class="hljs-title function_">asyncGenerator</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> data = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> data) &#123;<br>        <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, <span class="hljs-number">1000</span>)); <span class="hljs-comment">// 模拟异步操作</span><br>        <span class="hljs-keyword">yield</span> item; <span class="hljs-comment">// 暂停执行并返回当前 item</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>关键点：</strong></p>
+<ul>
+<li><strong><code>async function\*</code></strong>: 声明一个异步生成器函数。</li>
+<li><strong><code>yield</code></strong>: 用于暂停函数的执行，并返回一个值给调用者。</li>
+<li><strong><code>await</code></strong>: 可以在异步生成器中使用，以等待异步操作完成。</li>
+</ul>
+<h3 id="2-异步迭代器"><a href="#2-异步迭代器" class="headerlink" title="2. 异步迭代器"></a>2. 异步迭代器</h3><p>当你调用异步生成器函数（如 <code>asyncGenerator()</code>）时，它返回一个异步迭代器。这个迭代器可以通过 <code>next()</code> 方法逐步获取值。</p>
+<ul>
+<li><strong><code>next()</code> 方法</strong>: 返回一个 Promise，该 Promise 的 <code>value</code> 属性是生成器 <code>yield</code> 返回的值，<code>done</code> 属性指示生成器是否已完成。</li>
+</ul>
+<h3 id="3-for-await-of-语句"><a href="#3-for-await-of-语句" class="headerlink" title="3. for await...of 语句"></a>3. <code>for await...of</code> 语句</h3><p><code>for await...of</code> 是一个用于遍历异步迭代器的语句。它可以处理异步操作，使得代码更易于阅读。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">processAsyncData</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">for</span> <span class="hljs-keyword">await</span> (<span class="hljs-keyword">const</span> value <span class="hljs-keyword">of</span> <span class="hljs-title function_">asyncGenerator</span>()) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value); <span class="hljs-comment">// 每隔 1 秒输出 &#x27;a&#x27;，&#x27;b&#x27;，&#x27;c&#x27;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>关键点：</strong></p>
+<ul>
+<li><strong>自动调用 <code>next()</code></strong>: 在循环中，<code>for await...of</code> 会自动调用异步生成器的 <code>next()</code> 方法，获取生成器的下一个值。</li>
+<li><strong>异步等待</strong>: 在调用 <code>next()</code> 时，如果生成器还未到达下一个 <code>yield</code>，则会等待直到异步操作完成，获取到值后继续执行循环。</li>
+<li><strong>停止条件</strong>: 当生成器完成（即没有更多的值可以 <code>yield</code>），<code>done</code> 会变为 <code>true</code>，循环会自动停止。</li>
+</ul>
+<h3 id="4-详细流程"><a href="#4-详细流程" class="headerlink" title="4. 详细流程"></a>4. 详细流程</h3><p>让我们详细分析执行 <code>processAsyncData</code> 的流程：</p>
+<ol>
+<li><strong>调用 <code>asyncGenerator()</code></strong>: 这会创建一个异步生成器对象，准备生成值。</li>
+<li><strong>进入 <code>for await...of</code> 循环</strong>: 这时，循环开始，准备处理从异步生成器获取的值。</li>
+<li><strong>第一次迭代</strong>:<ul>
+<li><code>next()</code> 被自动调用。</li>
+<li>在 <code>asyncGenerator</code> 中，执行到第一个 <code>await</code>，即 <code>await new Promise(...)</code>，此时会暂停执行。</li>
+<li>等待 1 秒后，Promise 被解决，执行到 <code>yield item</code>，返回 <code>&#39;a&#39;</code>。</li>
+<li><code>for await...of</code> 接收到这个值，赋值给 <code>value</code>，并执行 <code>console.log(value)</code>，输出 <code>&#39;a&#39;</code>。</li>
+</ul>
+</li>
+<li><strong>第二次迭代</strong>:<ul>
+<li>再次自动调用 <code>next()</code>。</li>
+<li>同样地，执行到 <code>await</code>，暂停 1 秒后返回 <code>&#39;b&#39;</code>，并输出。</li>
+</ul>
+</li>
+<li><strong>第三次迭代</strong>:<ul>
+<li>继续执行，返回 <code>&#39;c&#39;</code>。</li>
+</ul>
+</li>
+<li><strong>结束</strong>:<ul>
+<li>当没有更多的值可 <code>yield</code> 时，异步生成器完成，<code>next()</code> 返回一个 <code>done</code> 为 <code>true</code> 的对象，循环结束。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h3><ul>
+<li><code>async function*</code> 创建异步生成器，可以在其中使用 <code>await</code> 和 <code>yield</code>。</li>
+<li><code>for await...of</code> 语句用于遍历异步生成器，自动处理 <code>next()</code> 调用和异步等待。</li>
+<li>这使得异步操作的控制流更为简单和清晰，避免了手动处理 Promise 的复杂性。</li>
+</ul>
+<h1 id="2-Promise-prototype-finally"><a href="#2-Promise-prototype-finally" class="headerlink" title="2. Promise.prototype.finally()"></a>2. Promise.prototype.finally()</h1><p><code>Promise.prototype.finally()</code> 方法为 Promise 提供了一个清理功能，允许你在 Promise 解决或拒绝后执行一段代码。这对于进行一些清理操作（例如关闭加载指示器）非常有用。</p>
+<ul>
+<li><p><strong>语法</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">promise.<span class="hljs-title function_">finally</span>(onFinally);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>参数</strong>:</p>
+<ul>
+<li><code>onFinally</code>: 一个可选的回调函数，在 Promise 解决或拒绝后执行。</li>
+</ul>
+</li>
+<li><p><strong>返回值</strong>:</p>
+<ul>
+<li>返回一个新的 Promise，其结果与原 Promise 相同。</li>
+</ul>
+</li>
+<li><p><strong>用法示例</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchData</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&#x27;数据获取成功&#x27;</span>);<br>        &#125;, <span class="hljs-number">1000</span>);<br>    &#125;);<br>&#125;<br><br><span class="hljs-title function_">fetchData</span>()<br>    .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data); <span class="hljs-comment">// 输出: 数据获取成功</span><br>    &#125;)<br>    .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;发生错误:&#x27;</span>, error);<br>    &#125;)<br>    .<span class="hljs-title function_">finally</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;清理操作&#x27;</span>); <span class="hljs-comment">// 不论成功或失败都会执行</span><br>    &#125;);<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="3-扩展对象（Spread-Properties）"><a href="#3-扩展对象（Spread-Properties）" class="headerlink" title="3. 扩展对象（Spread Properties）"></a>3. 扩展对象（Spread Properties）</h1><p>扩展对象语法允许我们使用扩展运算符（<code>...</code>）在对象字面量中复制属性。这使得对象的合并和克隆更加简洁。</p>
+<ul>
+<li><p><strong>语法</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> newObject = &#123; ...obj1, ...obj2 &#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>参数</strong>:</p>
+<ul>
+<li><code>obj1</code>, <code>obj2</code>: 要合并的对象。</li>
+</ul>
+</li>
+<li><p><strong>返回值</strong>:</p>
+<ul>
+<li>返回一个新对象，包含所有合并后的属性。</li>
+</ul>
+</li>
+<li><p><strong>用法示例</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> obj1 = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> &#125;;<br><span class="hljs-keyword">const</span> obj2 = &#123; <span class="hljs-attr">b</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">c</span>: <span class="hljs-number">4</span> &#125;;<br><span class="hljs-keyword">const</span> merged = &#123; ...obj1, ...obj2 &#125;;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(merged); <span class="hljs-comment">// 输出: &#123; a: 1, b: 3, c: 4 &#125;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="4-正则表达式的改进"><a href="#4-正则表达式的改进" class="headerlink" title="4. 正则表达式的改进"></a>4. 正则表达式的改进</h1><p>ES9 对正则表达式进行了增强，新增了两个主要功能：<strong>命名捕获组</strong>和<strong>s（dotAll）标志</strong>。</p>
+<h2 id="4-1-命名捕获组"><a href="#4-1-命名捕获组" class="headerlink" title="4.1 命名捕获组"></a>4.1 命名捕获组</h2><p>使用命名捕获组可以更容易地从正则表达式中提取信息。</p>
+<ul>
+<li><p><strong>语法</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> regex = <span class="hljs-regexp">/(?&lt;name&gt;pattern)/</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>返回值</strong>:</p>
+<ul>
+<li>捕获组的命名可以通过 <code>groups</code> 属性访问。</li>
+</ul>
+</li>
+<li><p><strong>用法示例</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> regex = <span class="hljs-regexp">/(?&lt;firstName&gt;\w+) (?&lt;lastName&gt;\w+)/</span>;<br><span class="hljs-keyword">const</span> str = <span class="hljs-string">&#x27;John Doe&#x27;</span>;<br><span class="hljs-keyword">const</span> result = regex.<span class="hljs-title function_">exec</span>(str);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">groups</span>.<span class="hljs-property">firstName</span>); <span class="hljs-comment">// 输出: John</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">groups</span>.<span class="hljs-property">lastName</span>); <span class="hljs-comment">// 输出: Doe</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-2-s（dotAll）标志"><a href="#4-2-s（dotAll）标志" class="headerlink" title="4.2 s（dotAll）标志"></a>4.2 s（dotAll）标志</h2><p><code>s</code> 标志使得点号 <code>.</code> 可以匹配换行符，这对于多行字符串的匹配非常有用。</p>
+<ul>
+<li><p><strong>语法</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> regex = <span class="hljs-regexp">/.*?/</span>s; <span class="hljs-comment">// 点号可以匹配换行符</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>用法示例</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> text = <span class="hljs-string">`Hello\nWorld`</span>;<br><span class="hljs-keyword">const</span> regex = <span class="hljs-regexp">/Hello.*World/</span>s;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(regex.<span class="hljs-title function_">test</span>(text)); <span class="hljs-comment">// 输出: true</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>ECMAScript 2018（ES9）引入的这些新特性，极大地增强了 JavaScript 处理异步操作、对象合并、正则表达式等方面的能力。它们使得代码更加简洁和易于维护，帮助开发者更高效地完成任务。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ECMAScript/" class="category-chain-item">ECMAScript</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ECMAScript/" class="print-no-link">#ECMAScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ECMAScript9新特性详解</div>
+      <div>https://yonghengshikong.github.io/posts/29004/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/21209/" title="ECMAScript10新特性详解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ECMAScript10新特性详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/57741/" title="ECMAScript8新特性详解">
+                        <span class="hidden-mobile">ECMAScript8新特性详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
