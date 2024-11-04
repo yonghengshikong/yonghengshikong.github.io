@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yonghengshikong.github.io/posts/59814/915718a948758c68.png">
 <meta property="article:published_time" content="2024-10-15T08:38:57.000Z">
-<meta property="article:modified_time" content="2024-10-30T21:23:22.328Z">
+<meta property="article:modified_time" content="2024-11-04T13:15:01.033Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="NodeJs">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.5k 字
+          7.4k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          47 分钟
+          62 分钟
         
       </span>
     
@@ -608,7 +608,243 @@
 <ul>
 <li><strong>作用</strong>：将备份的数据库文件恢复到 MongoDB。</li>
 </ul>
-<h1 id="五、Mongoose"><a href="#五、Mongoose" class="headerlink" title="五、Mongoose"></a>五、Mongoose</h1><h2 id="1-Mongoose-简介"><a href="#1-Mongoose-简介" class="headerlink" title="1. Mongoose 简介"></a>1. Mongoose 简介</h2><p>Mongoose 是 MongoDB 官方推荐的 Node.js ODM 库，它允许我们通过 JavaScript 定义 MongoDB 数据的 Schema，提供了数据验证、模型管理和数据操作功能。</p>
+<h2 id="9-总结所有的操作符"><a href="#9-总结所有的操作符" class="headerlink" title="9.总结所有的操作符"></a>9.总结所有的操作符</h2><table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>分类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>$set</strong></td>
+<td>更新操作</td>
+<td>将字段设置为指定的值。如果字段不存在，则创建该字段。</td>
+</tr>
+<tr>
+<td><strong>$unset</strong></td>
+<td>更新操作</td>
+<td>删除指定的字段。</td>
+</tr>
+<tr>
+<td><strong>$inc</strong></td>
+<td>更新操作</td>
+<td>将字段的值增加指定的数值（支持正数或负数）。</td>
+</tr>
+<tr>
+<td><strong>$mul</strong></td>
+<td>更新操作</td>
+<td>将字段的值乘以指定的数值。</td>
+</tr>
+<tr>
+<td><strong>$rename</strong></td>
+<td>更新操作</td>
+<td>重命名字段。</td>
+</tr>
+<tr>
+<td><strong>$min</strong></td>
+<td>更新操作</td>
+<td>如果指定的值小于当前字段值，则将字段更新为指定的值。</td>
+</tr>
+<tr>
+<td><strong>$max</strong></td>
+<td>更新操作</td>
+<td>如果指定的值大于当前字段值，则将字段更新为指定的值。</td>
+</tr>
+<tr>
+<td><strong>$currentDate</strong></td>
+<td>更新操作</td>
+<td>将字段更新为当前日期。支持 Date 或 Timestamp 类型。</td>
+</tr>
+<tr>
+<td><strong>$addToSet</strong></td>
+<td>数组操作</td>
+<td>如果值不在数组中，则添加到数组中（类似于去重的功能）。</td>
+</tr>
+<tr>
+<td><strong>$pop</strong></td>
+<td>数组操作</td>
+<td>从数组中移除第一个或最后一个元素。</td>
+</tr>
+<tr>
+<td><strong>$pull</strong></td>
+<td>数组操作</td>
+<td>从数组中删除所有匹配的元素。</td>
+</tr>
+<tr>
+<td><strong>$push</strong></td>
+<td>数组操作</td>
+<td>将一个或多个值添加到数组的末尾。</td>
+</tr>
+<tr>
+<td><strong>$each</strong></td>
+<td>数组操作</td>
+<td>与 <code>$push</code> 结合使用，用于一次插入多个值。</td>
+</tr>
+<tr>
+<td><strong>$slice</strong></td>
+<td>数组操作</td>
+<td>与 <code>$push</code> 和 <code>$each</code> 结合使用，限制数组的最大长度。</td>
+</tr>
+<tr>
+<td><strong>$sort</strong></td>
+<td>数组操作</td>
+<td>与 <code>$push</code> 和 <code>$each</code> 结合使用，对数组中的元素进行排序。</td>
+</tr>
+<tr>
+<td><strong>$position</strong></td>
+<td>数组操作</td>
+<td>与 <code>$push</code> 和 <code>$each</code> 结合使用，指定元素插入数组的位置。</td>
+</tr>
+<tr>
+<td><strong>$pullAll</strong></td>
+<td>数组操作</td>
+<td>从数组中删除与指定值完全匹配的所有元素。</td>
+</tr>
+<tr>
+<td><strong>$elemMatch</strong></td>
+<td>查询操作</td>
+<td>用于查询数组中符合指定条件的元素。</td>
+</tr>
+<tr>
+<td><strong>$in</strong></td>
+<td>查询操作</td>
+<td>匹配字段的值在给定数组中的文档。</td>
+</tr>
+<tr>
+<td><strong>$nin</strong></td>
+<td>查询操作</td>
+<td>匹配字段的值不在给定数组中的文档。</td>
+</tr>
+<tr>
+<td><strong>$and</strong></td>
+<td>逻辑操作</td>
+<td>满足所有条件的文档。</td>
+</tr>
+<tr>
+<td><strong>$or</strong></td>
+<td>逻辑操作</td>
+<td>满足至少一个条件的文档。</td>
+</tr>
+<tr>
+<td><strong>$not</strong></td>
+<td>逻辑操作</td>
+<td>否定表达式，用于匹配与指定条件不符的文档。</td>
+</tr>
+<tr>
+<td><strong>$nor</strong></td>
+<td>逻辑操作</td>
+<td>不满足任意一个条件的文档。</td>
+</tr>
+<tr>
+<td><strong>$gt</strong></td>
+<td>比较操作</td>
+<td>匹配字段的值大于指定值的文档。</td>
+</tr>
+<tr>
+<td><strong>$gte</strong></td>
+<td>比较操作</td>
+<td>匹配字段的值大于或等于指定值的文档。</td>
+</tr>
+<tr>
+<td><strong>$lt</strong></td>
+<td>比较操作</td>
+<td>匹配字段的值小于指定值的文档。</td>
+</tr>
+<tr>
+<td><strong>$lte</strong></td>
+<td>比较操作</td>
+<td>匹配字段的值小于或等于指定值的文档。</td>
+</tr>
+<tr>
+<td><strong>$eq</strong></td>
+<td>比较操作</td>
+<td>匹配字段的值等于指定值的文档。</td>
+</tr>
+<tr>
+<td><strong>$ne</strong></td>
+<td>比较操作</td>
+<td>匹配字段的值不等于指定值的文档。</td>
+</tr>
+<tr>
+<td><strong>$exists</strong></td>
+<td>查询操作</td>
+<td>匹配包含或不包含指定字段的文档。</td>
+</tr>
+<tr>
+<td><strong>$type</strong></td>
+<td>查询操作</td>
+<td>匹配指定字段类型的文档。</td>
+</tr>
+<tr>
+<td><strong>$size</strong></td>
+<td>查询操作</td>
+<td>匹配数组长度等于指定值的文档。</td>
+</tr>
+<tr>
+<td><strong>$regex</strong></td>
+<td>查询操作</td>
+<td>使用正则表达式匹配字段值。</td>
+</tr>
+<tr>
+<td><strong>$text</strong></td>
+<td>查询操作</td>
+<td>进行全文索引查询。</td>
+</tr>
+<tr>
+<td><strong>$where</strong></td>
+<td>查询操作</td>
+<td>使用 JavaScript 表达式匹配文档。</td>
+</tr>
+<tr>
+<td><strong>$geoWithin</strong></td>
+<td>地理位置查询</td>
+<td>匹配位于指定地理形状内的点。</td>
+</tr>
+<tr>
+<td><strong>$geoIntersects</strong></td>
+<td>地理位置查询</td>
+<td>匹配与指定的地理形状相交的点。</td>
+</tr>
+<tr>
+<td><strong>$near</strong></td>
+<td>地理位置查询</td>
+<td>查找距离某点附近的点。</td>
+</tr>
+<tr>
+<td><strong>$nearSphere</strong></td>
+<td>地理位置查询</td>
+<td>查找球体距离某点附近的点。</td>
+</tr>
+<tr>
+<td><strong>$mod</strong></td>
+<td>查询操作</td>
+<td>匹配字段的值是指定除数的余数的文档。</td>
+</tr>
+</tbody></table>
+<p>这些操作符在 MongoDB 中具有不同的用途，可以组合使用来实现复杂的查询和更新操作。例如，通过结合 <code>$set</code>、<code>$push</code> 和 <code>$pull</code> 可以在一个操作中更新多个字段并同时操作数组内容。这种灵活性使得 MongoDB 非常适用于文档更新和复杂查询的场景。</p>
+<h1 id="五、-MongoDB-的锁机制"><a href="#五、-MongoDB-的锁机制" class="headerlink" title="五、 MongoDB 的锁机制"></a>五、 MongoDB 的锁机制</h1><h2 id="1-MongoDB-的锁机制"><a href="#1-MongoDB-的锁机制" class="headerlink" title="1.MongoDB 的锁机制"></a>1.MongoDB 的锁机制</h2><p>在分布式数据库中，数据一致性与并发控制是两个重要的问题。MongoDB 作为一个广泛使用的 NoSQL 数据库，提供了一些机制来确保数据的原子性和一致性。</p>
+<h3 id="1-1-文档级锁"><a href="#1-1-文档级锁" class="headerlink" title="1.1 文档级锁"></a>1.1 文档级锁</h3><p>MongoDB 使用文档级锁（Document-Level Locking）来管理对数据的并发访问。这意味着在对单个文档进行操作时，MongoDB 会为该文档加锁，而允许其他文档同时被访问。这种机制显著提高了并发性能，特别是在高并发场景下。</p>
+<ul>
+<li><strong>原子性</strong>：MongoDB 中对单个文档的操作是原子性的。也就是说，对于同一文档的更新操作，要么完全成功，要么完全失败，不会出现部分更新的情况。</li>
+</ul>
+<h3 id="1-2-多文档操作的非原子性"><a href="#1-2-多文档操作的非原子性" class="headerlink" title="1.2 多文档操作的非原子性"></a>1.2 多文档操作的非原子性</h3><p>尽管单文档操作是原子性的，但当执行多文档操作（例如 <code>updateMany</code>）时，整体操作并不是原子性的。每个文档的修改是原子性的，但多个文档的操作整体上可能会由于某些文档更新失败而导致状态不一致。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">db.<span class="hljs-property">collection</span>.<span class="hljs-title function_">updateMany</span>(&#123; <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;pending&#x27;</span> &#125;, &#123; <span class="hljs-attr">$set</span>: &#123; <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;complete&#x27;</span> &#125; &#125;);<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，如果有一个文档在更新时因其他进程修改而失败，那么剩余的文档仍然会被更新，导致状态不一致。</p>
+<h2 id="2-事务支持"><a href="#2-事务支持" class="headerlink" title="2. 事务支持"></a>2. 事务支持</h2><p>MongoDB 4.0 及以上版本支持多文档事务，这样可以确保多个操作作为一个整体要么完全成功，要么完全失败。事务的使用可以避免因部分操作成功而导致的数据不一致问题。</p>
+<h3 id="2-1-事务的原理"><a href="#2-1-事务的原理" class="headerlink" title="2.1 事务的原理"></a>2.1 事务的原理</h3><p>在使用事务时，MongoDB 会在开始事务时锁定相应的文档，确保在事务未提交前，其他操作不能对这些文档进行修改。只有在成功提交事务后，修改才会生效。</p>
+<h3 id="2-2-使用示例"><a href="#2-2-使用示例" class="headerlink" title="2.2 使用示例"></a>2.2 使用示例</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> session = client.<span class="hljs-title function_">startSession</span>();<br><br>session.<span class="hljs-title function_">startTransaction</span>();<br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">await</span> collection1.<span class="hljs-title function_">updateOne</span>(&#123; <span class="hljs-attr">_id</span>: <span class="hljs-number">1</span> &#125;, &#123; <span class="hljs-attr">$set</span>: &#123; <span class="hljs-attr">field</span>: <span class="hljs-string">&#x27;value&#x27;</span> &#125; &#125;, &#123; session &#125;);<br>    <span class="hljs-keyword">await</span> collection2.<span class="hljs-title function_">updateOne</span>(&#123; <span class="hljs-attr">_id</span>: <span class="hljs-number">2</span> &#125;, &#123; <span class="hljs-attr">$set</span>: &#123; <span class="hljs-attr">field</span>: <span class="hljs-string">&#x27;value&#x27;</span> &#125; &#125;, &#123; session &#125;);<br>    <span class="hljs-keyword">await</span> session.<span class="hljs-title function_">commitTransaction</span>();<br>&#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-keyword">await</span> session.<span class="hljs-title function_">abortTransaction</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Transaction aborted due to error:&#x27;</span>, error);<br>&#125; <span class="hljs-keyword">finally</span> &#123;<br>    session.<span class="hljs-title function_">endSession</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，如果 <code>collection1</code> 或 <code>collection2</code> 的更新失败，事务将被中止，并且任何已经进行的更改都会被撤销。</p>
+<h2 id="3-乐观锁"><a href="#3-乐观锁" class="headerlink" title="3. 乐观锁"></a>3. 乐观锁</h2><p>在某些情况下，使用乐观锁可以有效解决并发修改的问题。乐观锁的思路是在更新时验证文档的版本号或修改时间戳，确保在更新时文档没有被其他进程修改。</p>
+<h3 id="3-1-实现乐观锁的示例"><a href="#3-1-实现乐观锁的示例" class="headerlink" title="3.1 实现乐观锁的示例"></a>3.1 实现乐观锁的示例</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> collection.<span class="hljs-title function_">findOne</span>(&#123; <span class="hljs-attr">_id</span>: documentId &#125;);<br><span class="hljs-keyword">if</span> (result.<span class="hljs-property">version</span> === currentVersion) &#123;<br>    <span class="hljs-keyword">await</span> collection.<span class="hljs-title function_">updateOne</span>(<br>        &#123; <span class="hljs-attr">_id</span>: documentId &#125;,<br>        &#123; <span class="hljs-attr">$set</span>: &#123; <span class="hljs-attr">field</span>: newValue, <span class="hljs-attr">version</span>: currentVersion + <span class="hljs-number">1</span> &#125; &#125;<br>    );<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Document was modified by another process&#x27;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这个示例中，只有在文档的版本号与当前版本一致时才进行更新，这样可以避免数据覆盖的问题。</p>
+<h2 id="4-结论"><a href="#4-结论" class="headerlink" title="4. 结论"></a>4. 结论</h2><p>MongoDB 的锁机制和事务支持为开发者提供了强大的工具来处理并发数据操作的问题。了解这些机制不仅有助于提高应用程序的性能，还能确保数据的一致性。在高并发环境下，合理使用事务和乐观锁可以有效避免数据冲突和不一致问题。</p>
+<p>对于开发者而言，掌握这些知识是构建健壮且可靠的 MongoDB 应用程序的重要基础。</p>
+<h1 id="六、Mongoose"><a href="#六、Mongoose" class="headerlink" title="六、Mongoose"></a>六、Mongoose</h1><h2 id="1-Mongoose-简介"><a href="#1-Mongoose-简介" class="headerlink" title="1. Mongoose 简介"></a>1. Mongoose 简介</h2><p>Mongoose 是 MongoDB 官方推荐的 Node.js ODM 库，它允许我们通过 JavaScript 定义 MongoDB 数据的 Schema，提供了数据验证、模型管理和数据操作功能。</p>
 <hr>
 <h2 id="2-安装-Mongoose"><a href="#2-安装-Mongoose" class="headerlink" title="2. 安装 Mongoose"></a>2. 安装 Mongoose</h2><p>在 Node.js 项目中，可以使用 npm 或 yarn 安装 Mongoose：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install mongoose<br><span class="hljs-meta prompt_"># </span><span class="language-bash">or</span><br>yarn add mongoose<br></code></pre></td></tr></table></figure>
@@ -1236,7 +1472,7 @@
 
 <h3 id="3-数据截取"><a href="#3-数据截取" class="headerlink" title="3. 数据截取"></a>3. 数据截取</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//skip 跳过 limit 限定</span><br><span class="hljs-title class_">SongModel</span>.<span class="hljs-title function_">find</span>().<span class="hljs-title function_">skip</span>(<span class="hljs-number">10</span>).<span class="hljs-title function_">limit</span>(<span class="hljs-number">10</span>).<span class="hljs-title function_">exec</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">err,data</span>)&#123;<br>    <span class="hljs-keyword">if</span>(err) <span class="hljs-keyword">throw</span> err;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>    mongoose.<span class="hljs-property">connection</span>.<span class="hljs-title function_">close</span>();<br>&#125;);<br></code></pre></td></tr></table></figure>
 
-<h1 id="六、图形化管理工具"><a href="#六、图形化管理工具" class="headerlink" title="六、图形化管理工具"></a>六、图形化管理工具</h1><p>我们可以使用图形化的管理工具来对Mongodb进行交互，这里演示两个图形化工具</p>
+<h1 id="七、图形化管理工具"><a href="#七、图形化管理工具" class="headerlink" title="七、图形化管理工具"></a>七、图形化管理工具</h1><p>我们可以使用图形化的管理工具来对Mongodb进行交互，这里演示两个图形化工具</p>
 <ul>
 <li><strong>Robo 3T 免费 <a target="_blank" rel="noopener" href="https://github.com/Studio3T/robomongo/releases">https://github.com/Studio3T/robomongo/releases</a></strong></li>
 <li><strong>Navicat 收费 <a target="_blank" rel="noopener" href="https://www.navicat.com.cn/">https://www.navicat.com.cn/</a></strong></li>
