@@ -1,0 +1,881 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="深入理解 TypeScript 装饰器TypeScript 中的装饰器是一个非常强大且灵活的特性，它允许开发者通过注解和修改类、方法、属性、参数的行为，使得代码更加优雅、模块化和可扩展。本文将从装饰器的类型、参数、返回值、实现机制、用法和应用场景等方面进行详细解析，并通过丰富的示例代码帮助开发者更好地理解和掌握装饰器的使用。 1. 开启装饰器支持在 TypeScript 中，装饰器是一个实验性特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入解析TypeScript装饰器">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/52923/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="深入理解 TypeScript 装饰器TypeScript 中的装饰器是一个非常强大且灵活的特性，它允许开发者通过注解和修改类、方法、属性、参数的行为，使得代码更加优雅、模块化和可扩展。本文将从装饰器的类型、参数、返回值、实现机制、用法和应用场景等方面进行详细解析，并通过丰富的示例代码帮助开发者更好地理解和掌握装饰器的使用。 1. 开启装饰器支持在 TypeScript 中，装饰器是一个实验性特性">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-11T13:57:16.000Z">
+<meta property="article:modified_time" content="2024-11-11T14:43:26.586Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>深入解析TypeScript装饰器 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入解析TypeScript装饰器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-11 21:57" pubdate>
+          2024年11月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">深入解析TypeScript装饰器</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="深入理解-TypeScript-装饰器"><a href="#深入理解-TypeScript-装饰器" class="headerlink" title="深入理解 TypeScript 装饰器"></a>深入理解 TypeScript 装饰器</h1><p>TypeScript 中的装饰器是一个非常强大且灵活的特性，它允许开发者通过注解和修改类、方法、属性、参数的行为，使得代码更加优雅、模块化和可扩展。本文将从装饰器的类型、参数、返回值、实现机制、用法和应用场景等方面进行详细解析，并通过丰富的示例代码帮助开发者更好地理解和掌握装饰器的使用。</p>
+<h2 id="1-开启装饰器支持"><a href="#1-开启装饰器支持" class="headerlink" title="1. 开启装饰器支持"></a>1. 开启装饰器支持</h2><p>在 TypeScript 中，装饰器是一个实验性特性。为了使用装饰器，需要在 <code>tsconfig.json</code> 配置文件中启用 <code>experimentalDecorators</code> 选项：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;compilerOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;experimentalDecorators&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-装饰器类型概览"><a href="#2-装饰器类型概览" class="headerlink" title="2. 装饰器类型概览"></a>2. 装饰器类型概览</h2><p>TypeScript 支持以下四种主要的装饰器类型：</p>
+<ol>
+<li><strong>类装饰器（Class Decorator）</strong></li>
+<li><strong>方法装饰器（Method Decorator）</strong></li>
+<li><strong>属性装饰器（Property Decorator）</strong></li>
+<li><strong>参数装饰器（Parameter Decorator）</strong></li>
+</ol>
+<p>每种装饰器的参数不同，具体参数说明和使用场景在下面的章节中将详细介绍。</p>
+<h2 id="3-装饰器的基本语法与使用"><a href="#3-装饰器的基本语法与使用" class="headerlink" title="3. 装饰器的基本语法与使用"></a>3. 装饰器的基本语法与使用</h2><h3 id="3-1-类装饰器"><a href="#3-1-类装饰器" class="headerlink" title="3.1 类装饰器"></a>3.1 类装饰器</h3><h4 id="3-1-1-基础实现"><a href="#3-1-1-基础实现" class="headerlink" title="3.1.1 基础实现"></a>3.1.1 基础实现</h4><p>类装饰器是最基本的装饰器，通常用于修改类的行为或替换构造函数。它接受一个参数——构造函数，并且返回一个新的构造函数或修改过的构造函数。</p>
+<p><strong>参数：</strong></p>
+<ul>
+<li><strong>target</strong>：类的构造函数。该构造函数是类的实例化方法，可以在装饰器中被替换或修改。</li>
+</ul>
+<p><strong>返回值：</strong></p>
+<ul>
+<li>可以返回一个新的类构造函数，用来替换原始类的构造函数。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">logClass</span>(<span class="hljs-params">target: <span class="hljs-built_in">Function</span></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Class <span class="hljs-subst">$&#123;target.name&#125;</span> has been decorated.`</span>);<br>&#125;<br><br><span class="hljs-meta">@logClass</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;MyClass instance created.&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> myClass = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br><span class="hljs-comment">// 输出：</span><br><span class="hljs-comment">// Class MyClass has been decorated.</span><br><span class="hljs-comment">// MyClass instance created.</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-1-2-装饰器传参的基本实现-装饰器工厂"><a href="#3-1-2-装饰器传参的基本实现-装饰器工厂" class="headerlink" title="3.1.2  装饰器传参的基本实现(装饰器工厂)"></a>3.1.2  装饰器传参的基本实现(装饰器工厂)</h4><p>通过这种方式，你可以在装饰器中使用传入的参数来执行特定的逻辑。我们通过一个简单的示例来演示这个过程：</p>
+<p><strong>示例：为类装饰器传递参数</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">logClass</span>(<span class="hljs-params">message: <span class="hljs-built_in">string</span></span>) &#123;<br>  <span class="hljs-comment">// 返回的实际装饰器函数</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">target: <span class="hljs-built_in">Function</span></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;message&#125;</span>: Class <span class="hljs-subst">$&#123;target.name&#125;</span> has been decorated.`</span>);<br>  &#125;;<br>&#125;<br><br><span class="hljs-meta">@logClass</span>(<span class="hljs-string">&quot;Hello&quot;</span>)<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;MyClass instance created.&quot;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<ol>
+<li><code>logClass</code> 是一个工厂函数，接收一个 <code>message</code> 参数。</li>
+<li>在 <code>logClass</code> 内部，我们返回一个实际的装饰器函数（<code>target =&gt; &#123; ... &#125;</code>）。</li>
+<li>返回的装饰器函数会接收到类的构造函数作为 <code>target</code> 参数，这样你就可以在装饰器中使用这个类的构造函数，或者执行其他操作。</li>
+<li>这个装饰器在 <code>@logClass(&quot;Hello&quot;)</code> 中使用时，传入了 <code>&quot;Hello&quot;</code> 这个参数，最终输出的内容会包括这个参数。</li>
+</ol>
+<p><strong>输出结果：</strong></p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs smali">Hello: Class MyClass has been decorated.<br>MyClass<span class="hljs-built_in"> instance </span>created.<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-3-进一步的装饰器参数应用"><a href="#3-2-3-进一步的装饰器参数应用" class="headerlink" title="3.2.3  进一步的装饰器参数应用"></a>3.2.3  进一步的装饰器参数应用</h4><p>你还可以传递更多参数，并在装饰器中执行更复杂的逻辑。以下是一个扩展的示例，演示如何为类装饰器传递多个参数，并执行类属性和方法的修改。</p>
+<p><strong>示例：带多个参数的类装饰器</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">logClass</span>(<span class="hljs-params">message: <span class="hljs-built_in">string</span>, level: <span class="hljs-built_in">string</span></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">target: <span class="hljs-built_in">Function</span></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;message&#125;</span> [Level: <span class="hljs-subst">$&#123;level&#125;</span>]: Class <span class="hljs-subst">$&#123;target.name&#125;</span> has been decorated.`</span>);<br>  &#125;;<br>&#125;<br><br><span class="hljs-meta">@logClass</span>(<span class="hljs-string">&quot;Logging&quot;</span>, <span class="hljs-string">&quot;INFO&quot;</span>)<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;MyClass instance created.&quot;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br></code></pre></td></tr></table></figure>
+
+<p><strong>输出结果</strong>：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs smali">Logging [Level: INFO]: Class MyClass has been decorated.<br>MyClass<span class="hljs-built_in"> instance </span>created.<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-4-装饰器组合"><a href="#3-2-4-装饰器组合" class="headerlink" title="3.2.4 装饰器组合"></a>3.2.4 装饰器组合</h4><p>多个装饰器可以同时应用到一个声明上，就像下面的示例：</p>
+<ul>
+<li>书写在同一行上：</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-meta">@f</span> <span class="hljs-meta">@g</span> x<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>书写在多行上：</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-meta">@f</span><br><span class="hljs-meta">@g</span><br>x<br></code></pre></td></tr></table></figure>
+
+<p>当多个装饰器应用于一个声明上，它们求值方式与<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Function_composition">复合函数</a>相似。在这个模型下，当复合<em>f</em>和<em>g</em>时，复合的结果(<em>f</em> ∘ <em>g</em>)(<em>x</em>)等同于<em>f</em>(<em>g</em>(<em>x</em>))。</p>
+<p>同样的，在TypeScript里，当多个装饰器应用在一个声明上时会进行如下步骤的操作：</p>
+<ol>
+<li>由上至下依次对装饰器表达式求值。</li>
+<li>求值的结果会被当作函数，由下至上依次调用。</li>
+</ol>
+<p>如果我们使用<strong>装饰器工厂</strong>的话，可以通过下面的例子来观察它们求值的顺序：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">f</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;f(): evaluated&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params">target, propertyKey: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;f(): called&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">g</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;g(): evaluated&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params">target, propertyKey: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;g(): called&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> &#123;<br>    <span class="hljs-meta">@f</span>()<br>    <span class="hljs-meta">@g</span>()<br>    <span class="hljs-title function_">method</span>(<span class="hljs-params"></span>) &#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在控制台里会打印出如下结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">f(): evaluated<br>g(): evaluated<br>g(): called<br>f(): called<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-方法装饰器"><a href="#3-2-方法装饰器" class="headerlink" title="3.2 方法装饰器"></a>3.2 方法装饰器</h3><p>方法装饰器用于类的方法，它接受三个参数：</p>
+<ol>
+<li><strong>target</strong>：方法所在类的原型（<code>prototype</code>）。</li>
+<li><strong>propertyKey</strong>：方法的名称（<code>string</code> 类型）。</li>
+<li><strong>descriptor</strong>：方法的属性描述符（<code>PropertyDescriptor</code> 类型）。</li>
+</ol>
+<p><strong>参数：</strong></p>
+<ul>
+<li><strong>target</strong>：类的原型（即类的实例对象），如果是静态方法，则为构造函数。</li>
+<li><strong>propertyKey</strong>：方法名称，<code>string</code> 类型。</li>
+<li><strong>descriptor</strong>：该方法的属性描述符（<code>PropertyDescriptor</code>），包含了 <code>value</code>、<code>writable</code>、<code>enumerable</code> 和 <code>configurable</code> 等字段。</li>
+</ul>
+<p><strong>PropertyDescriptor 字段：</strong></p>
+<ul>
+<li><strong>value</strong>：方法本身的实现（即函数）。</li>
+<li><strong>writable</strong>：布尔值，指示方法是否可以被修改。</li>
+<li><strong>enumerable</strong>：布尔值，指示方法是否可枚举。</li>
+<li><strong>configurable</strong>：布尔值，指示方法是否可配置。</li>
+</ul>
+<p>可以通过 <code>descriptor</code> 修改方法的执行行为，如修改其值或禁用它。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">logMethod</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, propertyKey: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) &#123;<br>  <span class="hljs-keyword">const</span> originalMethod = descriptor.<span class="hljs-property">value</span>;<br>  <br>  descriptor.<span class="hljs-property">value</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">...args: <span class="hljs-built_in">any</span>[]</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Method <span class="hljs-subst">$&#123;propertyKey&#125;</span> was called with arguments:`</span>, args);<br>    <span class="hljs-keyword">return</span> originalMethod.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args);<br>  &#125;;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-meta">@logMethod</span><br>  <span class="hljs-title function_">greet</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, <span class="hljs-subst">$&#123;name&#125;</span>`</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br>obj.<span class="hljs-title function_">greet</span>(<span class="hljs-string">&#x27;Alice&#x27;</span>);<br><span class="hljs-comment">// 输出：</span><br><span class="hljs-comment">// Method greet was called with arguments: [ &#x27;Alice&#x27; ]</span><br><span class="hljs-comment">// Hello, Alice</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3-属性装饰器"><a href="#3-3-属性装饰器" class="headerlink" title="3.3 属性装饰器"></a>3.3 属性装饰器</h3><p>属性装饰器用于类的属性，它只能接收两个参数：</p>
+<ol>
+<li><strong>target</strong>：类的原型（<code>prototype</code>）。</li>
+<li><strong>propertyKey</strong>：属性名（<code>string</code> 类型）。</li>
+</ol>
+<p>属性装饰器通常用于为属性添加元数据或进行相关处理，但不能直接修改属性值。如果需要修改属性值，应使用 getter 或 setter。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">logProperty</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, propertyKey: <span class="hljs-built_in">string</span></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Property <span class="hljs-subst">$&#123;propertyKey&#125;</span> has been decorated.`</span>);<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-meta">@logProperty</span><br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> = <span class="hljs-string">&#x27;Alice&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-4-参数装饰器"><a href="#3-4-参数装饰器" class="headerlink" title="3.4 参数装饰器"></a>3.4 参数装饰器</h3><p>参数装饰器用于方法参数，它接受三个参数：</p>
+<ol>
+<li><strong>target</strong>：方法所在类的原型（<code>prototype</code>）。</li>
+<li><strong>propertyKey</strong>：方法名称（<code>string</code> 类型）。</li>
+<li><strong>parameterIndex</strong>：参数在方法中的索引（<code>number</code> 类型）。</li>
+</ol>
+<p><strong>示例：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">logParameter</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, propertyKey: <span class="hljs-built_in">string</span>, parameterIndex: <span class="hljs-built_in">number</span></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Parameter at index <span class="hljs-subst">$&#123;parameterIndex&#125;</span> in method <span class="hljs-subst">$&#123;propertyKey&#125;</span> has been decorated.`</span>);<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-title function_">greet</span>(<span class="hljs-params"><span class="hljs-meta">@logParameter</span> name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, <span class="hljs-subst">$&#123;name&#125;</span>`</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br>obj.<span class="hljs-title function_">greet</span>(<span class="hljs-string">&#x27;Alice&#x27;</span>);<br><span class="hljs-comment">// 输出：</span><br><span class="hljs-comment">// Parameter at index 0 in method greet has been decorated.</span><br><span class="hljs-comment">// Hello, Alice</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-装饰器的参数解析"><a href="#4-装饰器的参数解析" class="headerlink" title="4. 装饰器的参数解析"></a>4. 装饰器的参数解析</h2><h3 id="4-1-PropertyDescriptor-详解"><a href="#4-1-PropertyDescriptor-详解" class="headerlink" title="4.1 PropertyDescriptor 详解"></a>4.1 <code>PropertyDescriptor</code> 详解</h3><p><code>PropertyDescriptor</code> 是一个描述对象属性的元数据对象。在 JavaScript 中，<code>PropertyDescriptor</code> 被用于定义对象的属性行为，包括属性是否可写、是否可枚举、是否可配置等。</p>
+<p>在 TypeScript 的装饰器中，<code>PropertyDescriptor</code> 被广泛用于描述方法和属性的行为。通过修改 <code>PropertyDescriptor</code>，我们可以对方法或属性的访问行为进行定制，从而增强类的功能。</p>
+<p><code>**PropertyDescriptor**</code> 主要有以下几个字段：</p>
+<ol>
+<li>value<ul>
+<li><strong>类型</strong>：<code>any</code></li>
+<li><strong>说明</strong>：该字段保存了属性或方法的实际值。对于属性，它是该属性的值；对于方法，它是方法本身（即函数）。我们可以通过修改 <code>value</code> 字段来改变方法或属性的行为。</li>
+</ul>
+</li>
+<li>writable<ul>
+<li><strong>类型</strong>：<code>boolean</code></li>
+<li><strong>说明</strong>：该字段表示属性是否是可写的。如果为 <code>false</code>，则该属性不可修改。对于方法装饰器，这个字段表示方法是否可以被替换。</li>
+</ul>
+</li>
+<li>enumerable<ul>
+<li><strong>类型</strong>：<code>boolean</code></li>
+<li><strong>说明</strong>：该字段表示属性或方法是否可枚举。如果为 <code>false</code>，则该属性不会在 <code>for...in</code> 循环中被列举出来。</li>
+</ul>
+</li>
+<li>configurable<ul>
+<li><strong>类型</strong>：<code>boolean</code></li>
+<li><strong>说明</strong>：该字段表示是否可以删除该属性或修改该属性的描述符。如果为 <code>false</code>，则无法删除或修改该属性的描述符。</li>
+</ul>
+</li>
+<li>get<ul>
+<li><strong>类型</strong>：<code>Function | undefined</code></li>
+<li><strong>说明</strong>：该字段仅在属性是访问器属性（getter）时存在。它保存一个函数，用于获取该属性的值。可以通过修改 <code>get</code> 来修改属性的读取行为。</li>
+</ul>
+</li>
+<li>set<ul>
+<li><strong>类型</strong>：<code>Function | undefined</code></li>
+<li><strong>说明</strong>：该字段仅在属性是访问器属性（setter）时存在。它保存一个函数，用于设置该属性的值。可以通过修改 <code>set</code> 来修改属性的写入行为。</li>
+</ul>
+</li>
+</ol>
+<h4 id="4-1-1-修改属性的可写性和可枚举性"><a href="#4-1-1-修改属性的可写性和可枚举性" class="headerlink" title="4.1.1 修改属性的可写性和可枚举性"></a>4.1.1 修改属性的可写性和可枚举性</h4><p>属性装饰器是通过 <code>PropertyDescriptor</code> 来修改属性的行为。例如，假设我们想让某个属性成为只读属性，并且不希望它在 <code>for...in</code> 循环中出现，可以通过 <code>PropertyDescriptor</code> 来实现：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">readonly</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, key: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) &#123;<br>  descriptor.<span class="hljs-property">writable</span> = <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 使属性只读</span><br>  descriptor.<span class="hljs-property">enumerable</span> = <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 使属性不可枚举</span><br>  <span class="hljs-keyword">return</span> descriptor;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-meta">@readonly</span><br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>(<span class="hljs-string">&#x27;John&#x27;</span>);<br>obj.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;Jane&#x27;</span>;  <span class="hljs-comment">// 错误：name 属性是只读的</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(obj));  <span class="hljs-comment">// 输出：[]</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个示例中，<code>readonly</code> 装饰器修改了 <code>name</code> 属性，使它变为只读属性且不可枚举。通过设置 <code>descriptor.writable</code> 和 <code>descriptor.enumerable</code>，我们可以控制属性的行为。</p>
+<h4 id="4-1-2-修改方法的实现"><a href="#4-1-2-修改方法的实现" class="headerlink" title="4.1.2 修改方法的实现"></a>4.1.2 修改方法的实现</h4><p>方法装饰器也可以通过 <code>PropertyDescriptor</code> 来修改方法的实现。例如，我们可以在方法执行前后增加日志记录：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">logMethod</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, key: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) &#123;<br>  <span class="hljs-keyword">const</span> originalMethod = descriptor.<span class="hljs-property">value</span>;  <span class="hljs-comment">// 保存原始方法</span><br><br>  <span class="hljs-comment">// 修改方法实现，增加日志功能</span><br>  descriptor.<span class="hljs-property">value</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">...args: <span class="hljs-built_in">any</span>[]</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Method <span class="hljs-subst">$&#123;key&#125;</span> called with arguments: <span class="hljs-subst">$&#123;<span class="hljs-built_in">JSON</span>.stringify(args)&#125;</span>`</span>);<br>    <span class="hljs-keyword">const</span> result = originalMethod.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args);  <span class="hljs-comment">// 调用原始方法</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Method <span class="hljs-subst">$&#123;key&#125;</span> returned: <span class="hljs-subst">$&#123;result&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> result;<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> descriptor;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-meta">@logMethod</span><br>  <span class="hljs-title function_">add</span>(<span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span> &#123;<br>    <span class="hljs-keyword">return</span> a + b;<br>  &#125;<br><br>  <span class="hljs-meta">@logMethod</span><br>  <span class="hljs-title function_">greet</span>(<span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">string</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">`Hello, <span class="hljs-subst">$&#123;name&#125;</span>!`</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br>obj.<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);  <span class="hljs-comment">// 输出：Method add called with arguments: [1,2] 和 Method add returned: 3</span><br>obj.<span class="hljs-title function_">greet</span>(<span class="hljs-string">&quot;Alice&quot;</span>);  <span class="hljs-comment">// 输出：Method greet called with arguments: [&quot;Alice&quot;] 和 Method greet returned: Hello, Alice!</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>logMethod</code> 装饰器通过修改 <code>descriptor.value</code>，将原始的方法实现替换为带有日志记录功能的新方法。每次调用方法时，都会打印出调用参数和返回值。</p>
+<h4 id="4-1-3-控制属性的访问器行为"><a href="#4-1-3-控制属性的访问器行为" class="headerlink" title="4.1.3 控制属性的访问器行为"></a>4.1.3 控制属性的访问器行为</h4><p>当属性是访问器属性（getter 或 setter）时，<code>PropertyDescriptor</code> 中的 <code>get</code> 和 <code>set</code> 字段将包含访问器的实现。通过修改这些字段，可以定制属性的读取和写入逻辑。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">validate</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, key: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) &#123;<br>  <span class="hljs-keyword">const</span> originalGetter = descriptor.<span class="hljs-property">get</span>;  <span class="hljs-comment">// 保存原始 getter</span><br><br>  descriptor.<span class="hljs-property">get</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Accessing <span class="hljs-subst">$&#123;key&#125;</span>`</span>);<br>    <span class="hljs-keyword">return</span> originalGetter?.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>);<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> descriptor;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-attr">_age</span>: <span class="hljs-built_in">number</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">age: <span class="hljs-built_in">number</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_age</span> = age;<br>  &#125;<br><br>  <span class="hljs-meta">@validate</span><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">age</span>() &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_age</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">set</span> <span class="hljs-title function_">age</span>(<span class="hljs-params">value: <span class="hljs-built_in">number</span></span>) &#123;<br>    <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Age cannot be negative&quot;</span>);<br>    &#125;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_age</span> = value;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>(<span class="hljs-number">25</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj.<span class="hljs-property">age</span>);  <span class="hljs-comment">// 输出：Accessing age 和 25</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>validate</code> 装饰器在 <code>getter</code> 被调用时添加了日志功能。通过修改 <code>descriptor.get</code>，我们可以在读取属性时执行额外的逻辑。</p>
+<p><code>PropertyDescriptor</code> 是 TypeScript 装饰器中非常重要的一个参数，它允许开发者对属性和方法的行为进行细粒度的控制。通过 <code>PropertyDescriptor</code>，我们可以：</p>
+<ul>
+<li>控制属性的可写性（<code>writable</code>）</li>
+<li>控制属性是否可枚举（<code>enumerable</code>）</li>
+<li>控制属性是否可配置（<code>configurable</code>）</li>
+<li>修改方法的实现（<code>value</code>）</li>
+<li>修改属性的访问器（<code>get</code> 和 <code>set</code>）</li>
+</ul>
+<p>通过灵活地使用 <code>PropertyDescriptor</code>，我们可以增强类和对象的功能，实现日志记录、缓存、权限控制等功能。掌握 <code>PropertyDescriptor</code> 的使用，可以让我们更好地在 TypeScript 中实现装饰器模式，提升代码的灵活性和可维护性。</p>
+<h3 id="4-2-装饰器的用处"><a href="#4-2-装饰器的用处" class="headerlink" title="4.2 装饰器的用处"></a>4.2 装饰器的用处</h3><p>装饰器提供了一种灵活的方式来修改类、方法、属性或参数的行为。它在以下场景中非常有用：</p>
+<ol>
+<li><strong>依赖注入</strong>：使用装饰器动态地为类或方法注入依赖对象。</li>
+<li><strong>权限控制</strong>：控制方法的访问权限，比如基于用户角色或权限进行限制。</li>
+<li><strong>日志记录</strong>：自动记录方法的调用，参数和返回值，帮助调试和性能监控。</li>
+<li><strong>性能优化</strong>：通过缓存、延迟加载等技术优化方法的执行效率。</li>
+<li><strong>事件监听</strong>：自动为类或方法注册事件监听器。</li>
+</ol>
+<h3 id="4-3-使用装饰器的场景示例"><a href="#4-3-使用装饰器的场景示例" class="headerlink" title="4.3 使用装饰器的场景示例"></a>4.3 使用装饰器的场景示例</h3><p><strong>示例 1：依赖注入</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">inject</span>(<span class="hljs-params">service: <span class="hljs-built_in">any</span></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, propertyKey: <span class="hljs-built_in">string</span></span>) &#123;<br>    target[propertyKey] = service;<br>  &#125;;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LoggerService</span> &#123;<br>  <span class="hljs-title function_">log</span>(<span class="hljs-params">message: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(message);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-meta">@inject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LoggerService</span>())<br>  <span class="hljs-attr">logger</span>: <span class="hljs-title class_">LoggerService</span>;<br><br>  <span class="hljs-title function_">greet</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">logger</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Hello, world!&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br>obj.<span class="hljs-title function_">greet</span>();  <span class="hljs-comment">// 输出：Hello, world!</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>示例 2：性能监控</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">monitorPerformance</span>(<span class="hljs-params">target: <span class="hljs-built_in">any</span>, propertyKey: <span class="hljs-built_in">string</span>, descriptor: PropertyDescriptor</span>) &#123;<br>  <span class="hljs-keyword">const</span> originalMethod = descriptor.<span class="hljs-property">value</span>;<br><br>  descriptor.<span class="hljs-property">value</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">...args: <span class="hljs-built_in">any</span>[]</span>) &#123;<br>    <span class="hljs-keyword">const</span> start = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>();<br>    <span class="hljs-keyword">const</span> result = originalMethod.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, args);<br>    <span class="hljs-keyword">const</span> end = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Method <span class="hljs-subst">$&#123;propertyKey&#125;</span> took <span class="hljs-subst">$&#123;end - start&#125;</span>ms to execute`</span>);<br>    <span class="hljs-keyword">return</span> result;<br>  &#125;;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span> &#123;<br>  <span class="hljs-meta">@monitorPerformance</span><br>  <span class="hljs-title function_">longRunningTask</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 模拟长时间的任务</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1e8</span>; i++) &#123;&#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>();<br>obj.<span class="hljs-title function_">longRunningTask</span>();  <span class="hljs-comment">// 输出：Method longRunningTask took XXXms to execute</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><p>装饰器是 TypeScript 提供的一个强大特性，通过注解类、方法、属性或参数来改变它们的行为。在这篇文章中，我们详细探讨了装饰器的语法、参数、用途以及一些常见的应用场景。掌握装饰器的使用方法，能够让你在项目中写出更加优雅、简洁和可扩展的代码。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/TypeScript/" class="category-chain-item">TypeScript</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/TypeScript/" class="print-no-link">#TypeScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>深入解析TypeScript装饰器</div>
+      <div>https://yonghengshikong.github.io/posts/52923/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/6873/" title="hexo-fluid免费部署评论功能">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">hexo-fluid免费部署评论功能</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/37339/" title="ECMAScript14新特性详解">
+                        <span class="hidden-mobile">ECMAScript14新特性详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
