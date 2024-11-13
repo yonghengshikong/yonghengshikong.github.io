@@ -24,7 +24,7 @@
 <meta property="og:description" content="ES6（ECMAScript 6，也称为ECMAScript 2015）是JavaScript语言的一个重大更新，引入了许多新特性，旨在使代码更简洁、更易读，同时提供更强大的功能。以下是ES6中引入的主要新特性及其详细解释：  1. let 和 const 关键字let 声明 块级作用域：let 声明的变量具有块级作用域，即变量只在其所在的代码块 &#123;&#125; 内有效。 不允许重复声明">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-09-17T09:14:01.000Z">
-<meta property="article:modified_time" content="2024-10-28T07:55:51.553Z">
+<meta property="article:modified_time" content="2024-11-13T02:04:53.893Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="ECMAScript">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          13k 字
+          14k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          108 分钟
+          118 分钟
         
       </span>
     
@@ -303,14 +303,74 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">PI</span> = <span class="hljs-number">3.14</span>;<br><span class="hljs-variable constant_">PI</span> = <span class="hljs-number">3.1415</span>; <span class="hljs-comment">// 报错，无法重新赋值</span><br></code></pre></td></tr></table></figure>
 
 <hr>
-<h1 id="2-箭头函数（Arrow-Functions）"><a href="#2-箭头函数（Arrow-Functions）" class="headerlink" title="2. 箭头函数（Arrow Functions）"></a>2. <strong>箭头函数（Arrow Functions）</strong></h1><ul>
-<li><strong>简化函数定义</strong>：使用 <code>=&gt;</code> 符号定义函数，语法更简洁。</li>
-<li>**不绑定 <code>this</code>**：箭头函数不创建自己的 <code>this</code>，它会捕获上下文的 <code>this</code> 值。</li>
-<li><strong>不能用作构造函数</strong>：箭头函数不能使用 <code>new</code> 关键字调用。</li>
-</ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 普通函数</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123;<br>  <span class="hljs-keyword">return</span> a + b;<br>&#125;<br><br><span class="hljs-comment">// 箭头函数</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">add</span> = (<span class="hljs-params">a, b</span>) =&gt; a + b;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">add</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)); <span class="hljs-comment">// 输出 5</span><br></code></pre></td></tr></table></figure>
+<h1 id="2-箭头函数（Arrow-Functions）"><a href="#2-箭头函数（Arrow-Functions）" class="headerlink" title="2. 箭头函数（Arrow Functions）"></a>2. <strong>箭头函数（Arrow Functions）</strong></h1><p>箭头函数（Arrow Functions）是 JavaScript 中一种简洁的函数书写方式，它不仅使代码更简洁，而且在一些语法和行为上与普通函数不同。箭头函数自 ES6 引入以来，广泛应用于 JavaScript 开发中。</p>
+<h2 id="2-1-箭头函数的基本语法"><a href="#2-1-箭头函数的基本语法" class="headerlink" title="2.1. 箭头函数的基本语法"></a>2.1. <strong>箭头函数的基本语法</strong></h2><p>箭头函数的基本语法如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">functionName</span> = (<span class="hljs-params">parameter1, parameter2, ...</span>) =&gt; &#123;<br>  <span class="hljs-comment">// 函数体</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
+<ul>
+<li><code>const functionName</code> 是常规的变量声明方式，可以替换为 <code>let</code> 或 <code>var</code>。</li>
+<li><code>(parameter1, parameter2, ...)</code> 是函数的参数，可以是零个或多个。</li>
+<li><code>=&gt;</code> 是箭头函数的关键字，表示函数的开始。</li>
+<li><code>&#123;&#125;</code> 包围着函数体，表示函数执行的操作。如果只有一行语句，可以省略花括号和 <code>return</code>。</li>
+</ul>
+<h2 id="2-2-最简单的箭头函数"><a href="#2-2-最简单的箭头函数" class="headerlink" title="2.2. 最简单的箭头函数"></a>2.2. <strong>最简单的箭头函数</strong></h2><p>一个简单的箭头函数，它没有参数，返回一个固定值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">sayHello</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-string">&#x27;Hello, World!&#x27;</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">sayHello</span>());  <span class="hljs-comment">// 输出: Hello, World!</span><br></code></pre></td></tr></table></figure>
+
+<p>在这里，<code>sayHello</code> 是一个没有参数的箭头函数，直接返回 <code>&#39;Hello, World!&#39;</code> 字符串。</p>
+<h2 id="2-3-有参数的箭头函数"><a href="#2-3-有参数的箭头函数" class="headerlink" title="2.3. 有参数的箭头函数"></a>2.3. 有参数的箭头函数</h2><p>箭头函数可以有一个或多个参数。对于一个参数时，可以省略圆括号；多个参数时，圆括号是必须的。</p>
+<p><strong>单个参数：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">square</span> = x =&gt; x * x;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">square</span>(<span class="hljs-number">5</span>));  <span class="hljs-comment">// 输出: 25</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>多个参数：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">add</span> = (<span class="hljs-params">a, b</span>) =&gt; a + b;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">add</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>));  <span class="hljs-comment">// 输出: 7</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-4-有返回值的箭头函数"><a href="#2-4-有返回值的箭头函数" class="headerlink" title="2.4. 有返回值的箭头函数"></a>2.4. <strong>有返回值的箭头函数</strong></h2><p>当箭头函数的函数体中只有一个表达式时，<code>return</code> 语句可以省略，表达式的结果会自动作为返回值返回。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">multiply</span> = (<span class="hljs-params">x, y</span>) =&gt; x * y;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">multiply</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>));  <span class="hljs-comment">// 输出: 6</span><br></code></pre></td></tr></table></figure>
+
+<p>对于多个表达式的箭头函数，必须使用花括号 <code>&#123;&#125;</code> 包裹函数体，并显式写出 <code>return</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">addAndMultiply</span> = (<span class="hljs-params">a, b</span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> sum = a + b;<br>  <span class="hljs-keyword">return</span> sum * <span class="hljs-number">2</span>;<br>&#125;;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">addAndMultiply</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>));  <span class="hljs-comment">// 输出: 14</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-5-箭头函数与-this"><a href="#2-5-箭头函数与-this" class="headerlink" title="2.5. 箭头函数与 this"></a>2.5. <strong>箭头函数与 <code>this</code></strong></h2><p>箭头函数与普通函数最大的区别之一是它不会创建自己的 <code>this</code> 值，而是继承（”绑定”）外部上下文中的 <code>this</code> 值。这意味着，在箭头函数中，<code>this</code> 的指向由外部作用域决定，通常是它被定义时的 <code>this</code>。</p>
+<p><strong>普通函数中的 <code>this</code>：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params">name</span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span>);  <span class="hljs-comment">// undefined，因为普通函数的 `this` 指向 `setTimeout` 的作用域</span><br>  &#125;, <span class="hljs-number">1000</span>);<br>&#125;<br><br><span class="hljs-keyword">const</span> person = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;John&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>箭头函数中的 <code>this</code>：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params">name</span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span>);  <span class="hljs-comment">// John，因为箭头函数继承了外部作用域的 `this`</span><br>  &#125;, <span class="hljs-number">1000</span>);<br>&#125;<br><br><span class="hljs-keyword">const</span> person = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;John&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>在上面的例子中，普通函数中的 <code>this</code> 指向 <code>setTimeout</code> 的上下文，而箭头函数中的 <code>this</code> 指向外部的 <code>Person</code> 对象，继承了外部的 <code>this</code>。</p>
+<h2 id="2-6-箭头函数与-arguments-对象"><a href="#2-6-箭头函数与-arguments-对象" class="headerlink" title="2.6. 箭头函数与 arguments 对象"></a><strong>2.6. 箭头函数与 <code>arguments</code> 对象</strong></h2><p>箭头函数没有自己的 <code>arguments</code> 对象。它会继承外部函数的 <code>arguments</code> 对象。如果你需要使用 <code>arguments</code>，可以选择使用普通函数。</p>
+<p><strong>普通函数的 <code>arguments</code>：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sum</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">arguments</span>);  <span class="hljs-comment">// &#123; &#x27;0&#x27;: 1, &#x27;1&#x27;: 2, &#x27;2&#x27;: 3 &#125;</span><br>&#125;<br><br><span class="hljs-title function_">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>箭头函数无法使用 <code>arguments</code>：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">sum</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">arguments</span>);  <span class="hljs-comment">// 报错: arguments is not defined</span><br>&#125;<br><br><span class="hljs-title function_">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-7-箭头函数在回调中的应用"><a href="#2-7-箭头函数在回调中的应用" class="headerlink" title="2.7. 箭头函数在回调中的应用"></a>2.7. <strong>箭头函数在回调中的应用</strong></h2><p>箭头函数通常用于回调函数，因为它的简洁性和继承外部 <code>this</code> 的特性，使得它在事件处理、数组方法（如 <code>map</code>、<code>filter</code>）等回调场景中非常有用。</p>
+<p><strong>例子：使用 <code>map</code> 和箭头函数</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> numbers = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>];<br><span class="hljs-keyword">const</span> doubled = numbers.<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> x * <span class="hljs-number">2</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(doubled);  <span class="hljs-comment">// 输出: [2, 4, 6, 8]</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>例子：在事件监听器中使用箭头函数</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> button = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;button&#x27;</span>);<br>button.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Button clicked&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-8-箭头函数的限制"><a href="#2-8-箭头函数的限制" class="headerlink" title="2.8. 箭头函数的限制"></a>2.8. <strong>箭头函数的限制</strong></h2><p>虽然箭头函数有许多优点，但它也有一些限制和特性：</p>
+<ol>
+<li><p><strong>不能用作构造函数</strong>：箭头函数不能作为构造函数使用，因此不能使用 <code>new</code> 来调用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">Foo</span> = (<span class="hljs-params"></span>) =&gt; &#123;&#125;;<br><span class="hljs-keyword">const</span> bar = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Foo</span>();  <span class="hljs-comment">// 报错：Foo is not a constructor</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>**没有 <code>prototype</code>**：箭头函数没有 <code>prototype</code> 属性，因此不能用作类的构造函数。</p>
+</li>
+<li><p>**不能改变 <code>this</code>**：箭头函数的 <code>this</code> 是继承自外部作用域的，而不是动态绑定的。如果你希望在调用时动态绑定 <code>this</code>，需要使用普通函数。</p>
+</li>
+</ol>
+<h2 id="2-9-箭头函数与函数表达式"><a href="#2-9-箭头函数与函数表达式" class="headerlink" title="2.9. 箭头函数与函数表达式"></a>2.9. <strong>箭头函数与函数表达式</strong></h2><p>箭头函数通常与函数表达式一起使用，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">greet</span> = (<span class="hljs-params">name</span>) =&gt; &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, <span class="hljs-subst">$&#123;name&#125;</span>`</span>);<br>&#125;;<br><br><span class="hljs-title function_">greet</span>(<span class="hljs-string">&#x27;Alice&#x27;</span>);  <span class="hljs-comment">// 输出: Hello, Alice</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-10-箭头函数的书写规范"><a href="#2-10-箭头函数的书写规范" class="headerlink" title="2.10. 箭头函数的书写规范"></a>2.10. <strong>箭头函数的书写规范</strong></h2><ul>
+<li>如果箭头函数有多个参数，必须使用圆括号。</li>
+<li>如果箭头函数只有一个参数且没有类型约束，可以省略圆括号。</li>
+<li>如果箭头函数的主体只有一个表达式，可以省略花括号和 <code>return</code> 关键字。</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>箭头函数是 JavaScript 中非常强大和简洁的特性，它在简化代码的同时，也带来了新的行为特性，特别是在 <code>this</code> 和 <code>arguments</code> 的处理上。箭头函数适用于需要短小、简洁的回调函数，尤其在处理数组、事件监听等场景时非常常见。尽管如此，在某些需要动态 <code>this</code> 或构造函数的场景中，普通函数依然是更合适的选择。</p>
 <hr>
 <h1 id="3-模板字符串（Template-Literals）"><a href="#3-模板字符串（Template-Literals）" class="headerlink" title="3. 模板字符串（Template Literals）"></a>3. <strong>模板字符串（Template Literals）</strong></h1><ul>
 <li><strong>多行字符串</strong>：使用反引号 &#96;&#96;&#96; 包裹，可以直接编写多行字符串。</li>
