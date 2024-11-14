@@ -1,0 +1,755 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="TypeScript 中的 接口 (Interface) 详解接口 (Interface) 是 TypeScript 中用于定义对象形状的一种方式。它能够定义对象的结构、类的行为以及函数的签名等，是 TypeScript 类型系统的一个重要组成部分。接口提供了一种契约或规范，来描述对象和类必须遵守的结构或行为。 在 TypeScript 中，接口的主要作用是声明对象和类的结构，使得代码更具可读性和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript接口详解">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/47720/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="TypeScript 中的 接口 (Interface) 详解接口 (Interface) 是 TypeScript 中用于定义对象形状的一种方式。它能够定义对象的结构、类的行为以及函数的签名等，是 TypeScript 类型系统的一个重要组成部分。接口提供了一种契约或规范，来描述对象和类必须遵守的结构或行为。 在 TypeScript 中，接口的主要作用是声明对象和类的结构，使得代码更具可读性和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-13T03:43:42.000Z">
+<meta property="article:modified_time" content="2024-11-13T03:45:50.187Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>TypeScript接口详解 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="TypeScript接口详解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-13 11:43" pubdate>
+          2024年11月13日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">TypeScript接口详解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="TypeScript-中的-接口-Interface-详解"><a href="#TypeScript-中的-接口-Interface-详解" class="headerlink" title="TypeScript 中的 接口 (Interface) 详解"></a>TypeScript 中的 <strong>接口 (Interface)</strong> 详解</h1><p><strong>接口 (Interface)</strong> 是 TypeScript 中用于定义对象形状的一种方式。它能够定义对象的结构、类的行为以及函数的签名等，是 TypeScript 类型系统的一个重要组成部分。接口提供了一种契约或规范，来描述对象和类必须遵守的结构或行为。</p>
+<p>在 TypeScript 中，接口的主要作用是声明对象和类的结构，使得代码更具可读性和可维护性。</p>
+<h2 id="1-基本的接口定义"><a href="#1-基本的接口定义" class="headerlink" title="1. 基本的接口定义"></a>1. <strong>基本的接口定义</strong></h2><p>接口的最基本的形式就是通过 <code>interface</code> 关键字定义一个对象的类型。你可以指定对象的属性和它们的类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Person</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">person</span>: <span class="hljs-title class_">Person</span> = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;John&quot;</span>,<br>  <span class="hljs-attr">age</span>: <span class="hljs-number">30</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在上面的代码中，<code>Person</code> 接口定义了一个对象必须有 <code>name</code> 和 <code>age</code> 两个属性，并且分别是 <code>string</code> 和 <code>number</code> 类型。通过 <code>const person: Person</code>，我们强制要求 <code>person</code> 必须符合 <code>Person</code> 接口的结构。</p>
+<h2 id="2-可选属性"><a href="#2-可选属性" class="headerlink" title="2. 可选属性"></a>2. <strong>可选属性</strong></h2><p>在接口中，我们可以使用 <code>?</code> 来标记某个属性为可选的。这意味着这个属性可以在对象中不存在。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Person</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;<br>  address?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// 可选属性</span><br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">person1</span>: <span class="hljs-title class_">Person</span> = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">25</span> &#125;;<br><span class="hljs-keyword">const</span> <span class="hljs-attr">person2</span>: <span class="hljs-title class_">Person</span> = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">address</span>: <span class="hljs-string">&quot;123 Street&quot;</span> &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>address</code> 是一个可选属性，所以可以选择提供，也可以不提供。</p>
+<h2 id="3-只读属性"><a href="#3-只读属性" class="headerlink" title="3. 只读属性"></a>3. <strong>只读属性</strong></h2><p>可以使用 <code>readonly</code> 修饰符来指定对象的属性是只读的，即初始化后不能被修改。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Point</span> &#123;<br>  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">point</span>: <span class="hljs-title class_">Point</span> = &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">20</span> &#125;;<br>point.<span class="hljs-property">x</span> = <span class="hljs-number">30</span>;  <span class="hljs-comment">// 错误：不能修改只读属性 &#x27;x&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>x</code> 和 <code>y</code> 是只读属性，不能再修改它们的值。</p>
+<h2 id="4-函数类型"><a href="#4-函数类型" class="headerlink" title="4. 函数类型"></a>4. <strong>函数类型</strong></h2><p>接口不仅可以描述对象的结构，也可以用于定义函数的类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">AddFunction</span> &#123;<br>  (<span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">add</span>: <span class="hljs-title class_">AddFunction</span> = <span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a + b;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>AddFunction</code> 接口规定了一个函数类型，该函数接收两个 <code>number</code> 类型的参数并返回一个 <code>number</code> 类型的值。</p>
+<h2 id="5-索引签名"><a href="#5-索引签名" class="headerlink" title="5. 索引签名"></a>5. <strong>索引签名</strong></h2><p>当你不知道对象的确切属性名时，可以使用索引签名来描述对象的结构。索引签名允许你指定对象的属性类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Dictionary</span> &#123;<br>  [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">dict</span>: <span class="hljs-title class_">Dictionary</span> = &#123;<br>  <span class="hljs-string">&quot;apple&quot;</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-string">&quot;banana&quot;</span>: <span class="hljs-number">2</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在上面的代码中，<code>Dictionary</code> 接口定义了一个具有字符串键（<code>key: string</code>）和数字值（<code>number</code>）的对象。</p>
+<h2 id="6-类实现接口"><a href="#6-类实现接口" class="headerlink" title="6. 类实现接口"></a>6. <strong>类实现接口</strong></h2><p>接口不仅可以描述对象的结构，还可以作为类的类型约束。在 TypeScript 中，类可以通过 <code>implements</code> 关键字来实现接口，从而强制类符合接口的结构。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-title function_">sound</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  &#125;<br><br>  <span class="hljs-title function_">sound</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Woof!&quot;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> dog = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Dog</span>(<span class="hljs-string">&quot;Buddy&quot;</span>);<br>dog.<span class="hljs-title function_">sound</span>();  <span class="hljs-comment">// 输出 &quot;Woof!&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>Dog</code> 类实现了 <code>Animal</code> 接口，确保类中有 <code>name</code> 属性和 <code>sound</code> 方法。使用 <code>implements</code> 关键字，我们强制类遵循接口的约定。</p>
+<h2 id="7-继承接口"><a href="#7-继承接口" class="headerlink" title="7. 继承接口"></a>7. <strong>继承接口</strong></h2><p>接口可以继承其他接口。这是通过 <code>extends</code> 关键字来实现的，允许一个接口继承多个其他接口的属性和方法。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Person</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Worker</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Person</span> &#123;<br>  <span class="hljs-attr">job</span>: <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">worker</span>: <span class="hljs-title class_">Worker</span> = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Alice&quot;</span>,<br>  <span class="hljs-attr">age</span>: <span class="hljs-number">30</span>,<br>  <span class="hljs-attr">job</span>: <span class="hljs-string">&quot;Engineer&quot;</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>Worker</code> 接口继承了 <code>Person</code> 接口，因此它包含了 <code>name</code> 和 <code>age</code> 属性，并且增加了 <code>job</code> 属性。</p>
+<h2 id="8-接口与联合类型"><a href="#8-接口与联合类型" class="headerlink" title="8. 接口与联合类型"></a>8. <strong>接口与联合类型</strong></h2><p>接口还可以与联合类型结合使用，以便定义多种不同类型的组合。你可以使用接口来描述联合类型中的某个部分。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Dog</span> &#123;<br>  <span class="hljs-title function_">bark</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Cat</span> &#123;<br>  <span class="hljs-title function_">meow</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">Pet</span> = <span class="hljs-title class_">Dog</span> | <span class="hljs-title class_">Cat</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">makeSound</span>(<span class="hljs-params">pet: Pet</span>) &#123;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;bark&quot;</span> <span class="hljs-keyword">in</span> pet) &#123;<br>    pet.<span class="hljs-title function_">bark</span>();<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    pet.<span class="hljs-title function_">meow</span>();<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">dog</span>: <span class="hljs-title class_">Dog</span> = &#123; <span class="hljs-attr">bark</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Woof!&quot;</span>) &#125;;<br><span class="hljs-keyword">const</span> <span class="hljs-attr">cat</span>: <span class="hljs-title class_">Cat</span> = &#123; <span class="hljs-attr">meow</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Meow!&quot;</span>) &#125;;<br><br><span class="hljs-title function_">makeSound</span>(dog); <span class="hljs-comment">// 输出 &quot;Woof!&quot;</span><br><span class="hljs-title function_">makeSound</span>(cat); <span class="hljs-comment">// 输出 &quot;Meow!&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>Pet</code> 是一个联合类型，它可以是 <code>Dog</code> 或 <code>Cat</code>。通过检查 <code>pet</code> 是否有 <code>bark</code> 方法来区分不同的类型。</p>
+<h2 id="9-接口的扩展与多重继承"><a href="#9-接口的扩展与多重继承" class="headerlink" title="9. 接口的扩展与多重继承"></a>9. <strong>接口的扩展与多重继承</strong></h2><p>接口不仅可以继承一个接口，也可以继承多个接口，支持多重继承，允许你将多个接口的功能组合到一个接口中。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> A &#123;<br>  <span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> B &#123;<br>  <span class="hljs-attr">b</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> C <span class="hljs-keyword">extends</span> A, B &#123;<br>  <span class="hljs-attr">c</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">obj</span>: C = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">c</span>: <span class="hljs-number">3</span> &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>C</code> 接口继承了 <code>A</code> 和 <code>B</code>，因此它需要包含 <code>a</code>、<code>b</code> 和 <code>c</code> 这三个属性。</p>
+<h2 id="10-接口与类型别名的区别"><a href="#10-接口与类型别名的区别" class="headerlink" title="10. 接口与类型别名的区别"></a>10. <strong>接口与类型别名的区别</strong></h2><p>接口与类型别名在 TypeScript 中有许多相似之处，但它们也有一些区别：</p>
+<ul>
+<li><strong>扩展性</strong>：接口是可以被继承的，并且可以通过声明合并扩展接口。类型别名则不能被直接继承。</li>
+<li><strong>功能限制</strong>：类型别名不仅可以定义对象的结构，也可以定义其他类型（如联合类型、交叉类型、元组等），而接口主要用于描述对象和类的形状。</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Shape</span> &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">ShapeType</span> = &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>这两者看起来相似，但接口通常用于类和对象的定义，而类型别名则更灵活，能支持更复杂的类型结构。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><strong>接口 (Interface)</strong> 是 TypeScript 中的强大功能，用于定义对象、类、函数等的结构。</li>
+<li>接口可以包含<strong>属性</strong>、<strong>方法</strong>、<strong>可选属性</strong>、<strong>只读属性</strong>等。</li>
+<li><strong>类实现接口</strong>，可以确保类的结构符合接口的要求。</li>
+<li><strong>接口继承</strong>可以将多个接口的功能合并。</li>
+<li>TypeScript 中还有 **类型别名 (type alias)**，它与接口有许多相似之处，但类型别名可以定义更多复杂的类型结构。</li>
+</ol>
+<p>通过合理使用接口，可以增强 TypeScript 代码的可读性、可维护性和类型安全性，从而提升开发效率和代码质量。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/TypeScript/" class="category-chain-item">TypeScript</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/TypeScript/" class="print-no-link">#TypeScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TypeScript接口详解</div>
+      <div>https://yonghengshikong.github.io/posts/47720/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/57764/" title="TypeScript联合类型详解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TypeScript联合类型详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/11376/" title="JavaScript模块化详解">
+                        <span class="hidden-mobile">JavaScript模块化详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

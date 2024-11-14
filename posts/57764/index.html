@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="联合类型（Union Types）详解在 TypeScript 中，联合类型（Union Types）允许你将多种类型组合在一起，表示一个值可以是多种类型之一。这种灵活的类型定义可以帮助你在开发过程中处理更多元的数据结构，同时保证类型安全。 1. 基本语法联合类型的语法是通过 |（竖线）符号将多个类型连接起来。你可以定义一个变量、参数或者返回值，它可以是多个类型中的任何一种。例如： 12345le">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript联合类型详解">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/57764/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="联合类型（Union Types）详解在 TypeScript 中，联合类型（Union Types）允许你将多种类型组合在一起，表示一个值可以是多种类型之一。这种灵活的类型定义可以帮助你在开发过程中处理更多元的数据结构，同时保证类型安全。 1. 基本语法联合类型的语法是通过 |（竖线）符号将多个类型连接起来。你可以定义一个变量、参数或者返回值，它可以是多个类型中的任何一种。例如： 12345le">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-13T04:02:31.000Z">
+<meta property="article:modified_time" content="2024-11-13T04:05:18.635Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>TypeScript联合类型详解 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="TypeScript联合类型详解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-13 12:02" pubdate>
+          2024年11月13日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">TypeScript联合类型详解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="联合类型（Union-Types）详解"><a href="#联合类型（Union-Types）详解" class="headerlink" title="联合类型（Union Types）详解"></a>联合类型（Union Types）详解</h1><p>在 TypeScript 中，<strong>联合类型</strong>（Union Types）允许你将多种类型组合在一起，表示一个值可以是多种类型之一。这种灵活的类型定义可以帮助你在开发过程中处理更多元的数据结构，同时保证类型安全。</p>
+<h2 id="1-基本语法"><a href="#1-基本语法" class="headerlink" title="1. 基本语法"></a>1. 基本语法</h2><p>联合类型的语法是通过 <code>|</code>（竖线）符号将多个类型连接起来。你可以定义一个变量、参数或者返回值，它可以是多个类型中的任何一种。例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">let</span> <span class="hljs-attr">value</span>: <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span>;<br><br>value = <span class="hljs-string">&quot;Hello&quot;</span>;  <span class="hljs-comment">// 合法</span><br>value = <span class="hljs-number">42</span>;       <span class="hljs-comment">// 合法</span><br>value = <span class="hljs-literal">true</span>;     <span class="hljs-comment">// 错误，布尔类型不在联合类型范围内</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>value</code> 可以是 <code>string</code> 或 <code>number</code> 类型。当你使用联合类型时，TypeScript 会根据上下文来推断当前值的类型，但你必须小心处理不同类型的值之间的差异。</p>
+<h2 id="2-联合类型的使用场景"><a href="#2-联合类型的使用场景" class="headerlink" title="2. 联合类型的使用场景"></a>2. 联合类型的使用场景</h2><ul>
+<li><strong>多个可能的类型</strong>：当你不确定一个值的具体类型，或者这个值可能是多种类型中的任何一种时，联合类型非常有用。</li>
+<li><strong>函数参数或返回值</strong>：如果函数参数或者返回值可能是不同的类型，使用联合类型可以确保类型安全。</li>
+</ul>
+<p><strong>例子：联合类型应用于函数参数</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">printId</span>(<span class="hljs-params">id: <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;ID is:&quot;</span>, id);<br>&#125;<br><br><span class="hljs-title function_">printId</span>(<span class="hljs-number">101</span>);       <span class="hljs-comment">// 合法，传入一个数字</span><br><span class="hljs-title function_">printId</span>(<span class="hljs-string">&quot;ABC123&quot;</span>);  <span class="hljs-comment">// 合法，传入一个字符串</span><br><span class="hljs-title function_">printId</span>(<span class="hljs-literal">true</span>);      <span class="hljs-comment">// 错误，布尔类型不符合联合类型</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>id</code> 可以是 <code>string</code> 或 <code>number</code> 类型，函数会根据传入的参数类型进行处理。</p>
+<h2 id="3-联合类型的细节"><a href="#3-联合类型的细节" class="headerlink" title="3. 联合类型的细节"></a>3. 联合类型的细节</h2><h3 id="3-1-使用联合类型时的类型保护"><a href="#3-1-使用联合类型时的类型保护" class="headerlink" title="3.1. 使用联合类型时的类型保护"></a>3.1. 使用联合类型时的类型保护</h3><p>当你使用联合类型时，TypeScript 会将你处理的值看作是<strong>多个类型的交集</strong>。为了能够安全地对值进行操作，你通常需要在处理该值之前进行 <strong>类型保护</strong>。</p>
+<p>一种常见的类型保护方式是使用 <code>typeof</code> 来检查类型：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">printLength</span>(<span class="hljs-params">value: <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span></span>) &#123;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&quot;string&quot;</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value.<span class="hljs-property">length</span>);  <span class="hljs-comment">// 只有字符串才有 .length 属性</span><br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(value.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">2</span>));  <span class="hljs-comment">// 只有数字才有 .toFixed() 方法</span><br>  &#125;<br>&#125;<br><br><span class="hljs-title function_">printLength</span>(<span class="hljs-string">&quot;Hello&quot;</span>);  <span class="hljs-comment">// 输出: 5</span><br><span class="hljs-title function_">printLength</span>(<span class="hljs-number">123.456</span>);   <span class="hljs-comment">// 输出: 123.46</span><br></code></pre></td></tr></table></figure>
+
+<p>通过使用 <code>typeof</code> 操作符，TypeScript 可以知道在不同的分支中，<code>value</code> 的确切类型是什么，从而允许你安全地调用相应的方法或属性。</p>
+<h3 id="3-2-使用-in-进行类型保护"><a href="#3-2-使用-in-进行类型保护" class="headerlink" title="3.2. 使用 in 进行类型保护"></a>3.2. 使用 <code>in</code> 进行类型保护</h3><p>你还可以通过 <code>in</code> 操作符来检查对象中是否存在某个属性，从而推断类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Dog</span> &#123;<br>  <span class="hljs-title function_">bark</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Cat</span> &#123;<br>  <span class="hljs-title function_">meow</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">makeSound</span>(<span class="hljs-params">animal: Dog | Cat</span>) &#123;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;bark&quot;</span> <span class="hljs-keyword">in</span> animal) &#123;<br>    animal.<span class="hljs-title function_">bark</span>();  <span class="hljs-comment">// animal 被推断为 Dog 类型</span><br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    animal.<span class="hljs-title function_">meow</span>();  <span class="hljs-comment">// animal 被推断为 Cat 类型</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在上面的例子中，<code>in</code> 操作符帮助我们根据 <code>animal</code> 对象的不同属性，来判断它是 <code>Dog</code> 类型还是 <code>Cat</code> 类型。</p>
+<h2 id="4-联合类型与数组"><a href="#4-联合类型与数组" class="headerlink" title="4. 联合类型与数组"></a>4. 联合类型与数组</h2><p>联合类型也可以用于数组元素的类型，意味着数组中的元素可以是不同类型的。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">let</span> <span class="hljs-attr">mixedArray</span>: (<span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span>)[] = [<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-number">42</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-number">100</span>];<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(mixedArray);<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>mixedArray</code> 是一个可以包含 <code>string</code> 或 <code>number</code> 类型的数组。你可以访问数组中的任何元素，但在操作时要小心类型的不一致性。</p>
+<h2 id="5-联合类型与对象"><a href="#5-联合类型与对象" class="headerlink" title="5. 联合类型与对象"></a>5. 联合类型与对象</h2><p>你可以将联合类型应用于对象的属性，表示该属性可以有多种类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Person</span> = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span> | <span class="hljs-built_in">string</span>;  <span class="hljs-comment">// age 可以是数字或字符串</span><br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-attr">person1</span>: <span class="hljs-title class_">Person</span> = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;;<br><span class="hljs-keyword">const</span> <span class="hljs-attr">person2</span>: <span class="hljs-title class_">Person</span> = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-attr">age</span>: <span class="hljs-string">&quot;unknown&quot;</span> &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>age</code> 可以是数字类型或字符串类型。</p>
+<h2 id="6-结合字面量类型和联合类型"><a href="#6-结合字面量类型和联合类型" class="headerlink" title="6. 结合字面量类型和联合类型"></a>6. 结合字面量类型和联合类型</h2><p>你还可以将字面量类型与联合类型结合起来，进一步细化变量或函数的可能值。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Direction</span> = <span class="hljs-string">&quot;left&quot;</span> | <span class="hljs-string">&quot;right&quot;</span> | <span class="hljs-string">&quot;up&quot;</span> | <span class="hljs-string">&quot;down&quot;</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">move</span>(<span class="hljs-params">direction: Direction</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Moving&quot;</span>, direction);<br>&#125;<br><br><span class="hljs-title function_">move</span>(<span class="hljs-string">&quot;left&quot;</span>);  <span class="hljs-comment">// 合法</span><br><span class="hljs-title function_">move</span>(<span class="hljs-string">&quot;right&quot;</span>); <span class="hljs-comment">// 合法</span><br><span class="hljs-title function_">move</span>(<span class="hljs-string">&quot;forward&quot;</span>); <span class="hljs-comment">// 错误，&quot;forward&quot; 不在字面量联合类型中</span><br></code></pre></td></tr></table></figure>
+
+<p>通过将字面量类型与联合类型结合，你可以强制变量只能是有限的特定值。</p>
+<h2 id="7-联合类型的局限性"><a href="#7-联合类型的局限性" class="headerlink" title="7. 联合类型的局限性"></a>7. 联合类型的局限性</h2><p>虽然联合类型提供了极大的灵活性，但它也有一些局限性。由于联合类型是多个类型的集合，因此当你访问该值时，TypeScript 无法知道你究竟想对该值进行何种操作。这是因为不同的类型有不同的属性和方法，因此你必须进行类型检查，以避免在不合适的类型上调用不支持的方法。</p>
+<p>例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getLength</span>(<span class="hljs-params">value: <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span></span>) &#123;<br>  <span class="hljs-keyword">return</span> value.<span class="hljs-property">length</span>;  <span class="hljs-comment">// 错误，number 类型没有 .length 属性</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在上述代码中，<code>number</code> 类型没有 <code>.length</code> 属性，所以直接访问会导致错误。</p>
+<h2 id="8-联合类型与类型推导"><a href="#8-联合类型与类型推导" class="headerlink" title="8. 联合类型与类型推导"></a>8. 联合类型与类型推导</h2><p>TypeScript 的类型推导机制可以在大多数情况下推导出联合类型。在定义变量时，如果没有明确指定类型，TypeScript 会根据赋给变量的值来推导其类型。例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">let</span> value = <span class="hljs-string">&quot;hello&quot;</span>;  <span class="hljs-comment">// 推导为 string 类型</span><br>value = <span class="hljs-number">42</span>;           <span class="hljs-comment">// 合法，value 推导为 string | number 类型</span><br></code></pre></td></tr></table></figure>
+
+<p>如果你将一个变量初始化为某个值，TypeScript 会自动推导出该变量的联合类型，而不需要显式地指定。</p>
+<h2 id="9-小结"><a href="#9-小结" class="headerlink" title="9. 小结"></a>9. 小结</h2><ul>
+<li><strong>定义和使用联合类型</strong>：使用 <code>|</code> 来组合多个类型，表示一个值可以是多种类型中的任何一种。</li>
+<li><strong>类型保护</strong>：为了安全地操作联合类型的值，常用的类型保护方法包括 <code>typeof</code>、<code>instanceof</code> 和 <code>in</code> 操作符。</li>
+<li><strong>联合类型与数组、对象</strong>：联合类型可以应用于数组元素和对象属性，使其可以接受不同类型的值。</li>
+<li><strong>字面量类型和联合类型结合</strong>：字面量类型和联合类型结合，可以进一步限定值的范围。</li>
+<li><strong>类型推导</strong>：TypeScript 会根据赋给变量的值推导出联合类型。</li>
+</ul>
+<p>通过这些特点，联合类型在 TypeScript 中提供了强大的灵活性，使得你可以处理更加复杂和多样化的类型，同时保持类型安全。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/TypeScript/" class="category-chain-item">TypeScript</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/TypeScript/" class="print-no-link">#TypeScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TypeScript联合类型详解</div>
+      <div>https://yonghengshikong.github.io/posts/57764/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/7201/" title="TypeScript中的类详细解析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TypeScript中的类详细解析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/47720/" title="TypeScript接口详解">
+                        <span class="hidden-mobile">TypeScript接口详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

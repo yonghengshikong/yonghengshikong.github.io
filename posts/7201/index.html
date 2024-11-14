@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="TypeScript 中的类、约束、继承、抽象类和接口：详细解析在 TypeScript 中，类、继承、约束、抽象类 和 接口 是构建面向对象程序的重要概念。这些概念提供了更强的类型安全性、更灵活的结构，并能够帮助开发者在编写代码时避免很多常见的错误。本篇博客将详细介绍这些概念，并解答一些常见的疑问，帮助你理解它们如何共同工作。  1. 类（Class）类是面向对象编程的核心，它定义了对象的结构和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript中的类详细解析">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/7201/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="TypeScript 中的类、约束、继承、抽象类和接口：详细解析在 TypeScript 中，类、继承、约束、抽象类 和 接口 是构建面向对象程序的重要概念。这些概念提供了更强的类型安全性、更灵活的结构，并能够帮助开发者在编写代码时避免很多常见的错误。本篇博客将详细介绍这些概念，并解答一些常见的疑问，帮助你理解它们如何共同工作。  1. 类（Class）类是面向对象编程的核心，它定义了对象的结构和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-13T07:55:27.000Z">
+<meta property="article:modified_time" content="2024-11-14T03:05:38.750Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>TypeScript中的类详细解析 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="TypeScript中的类详细解析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-13 15:55" pubdate>
+          2024年11月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">TypeScript中的类详细解析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="TypeScript-中的类、约束、继承、抽象类和接口：详细解析"><a href="#TypeScript-中的类、约束、继承、抽象类和接口：详细解析" class="headerlink" title="TypeScript 中的类、约束、继承、抽象类和接口：详细解析"></a>TypeScript 中的类、约束、继承、抽象类和接口：详细解析</h1><p>在 TypeScript 中，<strong>类</strong>、<strong>继承</strong>、<strong>约束</strong>、<strong>抽象类</strong> 和 <strong>接口</strong> 是构建面向对象程序的重要概念。这些概念提供了更强的类型安全性、更灵活的结构，并能够帮助开发者在编写代码时避免很多常见的错误。本篇博客将详细介绍这些概念，并解答一些常见的疑问，帮助你理解它们如何共同工作。</p>
+<hr>
+<h2 id="1-类（Class）"><a href="#1-类（Class）" class="headerlink" title="1. 类（Class）"></a>1. <strong>类（Class）</strong></h2><p><strong>类</strong>是面向对象编程的核心，它定义了对象的结构和行为。TypeScript 中的类在 ES6 类的基础上进行了增强，支持静态成员、访问修饰符（如 <code>public</code>, <code>private</code> 和 <code>protected</code>）以及构造函数等。</p>
+<h3 id="类的基本语法"><a href="#类的基本语法" class="headerlink" title="类的基本语法"></a>类的基本语法</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>  <span class="hljs-comment">// 成员变量</span><br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;<br><br>  <span class="hljs-comment">// 构造函数</span><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span>, age: <span class="hljs-built_in">number</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">age</span> = age;<br>  &#125;<br><br>  <span class="hljs-comment">// 方法</span><br>  <span class="hljs-title function_">sayHello</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, my name is <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>, and I am <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.age&#125;</span> years old.`</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> person = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;Alice&#x27;</span>, <span class="hljs-number">30</span>);<br>person.<span class="hljs-title function_">sayHello</span>(); <span class="hljs-comment">// Output: Hello, my name is Alice, and I am 30 years old.</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>构造函数</strong>：用于初始化对象实例。</li>
+<li><strong>成员变量</strong>：类中定义的属性。</li>
+<li><strong>方法</strong>：定义类的行为。</li>
+</ul>
+<hr>
+<h2 id="2-继承（Inheritance）"><a href="#2-继承（Inheritance）" class="headerlink" title="2. 继承（Inheritance）"></a>2. <strong>继承（Inheritance）</strong></h2><p>继承是面向对象编程的核心特性之一，它允许我们从一个已有的类创建一个新类，并继承父类的属性和方法。通过继承，可以重用代码并且增强其功能。</p>
+<p><strong>继承的基本语法</strong></p>
+<ul>
+<li>**super()**：子类必须调用 <code>super()</code> 来调用父类的构造函数。</li>
+<li><strong>方法重写</strong>：子类可以重写父类的方法。</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent</span> &#123;<br>  <span class="hljs-comment">// 父类成员对象</span><br>  <span class="hljs-attr">obj</span>: &#123; <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> &#125;;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;constructor-Parent&quot;</span>)<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">obj</span> = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Parent&#x27;</span> &#125;;<br>  &#125;<br><br>  <span class="hljs-comment">// 父类方法，修改 obj 对象</span><br>  <span class="hljs-title function_">updateObj</span>(<span class="hljs-params">newName: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">obj</span>.<span class="hljs-property">name</span> = newName;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent</span> &#123;<br>  <span class="hljs-comment">// 子类覆盖父类 obj 成员对象</span><br>  <span class="hljs-attr">obj</span>: &#123; <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> &#125; = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Child&#x27;</span> &#125;;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;constructor-Child&quot;</span>)<br>    <span class="hljs-variable language_">super</span>();<br>  &#125;<br> <br>&#125;<br><br><span class="hljs-keyword">const</span> childInstance = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(childInstance.<span class="hljs-property">obj</span>.<span class="hljs-property">name</span>);  <span class="hljs-comment">// 输出: &quot;Child&quot;</span><br><br><span class="hljs-comment">// 通过子类实例调用父类方法</span><br>childInstance.<span class="hljs-title function_">updateObj</span>(<span class="hljs-string">&quot;Updated by Parent&quot;</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(childInstance.<span class="hljs-property">obj</span>.<span class="hljs-property">name</span>);  <span class="hljs-comment">// 输出: &quot;Updated by Parent&quot;</span><br><br></code></pre></td></tr></table></figure>
+
+<p><strong>输出</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">[<span class="hljs-variable constant_">LOG</span>]: <span class="hljs-string">&quot;constructor-Child&quot;</span> <br>[<span class="hljs-variable constant_">LOG</span>]: <span class="hljs-string">&quot;constructor-Parent&quot;</span> <br>[<span class="hljs-variable constant_">LOG</span>]: <span class="hljs-string">&quot;Child&quot;</span> <br>[<span class="hljs-variable constant_">LOG</span>]: <span class="hljs-string">&quot;Updated by Parent&quot;</span> <br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    std::string name;<br>    <span class="hljs-built_in">Parent</span>() &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;constructor-Parent&quot;</span> &lt;&lt; std::endl;<br>        name = <span class="hljs-string">&quot;Parent&quot;</span>;  <span class="hljs-comment">// 修改成员变量 name</span><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">updateName</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; newName)</span> </span>&#123;<br>        name = newName;<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> : <span class="hljs-keyword">public</span> Parent &#123;<br><span class="hljs-keyword">public</span>:<br>    std::string name = <span class="hljs-string">&quot;child&quot;</span>;  <span class="hljs-comment">// 子类覆盖父类的成员变量</span><br><br>    <span class="hljs-built_in">Child</span>() &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;constructor-Child&quot;</span> &lt;&lt; std::endl;<br>        <span class="hljs-comment">// 父类构造函数会先执行，这时候父类的 name 会被修改</span><br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    Child childInstance;<br>    std::cout &lt;&lt; childInstance.name &lt;&lt; std::endl;  <span class="hljs-comment">// 输出: &quot;Parent1&quot;</span><br>    childInstance.<span class="hljs-built_in">updateName</span>(<span class="hljs-string">&quot;Updated by Parent&quot;</span>);<br>	<span class="hljs-comment">//Parent parentInstance = childInstance;</span><br>	<span class="hljs-comment">//std::cout &lt;&lt; &amp;childInstance &lt;&lt; std::endl;</span><br>	<span class="hljs-comment">//std::cout &lt;&lt; &amp;parentInstance &lt;&lt; std::endl;</span><br>	std::cout &lt;&lt; childInstance.name &lt;&lt; std::endl;<br>    <span class="hljs-comment">//std::cout &lt;&lt; parentInstance.name &lt;&lt; std::endl;  // 输出: &quot;Updated by Parent&quot;</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p><strong>输出</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">constructor-<span class="hljs-title class_">Parent</span><br>constructor-<span class="hljs-title class_">Child</span><br>child<br>child<br></code></pre></td></tr></table></figure>
+
+<p><strong>思考</strong><br>    为什么c++继承的实现，当子类调用父类的成员函数时，对成员变量进行修改，但是子类的实例化对象获取的成员变量却没有改变，<br>但是在javascript中却恰恰相反，输出的是修改之后的值，为什么类似的代码，得到的结果却不一样！</p>
+<p><strong>分析</strong></p>
+<h4 id="1-C-中的行为分析"><a href="#1-C-中的行为分析" class="headerlink" title="1.C++ 中的行为分析"></a>1.<strong>C++ 中的行为分析</strong></h4><p><strong>C++ 的继承机制和成员变量覆盖</strong></p>
+<p>在 C++ 中，继承关系是静态的。子类会覆盖父类的成员变量，如果子类定义了一个与父类同名的成员变量，那么子类的成员变量会遮蔽（隐藏）父类的成员变量。换句话说，父类和子类各自有独立的成员变量，即使它们同名。</p>
+<p><strong>C++ 中的成员函数调用与对象绑定</strong></p>
+<p>在 C++ 中，当你调用一个父类的成员函数时，实际的行为依赖于 <strong>静态绑定</strong> 和 <strong>动态绑定</strong> 的机制。</p>
+<ol>
+<li><strong>静态绑定</strong>：如果你调用的是父类的成员函数，而该函数没有使用 <code>virtual</code> 关键字（非虚函数），那么函数调用就是静态绑定。函数调用是在编译时就确定下来的，不能通过子类覆盖。</li>
+<li><strong>动态绑定</strong>：如果父类的成员函数是 <code>virtual</code>（虚函数），那么调用的成员函数是动态绑定的，具体调用哪个版本的函数是通过 <strong>虚函数表（VTable）</strong> 实现的，在运行时通过对象的实际类型来确定。</li>
+</ol>
+<ul>
+<li><h4 id="分析："><a href="#分析：" class="headerlink" title="分析："></a><strong>分析：</strong></h4><ol>
+<li><strong>父类构造函数</strong>：在 C++ 中，子类的构造函数调用之前，<strong>父类的构造函数会先被调用</strong>。在 <code>Parent</code> 类的构造函数中，<code>name</code> 被设置为 <code>&quot;Parent&quot;</code>，但此时 <code>Child</code> 类中的 <code>name</code> 成员已经被初始化为 <code>&quot;child&quot;</code>，因此父类构造函数修改的是父类的 <code>name</code>，而不是子类的 <code>name</code>。</li>
+<li><strong>成员覆盖</strong>：在 C++ 中，父类和子类都有一个名为 <code>name</code> 的成员变量。由于子类的 <code>name</code> 会覆盖父类的 <code>name</code>（即 <strong>隐藏</strong> 父类的成员变量），在访问 <code>childInstance.name</code> 时，访问的是子类的 <code>name</code>，即 <code>&quot;child&quot;</code>。</li>
+<li>**调用 <code>updateName</code>**：当你调用 <code>childInstance.updateName(&quot;Updated by Parent&quot;)</code> 时，实际上调用的是父类的 <code>updateName</code> 方法，因为该方法在 <code>Parent</code> 类中定义，而子类没有重写它。由于该方法修改的是父类的 <code>name</code>，它会更新父类的 <code>name</code> 为 <code>&quot;Updated by Parent&quot;</code>，但是此时 <strong>修改的是父类的 <code>name</code> 成员</strong>，而非子类的 <code>name</code>。因此，输出的是 <code>&quot;child&quot;</code>。</li>
+</ol>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a><strong>总结</strong>：</h4><p>在 C++ 中，即使子类覆盖了父类的成员变量，父类方法调用时修改的也是父类的 <code>name</code>，而非子类的 <code>name</code>。这是因为成员变量的覆盖并不影响父类的成员。除非调用的是虚函数，他才会根据虚函数表去修改对应实例对象的值。</p>
+</li>
+</ul>
+<h4 id="2-JavaScript-中的继承与方法调用"><a href="#2-JavaScript-中的继承与方法调用" class="headerlink" title="2.JavaScript 中的继承与方法调用"></a>2.<strong>JavaScript 中的继承与方法调用</strong></h4><p>JavaScript 的继承机制和 C++ 有显著不同。在 JavaScript 中，所有对象的属性和方法都是通过原型链来查找的，而且 JavaScript 的类并不像 C++ 那样直接将成员变量分配到类的实例中。成员变量实际上是类实例的属性，并且原型链的行为使得调用父类的方法时，子类可以覆盖和修改父类的属性。</p>
+<p>在 JavaScript 中，当子类实例化时，父类的构造函数会在子类的构造函数中调用（如果子类没有显式调用 <code>super()</code>，会自动调用）。不过，<strong>父类构造函数的调用时机</strong>是：<strong>在子类构造函数的成员变量初始化之前</strong>，但通常会在子类的 <code>this</code> 上下文可用之前调用。</p>
+<p><strong>更详细的解释：</strong></p>
+<ol>
+<li><p><strong>如果子类没有定义构造函数：</strong> 当子类没有定义构造函数时，JavaScript 会自动调用父类的构造函数。并且，父类的构造函数会在子类的成员变量初始化之前被调用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Parent constructor&quot;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;Parent&quot;</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent</span> &#123;<br>  <span class="hljs-comment">// 没有构造函数，默认调用父类构造函数</span><br>&#125;<br><br><span class="hljs-keyword">const</span> child = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>();  <span class="hljs-comment">// 输出: &quot;Parent constructor&quot;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child.<span class="hljs-property">name</span>);  <span class="hljs-comment">// 输出: &quot;Parent&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>如果子类显式定义了构造函数：</strong> 当子类显式定义了构造函数时，必须在子类构造函数内调用 <code>super()</code> 来调用父类的构造函数。<code>super()</code> 必须在子类构造函数中调用，在子类访问 <code>this</code> 之前。否则，JavaScript 会抛出错误。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Parent</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Parent constructor&quot;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;Parent&quot;</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Parent</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">super</span>();  <span class="hljs-comment">// 调用父类构造函数，必须在访问 `this` 之前</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Child constructor&quot;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">age</span> = <span class="hljs-number">10</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> child = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>();  <br><span class="hljs-comment">// 输出: </span><br><span class="hljs-comment">// &quot;Parent constructor&quot; </span><br><span class="hljs-comment">// &quot;Child constructor&quot;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child.<span class="hljs-property">name</span>);  <span class="hljs-comment">// 输出: &quot;Parent&quot;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child.<span class="hljs-property">age</span>);   <span class="hljs-comment">// 输出: 10</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>在上面的例子中，你可以看到：</p>
+<ul>
+<li><p><code>super()</code> 调用是在 <code>Child</code> 类的构造函数中，且它发生在对 <code>this</code> 的访问之前。这样，父类的构造函数会首先被调用，子类再对自己的成员变量进行初始化。</p>
+</li>
+<li><p>如果子类没有显式定义构造函数，会自动调用父类的构造函数，且父类的构造函数会在子类的成员变量初始化之前调用。</p>
+</li>
+<li><p>如果子类显式定义了构造函数，必须显式调用 <code>super()</code>，并且 <code>super()</code> 必须在访问 <code>this</code> 之前调用。</p>
+</li>
+</ul>
+<h4 id="总结：C-和-JavaScript-的差异"><a href="#总结：C-和-JavaScript-的差异" class="headerlink" title="总结：C++ 和 JavaScript 的差异"></a><strong>总结：C++ 和 JavaScript 的差异</strong></h4><ol>
+<li>**C++**：<ul>
+<li><strong>在 C++ 中，父类和子类的成员变量是完全独立的，子类可以覆盖父类的成员，但方法操作的是父类的成员变量（即使是通过子类实例调用父类方法）。</strong></li>
+<li><strong>C++ 中的继承机制更多依赖于成员的直接访问和静态绑定。</strong></li>
+</ul>
+</li>
+<li><strong>JavaScript</strong>：<ul>
+<li><strong>在 JavaScript 中，父类和子类的成员变量（或者对象属性）是共享的，子类的成员变量可以覆盖父类的成员变量。</strong></li>
+<li><strong>方法的调用基于原型链，动态绑定使得子类可以覆盖父类的方法，且修改的成员变量是子类实例的属性。</strong></li>
+<li><strong>需要注意的是，无论父类在构造函数中如何修改成员变量，都会被子类重新定义的成员变量给覆盖，无论子类是否有显性的调用构造函数。</strong></li>
+<li><strong>子类重写成员变量时，不能只声明不定义，要声明和定义一起实现。</strong></li>
+</ul>
+</li>
+</ol>
+<p>因此，C++ 和 JavaScript 在继承和成员变量的覆盖上有显著差异，导致它们在行为上的不同。</p>
+<h2 id="3-抽象类（Abstract-Class）"><a href="#3-抽象类（Abstract-Class）" class="headerlink" title="3. 抽象类（Abstract Class）"></a>3. <strong>抽象类（Abstract Class）</strong></h2><p>抽象类是无法直接实例化的类，它只能作为其他类的基类。抽象类通常包含 <strong>抽象方法</strong>（没有实现的方法），这些方法必须在继承该抽象类的子类中实现。抽象类提供了一种通用的方式来定义一组类的基本结构。</p>
+<h3 id="抽象类的基本语法"><a href="#抽象类的基本语法" class="headerlink" title="抽象类的基本语法"></a>抽象类的基本语法</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-keyword">abstract</span> <span class="hljs-title function_">makeSound</span>(): <span class="hljs-built_in">void</span>;  <span class="hljs-comment">// 抽象方法，没有实现</span><br><br>  <span class="hljs-title function_">move</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Moving...&quot;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Animal</span> &#123;<br>  <span class="hljs-title function_">makeSound</span>(): <span class="hljs-built_in">void</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Bark!&quot;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> dog = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Dog</span>();<br>dog.<span class="hljs-title function_">makeSound</span>(); <span class="hljs-comment">// Output: Bark!</span><br>dog.<span class="hljs-title function_">move</span>();      <span class="hljs-comment">// Output: Moving...</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>抽象方法</strong>：在抽象类中定义，但没有提供实现。子类必须提供实现。</li>
+<li><strong>普通方法</strong>：可以在抽象类中定义，并提供实现。子类可以继承或重写。</li>
+</ul>
+<h3 id="abstract-关键字"><a href="#abstract-关键字" class="headerlink" title="abstract 关键字"></a><strong><code>abstract</code> 关键字</strong></h3><p><code>abstract</code> 关键字用于标记类或方法为抽象的。抽象类不能直接实例化，必须通过继承来创建实例。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Shape</span> &#123;<br>  <span class="hljs-keyword">abstract</span> <span class="hljs-title function_">area</span>(): <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Shape</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> radius: <span class="hljs-built_in">number</span></span>) &#123;<br>    <span class="hljs-variable language_">super</span>();<br>  &#125;<br><br>  <span class="hljs-title function_">area</span>(): <span class="hljs-built_in">number</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">radius</span> * <span class="hljs-variable language_">this</span>.<span class="hljs-property">radius</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> circle = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>(<span class="hljs-number">5</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(circle.<span class="hljs-title function_">area</span>()); <span class="hljs-comment">// Output: 78.53981633974483</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-接口（Interface）"><a href="#4-接口（Interface）" class="headerlink" title="4. 接口（Interface）"></a>4. <strong>接口（Interface）</strong></h2><p>接口是 TypeScript 的一种用于定义对象结构的方式，它定义了对象的 <strong>类型</strong>，但并不提供实现。接口可以包含方法签名、属性声明和索引签名。接口与抽象类的一个主要区别是，接口只定义结构，不允许有实现。</p>
+<h3 id="接口的基本语法"><a href="#接口的基本语法" class="headerlink" title="接口的基本语法"></a>接口的基本语法</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-title function_">move</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  &#125;<br><br>  <span class="hljs-title function_">move</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span> is moving`</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">const</span> dog = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Dog</span>(<span class="hljs-string">&#x27;Buddy&#x27;</span>);<br>dog.<span class="hljs-title function_">move</span>(); <span class="hljs-comment">// Output: Buddy is moving</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>实现接口</strong>：通过 <code>implements</code> 关键字，类可以实现一个或多个接口。</li>
+<li><strong>接口的可选属性</strong>：接口中的属性可以是可选的，通过 <code>?</code> 标记。</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  age?: <span class="hljs-built_in">number</span>;  <span class="hljs-comment">// 可选属性</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="抽象类与接口的区别"><a href="#抽象类与接口的区别" class="headerlink" title="抽象类与接口的区别"></a>抽象类与接口的区别</h3><ul>
+<li><strong>接口</strong>：接口只能定义方法签名和属性，没有方法实现。接口不关心类的继承结构。</li>
+<li><strong>抽象类</strong>：抽象类可以包含实现的方法，也可以定义抽象方法。抽象类是具有部分实现的类。</li>
+</ul>
+<h3 id="示例：接口-vs-抽象类"><a href="#示例：接口-vs-抽象类" class="headerlink" title="示例：接口 vs 抽象类"></a>示例：接口 vs 抽象类</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 接口</span><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-title function_">makeSound</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  &#125;<br><br>  <span class="hljs-title function_">makeSound</span>(): <span class="hljs-built_in">void</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Bark!&#x27;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 抽象类</span><br><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br>  <span class="hljs-keyword">abstract</span> <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-keyword">abstract</span> <span class="hljs-title function_">makeSound</span>(): <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Animal</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">super</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  &#125;<br><br>  <span class="hljs-title function_">makeSound</span>(): <span class="hljs-built_in">void</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Bark!&#x27;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-类型约束（Constraints）和-as-关键字"><a href="#5-类型约束（Constraints）和-as-关键字" class="headerlink" title="5. 类型约束（Constraints）和 as 关键字"></a>5. <strong>类型约束（Constraints）和 <code>as</code> 关键字</strong></h2><p><strong>类型约束</strong>是 TypeScript 中用于指定泛型的类型的机制，它通过 <code>extends</code> 关键字来约束泛型。<code>as</code> 关键字用于强制类型转换。</p>
+<h3 id="约束的基本语法"><a href="#约束的基本语法" class="headerlink" title="约束的基本语法"></a>约束的基本语法</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">function</span> getLength&lt;T <span class="hljs-keyword">extends</span> &#123; <span class="hljs-attr">length</span>: <span class="hljs-built_in">number</span> &#125;&gt;(<span class="hljs-attr">value</span>: T): <span class="hljs-built_in">number</span> &#123;<br>  <span class="hljs-keyword">return</span> value.<span class="hljs-property">length</span>;<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">getLength</span>(<span class="hljs-string">&quot;Hello&quot;</span>));  <span class="hljs-comment">// Output: 5</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">getLength</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])); <span class="hljs-comment">// Output: 3</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>T extends &#123; length: number &#125;</code> 表示泛型 <code>T</code> 必须具有 <code>length</code> 属性。</p>
+<h3 id="as-关键字的使用"><a href="#as-关键字的使用" class="headerlink" title="as 关键字的使用"></a><code>as</code> 关键字的使用</h3><p><code>as</code> 关键字用于将值强制转换为特定类型。它告诉 TypeScript 编译器，开发者有信心该值符合某种类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">let</span> <span class="hljs-attr">someValue</span>: <span class="hljs-built_in">any</span> = <span class="hljs-string">&quot;Hello, world!&quot;</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-attr">strLength</span>: <span class="hljs-built_in">number</span> = (someValue <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>).<span class="hljs-property">length</span>;  <span class="hljs-comment">// 使用 as 转换类型</span><br></code></pre></td></tr></table></figure>
+
+<p><code>as</code> 在类型推导中非常有用，尤其是在从外部 API 获取数据时，我们知道返回值的类型但 TypeScript 无法自动推断。</p>
+<hr>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. <strong>总结</strong></h2><ul>
+<li><strong>类（Class）</strong> 是面向对象编程的基本单位，用于定义对象的属性和行为。</li>
+<li><strong>继承（Inheritance）</strong> 允许一个类继承另一个类的属性和方法，并可进行方法重写。</li>
+<li><strong>抽象类（Abstract Class）</strong> 是不能直接实例化的类，主要用于定义其他类的基础结构。</li>
+<li><strong>接口（Interface）</strong> 主要用于定义对象的结构，类可以实现接口并提供方法实现。</li>
+<li><strong>类型约束（Constraints）</strong> 用于限制泛型类型，确保其具有特定的属性或方法。</li>
+<li><strong><code>as</code> 关键字</strong> 用于进行类型断言，将值强制转换为指定的类型。</li>
+</ul>
+<p>理解这些概念及其用法，对于写出清晰、类型安全的 TypeScript 代码至关重要。希望这篇博客能帮助你更好地理解 TypeScript 中的面向对象编程和类型系统！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TypeScript中的类详细解析</div>
+      <div>https://yonghengshikong.github.io/posts/7201/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/10749/" title="深入理解JavaScript原型链-类-函数与对象的关系">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深入理解JavaScript原型链-类-函数与对象的关系</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/57764/" title="TypeScript联合类型详解">
+                        <span class="hidden-mobile">TypeScript联合类型详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
