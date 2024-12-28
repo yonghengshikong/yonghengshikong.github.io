@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Unity 物理引擎：原理、优化与真实感物理效果实现在 Unity 中，物理引擎是实现真实世界物理效果的重要工具，它通过模拟碰撞、力、重力等物理现象，使得游戏世界中的物体行为更加自然和可信。Unity 的物理引擎基于 NVIDIA PhysX，它提供了多种功能来帮助开发者构建符合现实物理规律的互动体验。在本篇博客中，我们将深入探讨 Unity 物理引擎的工作原理，如何使用 Rigidbody 和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="06、Unity 物理引擎：原理、优化与真实感物理效果实现">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/61900/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Unity 物理引擎：原理、优化与真实感物理效果实现在 Unity 中，物理引擎是实现真实世界物理效果的重要工具，它通过模拟碰撞、力、重力等物理现象，使得游戏世界中的物体行为更加自然和可信。Unity 的物理引擎基于 NVIDIA PhysX，它提供了多种功能来帮助开发者构建符合现实物理规律的互动体验。在本篇博客中，我们将深入探讨 Unity 物理引擎的工作原理，如何使用 Rigidbody 和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-06T03:01:16.000Z">
+<meta property="article:modified_time" content="2024-12-28T09:08:28.853Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>06、Unity 物理引擎：原理、优化与真实感物理效果实现 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="06、Unity 物理引擎：原理、优化与真实感物理效果实现"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-06 11:01" pubdate>
+          2024年12月6日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">06、Unity 物理引擎：原理、优化与真实感物理效果实现</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Unity-物理引擎：原理、优化与真实感物理效果实现"><a href="#Unity-物理引擎：原理、优化与真实感物理效果实现" class="headerlink" title="Unity 物理引擎：原理、优化与真实感物理效果实现"></a>Unity 物理引擎：原理、优化与真实感物理效果实现</h1><p>在 Unity 中，物理引擎是实现真实世界物理效果的重要工具，它通过模拟碰撞、力、重力等物理现象，使得游戏世界中的物体行为更加自然和可信。Unity 的物理引擎基于 <strong>NVIDIA PhysX</strong>，它提供了多种功能来帮助开发者构建符合现实物理规律的互动体验。在本篇博客中，我们将深入探讨 Unity 物理引擎的工作原理，如何使用 <code>Rigidbody</code> 和 <code>Collider</code> 进行物体的物理模拟，并讨论如何通过物理优化提升游戏性能。此外，我们还会介绍如何利用物理材料来模拟更真实的物理效果。</p>
+<hr>
+<h2 id="1-Unity-物理引擎的工作原理与优化"><a href="#1-Unity-物理引擎的工作原理与优化" class="headerlink" title="1. Unity 物理引擎的工作原理与优化"></a>1. Unity 物理引擎的工作原理与优化</h2><h3 id="1-1-物理引擎的基本原理"><a href="#1-1-物理引擎的基本原理" class="headerlink" title="1.1 物理引擎的基本原理"></a>1.1 <strong>物理引擎的基本原理</strong></h3><p>Unity 的物理引擎使用刚体（<code>Rigidbody</code>）和碰撞体（<code>Collider</code>）来模拟物体之间的相互作用。以下是 Unity 物理引擎的几个基本概念：</p>
+<ul>
+<li><strong>Rigidbody</strong>：<code>Rigidbody</code> 组件使得物体可以在物理引擎的控制下移动和旋转。它受重力、力和扭矩等物理现象的影响。</li>
+<li><strong>Collider</strong>：<code>Collider</code> 组件定义了物体的碰撞形状（如球形、盒形、胶囊形等）。它用于检测物体间的碰撞。</li>
+<li><strong>Force</strong>：力是推动物体运动的原因。Unity 提供了多种力（如推力、重力、摩擦力等）来改变物体的速度和加速度。</li>
+</ul>
+<p>Unity 物理引擎通过计算物体之间的碰撞和相互作用，动态更新物体的位置和旋转。</p>
+<h3 id="1-2-碰撞检测"><a href="#1-2-碰撞检测" class="headerlink" title="1.2 碰撞检测"></a>1.2 <strong>碰撞检测</strong></h3><p>碰撞检测是物理引擎的核心部分，用于检测物体是否相互接触。Unity 提供了两种类型的碰撞检测：</p>
+<ul>
+<li><strong>碰撞（Collision）</strong>：当两个物体发生接触时，会触发 <code>OnCollisionEnter</code>、<code>OnCollisionStay</code> 和 <code>OnCollisionExit</code> 事件。</li>
+<li><strong>触发器（Trigger）</strong>：当物体进入或离开触发器区域时，会触发 <code>OnTriggerEnter</code>、<code>OnTriggerStay</code> 和 <code>OnTriggerExit</code> 事件。与普通碰撞不同，触发器不会引发物理响应，只会触发事件。</li>
+</ul>
+<h4 id="1-2-1-使用-Rigidbody-和-Collider-组件"><a href="#1-2-1-使用-Rigidbody-和-Collider-组件" class="headerlink" title="1.2.1 使用 Rigidbody 和 Collider 组件"></a>1.2.1 <strong>使用 <code>Rigidbody</code> 和 <code>Collider</code> 组件</strong></h4><p>通过给物体添加 <code>Rigidbody</code> 和 <code>Collider</code> 组件，Unity 就能自动处理物体之间的碰撞检测。以下是基本使用方法：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 示例：添加刚体和碰撞体</span><br>Rigidbody rb = gameObject.AddComponent&lt;Rigidbody&gt;();<br>Collider col = gameObject.AddComponent&lt;BoxCollider&gt;();<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-3-物理优化"><a href="#1-3-物理优化" class="headerlink" title="1.3 物理优化"></a>1.3 <strong>物理优化</strong></h3><p>物理计算是一个相对昂贵的过程，尤其是在游戏中有大量物体时。为了确保游戏性能，我们需要优化物理计算：</p>
+<ul>
+<li><strong>减少物理更新频率</strong>：物理引擎在每个固定时间步长中更新一次。通过减小 <code>Fixed Timestep</code>（在 <strong>Edit -&gt; Project Settings -&gt; Time</strong> 中调整），可以减少物理更新的频率，从而减少计算量。</li>
+<li><strong>使用简单的碰撞体</strong>：尽量避免使用复杂的碰撞体（如网格碰撞体）。使用简单的碰撞体（如球体、盒子和胶囊）会更高效。</li>
+<li><strong>禁用不必要的物理计算</strong>：例如，对于静止的物体，可以禁用 <code>Rigidbody</code> 的 <code>useGravity</code> 或将其设置为 Kinematic（通过设置 <code>isKinematic</code> 为 <code>true</code>），避免物理引擎计算其运动。</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 示例：禁用不必要的物理计算</span><br>Rigidbody rb = gameObject.GetComponent&lt;Rigidbody&gt;();<br>rb.isKinematic = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// 禁用物理计算</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-使用力与物理材料实现真实感物理效果"><a href="#2-使用力与物理材料实现真实感物理效果" class="headerlink" title="2. 使用力与物理材料实现真实感物理效果"></a>2. 使用力与物理材料实现真实感物理效果</h2><h3 id="2-1-力与重力的使用"><a href="#2-1-力与重力的使用" class="headerlink" title="2.1 力与重力的使用"></a>2.1 <strong>力与重力的使用</strong></h3><p>力是物体运动的关键因素。Unity 提供了多种方式来施加力，包括：</p>
+<ul>
+<li><strong>AddForce</strong>：用于施加持续的力，改变物体的速度。</li>
+<li><strong>AddTorque</strong>：用于施加扭矩，改变物体的旋转速度。</li>
+</ul>
+<h4 id="2-1-1-施加力"><a href="#2-1-1-施加力" class="headerlink" title="2.1.1 施加力"></a>2.1.1 <strong>施加力</strong></h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 示例：施加一个向上的力</span><br>Rigidbody rb = gameObject.GetComponent&lt;Rigidbody&gt;();<br>rb.AddForce(Vector3.up * <span class="hljs-number">10f</span>, ForceMode.Impulse);  <span class="hljs-comment">// 施加一个瞬时向上的力</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>ForceMode</strong>：可以选择不同的力模式，如 <code>ForceMode.Force</code>（持续力），<code>ForceMode.Impulse</code>（瞬时力）等。</li>
+</ul>
+<h4 id="2-1-2-重力"><a href="#2-1-2-重力" class="headerlink" title="2.1.2 重力"></a>2.1.2 <strong>重力</strong></h4><p>Unity 中的物体会自动受重力影响。如果不想让物体受重力影响，可以通过设置 <code>useGravity</code> 为 <code>false</code> 来禁用重力。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 示例：禁用重力</span><br>Rigidbody rb = gameObject.GetComponent&lt;Rigidbody&gt;();<br>rb.useGravity = <span class="hljs-literal">false</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-2-物理材料与摩擦力、弹性"><a href="#2-2-物理材料与摩擦力、弹性" class="headerlink" title="2.2 物理材料与摩擦力、弹性"></a>2.2 <strong>物理材料与摩擦力、弹性</strong></h3><p><strong>物理材料（Physics Materials）</strong> 可以用来控制物体的摩擦力和弹性等属性，进而模拟更真实的物理效果。</p>
+<ul>
+<li><strong>摩擦力</strong>：<code>Friction</code> 控制物体与其他表面接触时的摩擦强度。</li>
+<li><strong>弹性</strong>：<code>Bounciness</code> 控制物体碰撞后的反弹程度。</li>
+</ul>
+<h4 id="2-2-1-创建物理材料"><a href="#2-2-1-创建物理材料" class="headerlink" title="2.2.1 创建物理材料"></a>2.2.1 <strong>创建物理材料</strong></h4><p>在 Unity 中，你可以通过创建 <code>Physics Material</code> 来调整物体的物理属性。通过设置摩擦力和弹性，可以实现各种物理效果。</p>
+<ol>
+<li>创建一个新的 <code>Physic Material</code>，并调整它的摩擦力和弹性属性。</li>
+<li>将其应用于物体的 <code>Collider</code> 组件。</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 示例：创建并应用物理材料</span><br>PhysicMaterial material = <span class="hljs-keyword">new</span> PhysicMaterial();<br>material.dynamicFriction = <span class="hljs-number">0.5f</span>;  <span class="hljs-comment">// 动态摩擦力</span><br>material.staticFriction = <span class="hljs-number">0.6f</span>;   <span class="hljs-comment">// 静态摩擦力</span><br>material.bounciness = <span class="hljs-number">0.8f</span>;       <span class="hljs-comment">// 弹性</span><br><br>Collider col = gameObject.GetComponent&lt;Collider&gt;();<br>col.material = material;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-2-实现真实的物理效果"><a href="#2-2-2-实现真实的物理效果" class="headerlink" title="2.2.2 实现真实的物理效果"></a>2.2.2 <strong>实现真实的物理效果</strong></h4><p>通过调整摩擦力和弹性，可以让物体的滑动、碰撞和反弹效果更加真实。例如，你可以创建一个滑动物体，调整摩擦力来模拟不同材质的摩擦效果。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 示例：通过物理材料模拟滑动物体</span><br>PhysicMaterial slideMaterial = <span class="hljs-keyword">new</span> PhysicMaterial();<br>slideMaterial.dynamicFriction = <span class="hljs-number">0.1f</span>;  <span class="hljs-comment">// 低摩擦，物体更容易滑动</span><br>slideMaterial.staticFriction = <span class="hljs-number">0.1f</span>;<br>slideMaterial.bounciness = <span class="hljs-number">0.5f</span>;<br><br>Collider col = gameObject.GetComponent&lt;Collider&gt;();<br>col.material = slideMaterial;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-3-碰撞与触发事件的响应"><a href="#2-3-碰撞与触发事件的响应" class="headerlink" title="2.3 碰撞与触发事件的响应"></a>2.3 <strong>碰撞与触发事件的响应</strong></h3><p>Unity 中的物理事件包括 <code>OnCollisionEnter</code>、<code>OnCollisionStay</code> 和 <code>OnCollisionExit</code> 事件（用于碰撞），以及 <code>OnTriggerEnter</code>、<code>OnTriggerStay</code> 和 <code>OnTriggerExit</code> 事件（用于触发器）。这些事件可以帮助你检测物体之间的碰撞和触发器交互，并根据需要做出响应。</p>
+<h4 id="2-3-1-碰撞事件"><a href="#2-3-1-碰撞事件" class="headerlink" title="2.3.1 碰撞事件"></a>2.3.1 <strong>碰撞事件</strong></h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnCollisionEnter</span>(<span class="hljs-params">Collision collision</span>)</span><br>&#123;<br>    <span class="hljs-comment">// 当与另一个物体碰撞时</span><br>    <span class="hljs-keyword">if</span> (collision.gameObject.CompareTag(<span class="hljs-string">&quot;Player&quot;</span>))<br>    &#123;<br>        Debug.Log(<span class="hljs-string">&quot;Player hit the object!&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-2-触发器事件"><a href="#2-3-2-触发器事件" class="headerlink" title="2.3.2 触发器事件"></a>2.3.2 <strong>触发器事件</strong></h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnTriggerEnter</span>(<span class="hljs-params">Collider other</span>)</span><br>&#123;<br>    <span class="hljs-comment">// 当物体进入触发器区域时</span><br>    <span class="hljs-keyword">if</span> (other.gameObject.CompareTag(<span class="hljs-string">&quot;Enemy&quot;</span>))<br>    &#123;<br>        Debug.Log(<span class="hljs-string">&quot;Enemy entered the trigger zone!&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h2><p>Unity 物理引擎提供了强大的功能来模拟现实世界中的物理现象。通过合理使用 <code>Rigidbody</code>、<code>Collider</code> 组件以及施加力和使用物理材料，可以创建逼真的物理效果，如物体的滑动、碰撞、跳跃等。同时，通过优化物理计算，减少不必要的物理更新，可以有效提升游戏性能。</p>
+<p>在实际开发中，了解并应用这些物理引擎的基本原理和优化技巧，将帮助你构建更流畅、真实的游戏体验。通过本文介绍的示例代码，你可以轻松实现物理效果并优化性能，让游戏中的物体行为更加自然和生动。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity/" class="category-chain-item">Unity</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Unity/Unity%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="category-chain-item">Unity基础知识</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>06、Unity 物理引擎：原理、优化与真实感物理效果实现</div>
+      <div>https://yonghengshikong.github.io/posts/61900/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/41458/" title="07、Unity 网络与多人游戏开发：从 Unity Networking 到 Mirror 框架">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">07、Unity 网络与多人游戏开发：从 Unity Networking 到 Mirror 框架</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/63931/" title="05、Unity UI 与用户体验：系统原理、交互设计与性能优化">
+                        <span class="hidden-mobile">05、Unity UI 与用户体验：系统原理、交互设计与性能优化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

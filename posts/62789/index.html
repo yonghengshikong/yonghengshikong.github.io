@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Unity 脚本与编程：高效的设计与优化实践在 Unity 游戏开发中，脚本编程是构建游戏逻辑、实现交互和优化性能的核心。无论是设计复用性强的脚本组件，还是优化脚本性能，掌握如何高效地组织和调试代码，都是每个 Unity 开发者必备的技能。本篇博客将深入探讨 Unity 中的脚本生命周期、事件系统、协程与异步操作、脚本组件化设计与组织、以及性能优化与内存管理等关键主题，帮助你更好地设计高效、可维护">
+<meta property="og:type" content="article">
+<meta property="og:title" content="02、Unity 脚本与编程：高效的设计与优化实践">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/62789/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Unity 脚本与编程：高效的设计与优化实践在 Unity 游戏开发中，脚本编程是构建游戏逻辑、实现交互和优化性能的核心。无论是设计复用性强的脚本组件，还是优化脚本性能，掌握如何高效地组织和调试代码，都是每个 Unity 开发者必备的技能。本篇博客将深入探讨 Unity 中的脚本生命周期、事件系统、协程与异步操作、脚本组件化设计与组织、以及性能优化与内存管理等关键主题，帮助你更好地设计高效、可维护">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-02T03:01:16.000Z">
+<meta property="article:modified_time" content="2024-12-28T08:49:23.095Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>02、Unity 脚本与编程：高效的设计与优化实践 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="02、Unity 脚本与编程：高效的设计与优化实践"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-02 11:01" pubdate>
+          2024年12月2日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">02、Unity 脚本与编程：高效的设计与优化实践</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Unity-脚本与编程：高效的设计与优化实践"><a href="#Unity-脚本与编程：高效的设计与优化实践" class="headerlink" title="Unity 脚本与编程：高效的设计与优化实践"></a>Unity 脚本与编程：高效的设计与优化实践</h1><p>在 Unity 游戏开发中，脚本编程是构建游戏逻辑、实现交互和优化性能的核心。无论是设计复用性强的脚本组件，还是优化脚本性能，掌握如何高效地组织和调试代码，都是每个 Unity 开发者必备的技能。本篇博客将深入探讨 Unity 中的脚本生命周期、事件系统、协程与异步操作、脚本组件化设计与组织、以及性能优化与内存管理等关键主题，帮助你更好地设计高效、可维护的游戏脚本。</p>
+<hr>
+<h3 id="1-Unity-脚本的生命周期与组件化设计"><a href="#1-Unity-脚本的生命周期与组件化设计" class="headerlink" title="1. Unity 脚本的生命周期与组件化设计"></a><strong>1. Unity 脚本的生命周期与组件化设计</strong></h3><p>在 Unity 中，脚本通常是通过 <strong>组件化</strong> 的方式附加到游戏对象（GameObject）上的，每个脚本都充当一个 <strong>组件</strong>，负责实现特定的游戏逻辑。Unity 的脚本生命周期是通过一系列生命周期函数（如 <code>Awake</code>、<code>Start</code>、<code>Update</code>、<code>OnDestroy</code>）来管理的。理解这些函数的作用和调用时机，是设计高效游戏脚本的基础。</p>
+<h4 id="1-1-Unity-脚本的生命周期"><a href="#1-1-Unity-脚本的生命周期" class="headerlink" title="1.1 Unity 脚本的生命周期"></a>1.1 <strong>Unity 脚本的生命周期</strong></h4><p>Unity 脚本的生命周期与游戏对象的生命周期密切相关，以下是几个常见的生命周期函数：</p>
+<ul>
+<li><p><strong>Awake</strong>：当脚本实例化时调用，通常用于初始化变量或设置初始状态。<code>Awake</code> 在脚本启用之前调用，仅执行一次。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span> &#123;<br>    Debug.Log(<span class="hljs-string">&quot;Awake 被调用&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Start</strong>：在游戏对象被启用时调用，执行初始化操作。通常可以依赖其他对象的初始化。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span> &#123;<br>    Debug.Log(<span class="hljs-string">&quot;Start 被调用&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Update</strong>：每一帧调用，用于执行每帧需要的操作，例如玩家输入、动画更新等。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span> &#123;<br>    Debug.Log(<span class="hljs-string">&quot;Update 被调用&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>OnDestroy</strong>：当游戏对象销毁时调用，适用于清理资源、注销事件监听器等操作。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnDestroy</span>()</span> &#123;<br>    Debug.Log(<span class="hljs-string">&quot;OnDestroy 被调用&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="1-2-脚本的组件化设计"><a href="#1-2-脚本的组件化设计" class="headerlink" title="1.2 脚本的组件化设计"></a>1.2 <strong>脚本的组件化设计</strong></h4><p>Unity 强调 <strong>组件化设计</strong>，每个脚本组件应该只关注自己职责范围内的逻辑。例如，玩家控制脚本只负责控制玩家的输入与移动，敌人 AI 脚本只负责敌人的行为逻辑。通过这种设计，可以实现脚本的 <strong>高内聚</strong> 和 <strong>低耦合</strong>，使得代码易于复用、维护和扩展。</p>
+<h4 id="1-3-脚本的调试与管理"><a href="#1-3-脚本的调试与管理" class="headerlink" title="1.3 脚本的调试与管理"></a>1.3 <strong>脚本的调试与管理</strong></h4><p>调试 Unity 脚本时，Unity 提供了调试功能，如在 Visual Studio 中设置断点，查看调试信息。合理地使用 <strong>日志</strong> 和 <strong>调试工具</strong>（例如 <code>Debug.Log</code>）可以帮助你快速定位问题。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br>Debug.Log(<span class="hljs-string">&quot;Debug Message: Value of variable x: &quot;</span> + x);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-Unity-中的事件系统与消息传递"><a href="#2-Unity-中的事件系统与消息传递" class="headerlink" title="2. Unity 中的事件系统与消息传递"></a><strong>2. Unity 中的事件系统与消息传递</strong></h3><p>Unity 提供了强大的 <strong>事件系统</strong>，用于实现不同游戏对象间的通信。事件系统可以帮助不同组件解耦，减少直接的依赖关系，提高代码的可维护性。</p>
+<h4 id="2-1-Unity-的消息传递机制"><a href="#2-1-Unity-的消息传递机制" class="headerlink" title="2.1 Unity 的消息传递机制"></a>2.1 <strong>Unity 的消息传递机制</strong></h4><p>Unity 中的消息传递机制包括以下几种方式：</p>
+<ul>
+<li><p><strong>SendMessage</strong>：发送消息到当前对象或其他对象，调用目标对象中的指定方法。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br>gameObject.SendMessage(<span class="hljs-string">&quot;OnPlayerCollide&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>BroadcastMessage</strong>：广播消息，发送给所有组件，触发相同的函数调用。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br>gameObject.BroadcastMessage(<span class="hljs-string">&quot;OnHit&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Event</strong>：通过事件委托的方式传递消息，适用于复杂的事件订阅机制。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">PlayerHitEvent</span>()</span>;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">event</span> PlayerHitEvent OnPlayerHit;<br><br><span class="hljs-comment">// 触发事件</span><br>OnPlayerHit?.Invoke();<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-2-消息传递的最佳实践"><a href="#2-2-消息传递的最佳实践" class="headerlink" title="2.2 消息传递的最佳实践"></a>2.2 <strong>消息传递的最佳实践</strong></h4><ul>
+<li><strong>减少依赖</strong>：尽量避免通过直接引用其他对象来实现通信，利用事件系统可以降低耦合度。</li>
+<li><strong>解耦合</strong>：通过事件或消息传递，通知多个对象做出反应，而不需要彼此之间有直接依赖关系。</li>
+</ul>
+<hr>
+<h3 id="3-协程与异步操作的使用"><a href="#3-协程与异步操作的使用" class="headerlink" title="3. 协程与异步操作的使用"></a><strong>3. 协程与异步操作的使用</strong></h3><p>协程（<strong>Coroutine</strong>）是 Unity 提供的一种简便方式，用于执行需要延时或异步操作的任务。协程的优势在于，它们允许你在执行过程中暂停并稍后恢复，不会阻塞主线程。</p>
+<h4 id="3-1-协程的工作原理"><a href="#3-1-协程的工作原理" class="headerlink" title="3.1 协程的工作原理"></a>3.1 <strong>协程的工作原理</strong></h4><p>协程的核心是 <code>IEnumerator</code> 类型，它允许你在函数中执行某些延时操作或异步任务。你可以通过 <code>yield</code> 语句来控制协程的暂停和恢复。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function">IEnumerator <span class="hljs-title">WaitAndPrint</span>()</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">yield</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title">WaitForSeconds</span>(<span class="hljs-params"><span class="hljs-number">2</span></span>)</span>;<br>    Debug.Log(<span class="hljs-string">&quot;2秒后打印&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>要启动协程，可以通过 <code>StartCoroutine</code> 来调用：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br>StartCoroutine(WaitAndPrint());<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-协程的应用场景"><a href="#3-2-协程的应用场景" class="headerlink" title="3.2 协程的应用场景"></a>3.2 <strong>协程的应用场景</strong></h4><ul>
+<li><strong>延迟操作</strong>：如延迟加载资源、延迟动画效果等。</li>
+<li><strong>异步加载</strong>：例如在加载大型场景或资源时，使用协程来避免主线程阻塞。</li>
+<li><strong>定时任务</strong>：定期执行某些操作，如敌人AI的巡逻行为。</li>
+</ul>
+<h4 id="3-3-协程的注意事项"><a href="#3-3-协程的注意事项" class="headerlink" title="3.3 协程的注意事项"></a>3.3 <strong>协程的注意事项</strong></h4><ul>
+<li>协程会在每一帧检查 <code>yield</code> 条件，注意避免不必要的性能开销。</li>
+<li>使用 <code>StopCoroutine</code> 可以中断协程，确保资源释放。</li>
+</ul>
+<hr>
+<h3 id="4-Unity-中的脚本组件化设计与组织"><a href="#4-Unity-中的脚本组件化设计与组织" class="headerlink" title="4. Unity 中的脚本组件化设计与组织"></a><strong>4. Unity 中的脚本组件化设计与组织</strong></h3><p>在一个复杂的游戏项目中，脚本的组织结构非常重要。合理的组织结构不仅可以提高代码的复用性，还能使项目更容易维护和扩展。</p>
+<h4 id="4-1-单例模式"><a href="#4-1-单例模式" class="headerlink" title="4.1 单例模式"></a>4.1 <strong>单例模式</strong></h4><p>单例模式是一种设计模式，确保一个类只有一个实例，并提供全局访问点。它通常用于管理游戏的全局状态或控制类（如游戏管理器、音效管理器）。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">GameManager</span> : <span class="hljs-title">MonoBehaviour</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> GameManager Instance;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span> &#123;<br>        <span class="hljs-keyword">if</span> (Instance == <span class="hljs-literal">null</span>) &#123;<br>            Instance = <span class="hljs-keyword">this</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            Destroy(gameObject);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-2-组件化设计与依赖注入"><a href="#4-2-组件化设计与依赖注入" class="headerlink" title="4.2 组件化设计与依赖注入"></a>4.2 <strong>组件化设计与依赖注入</strong></h4><p>依赖注入（<strong>Dependency Injection</strong>）是一种设计模式，通过它，组件不直接创建依赖项，而是将依赖项通过构造函数或属性注入到组件中。这种设计有助于解耦合和提高代码的可测试性。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PlayerController</span> : <span class="hljs-title">MonoBehaviour</span> &#123;<br>    <span class="hljs-keyword">private</span> IWeapon weapon;<br><br>    <span class="hljs-comment">// 通过构造函数注入依赖</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PlayerController</span>(<span class="hljs-params">IWeapon weapon</span>)</span> &#123;<br>        <span class="hljs-keyword">this</span>.weapon = weapon;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-3-脚本组织与模块划分"><a href="#4-3-脚本组织与模块划分" class="headerlink" title="4.3 脚本组织与模块划分"></a>4.3 <strong>脚本组织与模块划分</strong></h4><ul>
+<li><strong>控制器</strong>（Controllers）：用于处理游戏对象的行为，如玩家控制器、敌人控制器等。</li>
+<li><strong>模型</strong>（Models）：管理游戏数据和状态。</li>
+<li><strong>视图</strong>（Views）：负责展示游戏数据，如 UI 控件、图形渲染等。</li>
+</ul>
+<hr>
+<h3 id="5-脚本性能优化与内存管理"><a href="#5-脚本性能优化与内存管理" class="headerlink" title="5. 脚本性能优化与内存管理"></a><strong>5. 脚本性能优化与内存管理</strong></h3><p>游戏开发中，脚本的性能优化和内存管理至关重要。以下是一些常见的优化技巧：</p>
+<h4 id="5-1-减少-GC（垃圾回收）压力"><a href="#5-1-减少-GC（垃圾回收）压力" class="headerlink" title="5.1 减少 GC（垃圾回收）压力"></a>5.1 <strong>减少 GC（垃圾回收）压力</strong></h4><ul>
+<li><p><strong>对象池</strong>：使用对象池复用对象，避免频繁的内存分配和销毁操作。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br>ObjectPool&lt;Enemy&gt; enemyPool = <span class="hljs-keyword">new</span> ObjectPool&lt;Enemy&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>减少不必要的内存分配</strong>：避免在 <code>Update</code> 或 <code>FixedUpdate</code> 中频繁创建新对象，减少 GC 触发。</p>
+</li>
+</ul>
+<h4 id="5-2-优化循环与内存使用"><a href="#5-2-优化循环与内存使用" class="headerlink" title="5.2 优化循环与内存使用"></a>5.2 <strong>优化循环与内存使用</strong></h4><ul>
+<li><strong>避免重复计算</strong>：在 <code>Update</code> 或其他循环中，避免重复计算相同的结果，可以缓存结果或优化算法。</li>
+<li><strong>使用结构体而非类</strong>：结构体在栈上分配内存，避免了类的堆内存分配和垃圾回收。</li>
+</ul>
+<h4 id="5-3-序列化优化"><a href="#5-3-序列化优化" class="headerlink" title="5.3 序列化优化"></a>5.3 <strong>序列化优化</strong></h4><p>Unity 提供了多种序列化方式，合理使用可以有效减少内存占用：</p>
+<ul>
+<li>**合理使用 <code>SerializeField</code>**：避免在脚本中暴露不必要的公共变量，只序列化真正需要的数据。</li>
+<li><strong>优化 <code>Awake</code> 和 <code>Start</code> 中的数据初始化</strong>：确保资源加载与初始化逻辑简洁高效，减少内存消耗。</li>
+</ul>
+<hr>
+<h3 id="6-C-编程知识点补充"><a href="#6-C-编程知识点补充" class="headerlink" title="6. C# 编程知识点补充"></a><strong>6. C# 编程知识点补充</strong></h3><p>在 Unity 中使用 C# 编写脚本时，掌握一些常用的 C# 编程知识将大大提升开发效率。以下是一些常见的 C# 知识点：</p>
+<h4 id="6-1-委托与事件"><a href="#6-1-委托与事件" class="headerlink" title="6.1 委托与事件"></a>6.1 <strong>委托与事件</strong></h4><p>委托（Delegate）和事件（Event）是 C# 提供的一种类型安全的回调机制。它们允许一个方法作为参数传递，并在特定事件发生时被调用。</p>
+<ul>
+<li><p><strong>委托</strong>：定义一个委托类型，然后创建一个委托实例，并指向某个方法。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">MyDelegate</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span>;<br><span class="hljs-keyword">public</span> MyDelegate myDelegate;<br><br>myDelegate = <span class="hljs-keyword">new</span> MyDelegate(PrintMessage);<br>myDelegate(<span class="hljs-string">&quot;Hello, World!&quot;</span>);<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PrintMessage</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span> &#123;<br>    Debug.Log(message);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>事件</strong>：事件是一种基于委托的特殊用法，用于实现发布&#x2F;订阅模式。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Publisher</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Notify</span>()</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">event</span> Notify OnNotify;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TriggerEvent</span>()</span> &#123;<br>        OnNotify?.Invoke();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Subscriber</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">RespondToEvent</span>()</span> &#123;<br>        Debug.Log(<span class="hljs-string">&quot;Event triggered&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="6-2-LINQ-查询"><a href="#6-2-LINQ-查询" class="headerlink" title="6.2 LINQ 查询"></a>6.2 <strong>LINQ 查询</strong></h4><p>LINQ（语言集成查询）是 C# 中的一项强大功能，可以帮助开发者通过简洁的语法对集合进行查询、排序和过滤。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Linq;<br><br><span class="hljs-keyword">var</span> numbers = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt; &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> &#125;;<br><span class="hljs-keyword">var</span> evenNumbers = numbers.Where(n =&gt; n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>).ToList();<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="7-总结与实践"><a href="#7-总结与实践" class="headerlink" title="7. 总结与实践"></a><strong>7. 总结与实践</strong></h3><p>在 Unity 开发中，掌握脚本生命周期、事件系统、协程与异步操作的使用、以及脚本的性能优化，是构建高效游戏脚本的关键。通过合理的设计与优化，可以提升游戏的运行效率，并减少不必要的资源消耗。希望通过这篇博客，您能对 Unity 脚本编程有更深入的理解，并在实际项目中应用这些知识。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity/" class="category-chain-item">Unity</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Unity/Unity%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="category-chain-item">Unity基础知识</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>02、Unity 脚本与编程：高效的设计与优化实践</div>
+      <div>https://yonghengshikong.github.io/posts/62789/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/28561/" title="03、Unity 渲染与图形：渲染管线、优化与自定义 Shader">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">03、Unity 渲染与图形：渲染管线、优化与自定义 Shader</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/39444/" title="01、Unity架构与生命周期解析">
+                        <span class="hidden-mobile">01、Unity架构与生命周期解析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

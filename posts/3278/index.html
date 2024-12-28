@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="UI模块结构 UIGroupUIGroup是GF的UI模块的一大功能，它提供了游戏中常见的UI栈。当不同的UIForm实例处于同一个UIGroup中时，会以栈的形式维护它们的层级和生命周期。在一个UIGroup中，永远只有一个UIForm处于最上层，已存在的界面会被新打开的界面覆盖，并且会收到被覆盖事件。UIGroup内部通过链表的方式管理，表头代表栈顶，表尾代表栈底。这样的设计允许激活任意界面到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GameFramework界面（UI）">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/3278/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="UI模块结构 UIGroupUIGroup是GF的UI模块的一大功能，它提供了游戏中常见的UI栈。当不同的UIForm实例处于同一个UIGroup中时，会以栈的形式维护它们的层级和生命周期。在一个UIGroup中，永远只有一个UIForm处于最上层，已存在的界面会被新打开的界面覆盖，并且会收到被覆盖事件。UIGroup内部通过链表的方式管理，表头代表栈顶，表尾代表栈底。这样的设计允许激活任意界面到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/3278/1.jpg">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/3278/2.jpg">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/3278/3.jpg">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/3278/4.jpg">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/3278/5.jpg">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/3278/6.jpg">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/3278/7.jpg">
+<meta property="article:published_time" content="2024-12-27T03:54:47.629Z">
+<meta property="article:modified_time" content="2024-12-27T05:50:16.942Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yonghengshikong.github.io/posts/3278/1.jpg">
+  
+  
+  
+  <title>GameFramework界面（UI） - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="GameFramework界面（UI）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-27 11:54" pubdate>
+          2024年12月27日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">GameFramework界面（UI）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="UI模块结构"><a href="#UI模块结构" class="headerlink" title="UI模块结构"></a>UI模块结构</h2><p><img src="/posts/3278/1.jpg" srcset="/img/loading.gif" lazyload alt="1"></p>
+<h2 id="UIGroup"><a href="#UIGroup" class="headerlink" title="UIGroup"></a>UIGroup</h2><p>UIGroup是GF的UI模块的一大功能，它提供了游戏中常见的<strong>UI栈</strong>。当不同的UIForm实例处于同一个UIGroup中时，会以栈的形式维护它们的层级和生命周期。在一个UIGroup中，永远只有一个UIForm处于最上层，已存在的界面会被新打开的界面覆盖，并且会收到被覆盖事件。UIGroup内部通过链表的方式管理，表头代表栈顶，表尾代表栈底。这样的设计允许激活任意界面到最上层，增加业务的灵活性。</p>
+<p>当一系列相关联的UI需要在<strong>同一时刻只有一个处于最上层</strong>，并且需要感知相互间的打开关闭状态时，可以将它们归到同一个UIGroup中。</p>
+<p>UIGroup直接由UIManager管理，各个UIGroup管理各自的UIForm。</p>
+<h3 id="对外属性"><a href="#对外属性" class="headerlink" title="对外属性"></a>对外属性</h3><ul>
+<li><strong>Name</strong>：UIGroup的名字</li>
+<li><strong>Depth</strong>：UIGroup的深度（可动态设置）</li>
+<li><strong>Pause</strong>：UIGroup的暂停状态（可动态设置）</li>
+<li><strong>UIFormCount</strong>：包含的界面数量</li>
+<li><strong>CurrentUIForm</strong>：当前最上层的界面</li>
+</ul>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ul>
+<li><strong>GetUIForm</strong>、<strong>GetUIForms</strong>、<strong>GetAllUIForms</strong>：获取UIGroup中的UIForm。</li>
+<li><strong>AddUIForm</strong>、<strong>RemoveUIForm</strong>：在打开和关闭界面时，把UIForm从UIGroup中添加或移除。</li>
+<li><strong>RefocusUIForm</strong>：激活UIGroup中任意界面到最上层。</li>
+<li><strong>Refresh</strong>：UIGroup的核心逻辑，根据链表顺序及UIForm的属性，调用UIForm的<code>OnDepthChanged</code>、<code>OnCover</code>、<code>OnReveal</code>、<code>OnPause</code>、<code>OnResume</code>等方法。</li>
+</ul>
+<h3 id="UIFormInfo"><a href="#UIFormInfo" class="headerlink" title="UIFormInfo"></a>UIFormInfo</h3><p>UIGroup的内部类。UIGroup不直接引用UIForm，而是引用UIFormInfo。UIFormInfo包含了UIForm的引用，以及<code>Paused</code>和<code>Covered</code>两个状态。这些状态通过UIFormInfo包装，方便在Refresh操作时知道UIForm的状态。</p>
+<h2 id="UIForm"><a href="#UIForm" class="headerlink" title="UIForm"></a>UIForm</h2><p>UIForm是UI窗口类，被UIGroup直接管理，每个UI窗口都会有一个UIForm实例。</p>
+<h3 id="类内信息"><a href="#类内信息" class="headerlink" title="类内信息"></a>类内信息</h3><ul>
+<li><strong>SerialId：</strong>该UI实例的序列ID，每个界面被打开之后，关闭之前都有一个唯一的序列ID，主要是作为相同UI面板的不同实例、界面关闭被对象池回收后又取出来作为新界面打开等情况下的唯一标识。</li>
+<li><strong>UIFormAssetName：</strong>界面预制体的资源路径。</li>
+<li><strong>Handle：</strong>界面的GameObject对象，Handle返回的是Object类型，因为GameObject对象需要被UIManager内部的对象池回收，而UIManager处于GF层，是不会对Unity的类型“GameObject”感知的，所以这里以Object类型来持有。</li>
+<li><strong>UIGroup：</strong>所属的UIGroup。</li>
+<li><strong>DepthInUIGroup：</strong>这个界面在UIGroup中的深度。</li>
+<li><strong>PauseCoveredUIForm：</strong>当这个值为True的时候，打开这个界面，在UIGroup的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=184605643&content_type=Article&match_order=2&q=%E6%A0%88%E7%BB%93%E6%9E%84&zhida_source=entity">栈结构</a>中，比这个界面低（更接近栈底）的UIForm，会被调用OnPause，而关闭这个界面时，比这个界面低（更接近栈底）的UIForm，会被调用OnResume。</li>
+<li><strong>Logic：</strong>该UI的具体逻辑类UIFormLogic</li>
+</ul>
+<h3 id="生命周期方法"><a href="#生命周期方法" class="headerlink" title="生命周期方法"></a><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=184605643&content_type=Article&match_order=1&q=%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%96%B9%E6%B3%95&zhida_source=entity">生命周期方法</a></h3><ul>
+<li><p>OnInit &amp; OnRecycle</p>
+</li>
+<li><ul>
+<li>OnInit：调用UIManager的OpenUIForm初次打开UI时被调用</li>
+<li>OnRecycle：调用UIManager的CloseUIForm关闭UI时被调用</li>
+</ul>
+</li>
+<li><p>OnOpen &amp; OnClose</p>
+</li>
+<li><ul>
+<li>OnOpen：调用UIManager的OpenUIForm初次打开UI时被调用，在OnInit之后</li>
+<li>OnClose：调用UIManager的CloseUIForm关闭UI时被调用，在OnRecycle之前</li>
+</ul>
+</li>
+<li><p>OnCover &amp; OnReveal</p>
+</li>
+<li><ul>
+<li>OnCover：同一个UIGroup中，有其他界面覆盖到这个界面后，被调用</li>
+<li>OnReveal：同一个UIGroup中，这个界面从被覆盖的状态恢复到处于最上层后，被调用</li>
+</ul>
+</li>
+<li><p>OnPause &amp; OnResume</p>
+</li>
+<li><ul>
+<li>OnPause：当UIGroup的Pause属性被设置为True时，UIGroup中的所有UIForm的OnPause都被调用，或者当界面被另一个属性PauseCoveredUIForm为True的界面覆盖且当前界面Pause状态为False时，OnPause被调用</li>
+<li>OnResume：当界面Pause状态为True时，从被其他属性PauseCoveredUIForm为True的界面取消覆盖，且所属UIGroup的Pause属性也为False的时候，OnResume被调用</li>
+</ul>
+</li>
+<li><p>OnUpdate：界面打开后，只要不处于Pause状态，就会被每帧调用</p>
+</li>
+</ul>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><ul>
+<li>OnDepthChanged：当界面在当前的UIGroup中的深度发生变化时，被调用</li>
+<li>OnRefocus：当界面被强制（不遵循栈的规则，从不靠近栈顶的位置，直接回到栈顶）聚焦时，会被调用</li>
+</ul>
+<h2 id="UIFormLogic"><a href="#UIFormLogic" class="headerlink" title="UIFormLogic"></a>UIFormLogic</h2><p><img src="/posts/3278/2.jpg" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p>UIFormLogic为UI界面的具体逻辑类，类内有UIForm的所有生命周期方法，与之一一对应，框架将会调用到UIForm里的生命周期方法，而UIForm再调用到UIFormLogic中对应的方法，游戏业务层不对UIForm做扩展，而是对UIFormLogic继承进行扩展，可以根据具体使用的UI方案（ugui或ngui或其他）来继承UIFormLogic实现相应的UguiForm类等，而游戏中各个具体窗口再继承这个UI方案类，实现界面的具体逻辑。</p>
+<h2 id="UIManager"><a href="#UIManager" class="headerlink" title="UIManager"></a>UIManager</h2><p>UIManager是外部访问框架UI模块的入口。</p>
+<h3 id="查询接口"><a href="#查询接口" class="headerlink" title="查询接口"></a>查询接口</h3><p>提供HasUIGroup、GetUIGroup、GetAllUIGroups、HasUIForm、GetUIForm、GetUIForms、GetAllLoadedUIForms、GetAllLoadingUIFormSerialIds、IsLoadingUIForm、IsValidUIForm方法以对UIGroup和UIForm进行查询。</p>
+<h3 id="操作接口"><a href="#操作接口" class="headerlink" title="操作接口"></a>操作接口</h3><p>提供AddUIGroup、OpenUIForm、CloseUIForm、CloseAllLoadedUIForms、CloseAllLoadingUIForms、RefocusUIForm对UIGroup和UIForm进行操作。</p>
+<h3 id="UIGroup的管理"><a href="#UIGroup的管理" class="headerlink" title="UIGroup的管理"></a>UIGroup的管理</h3><p>UIManager内部以Dictionary字典结构来储存所有UIGroup，UIManager的Update方法中会遍历这个字典，调用所有UIGroup的Update方法，而UIGroup的Update方法再调用UIForm的Update方法。</p>
+<p>UIManager对外提供的UIForm相关的查询方法，都会遍历这个字典，从所有UIGroup找出一个或所有符合条件的UIForm。</p>
+<h3 id="UIManager的资源管理"><a href="#UIManager的资源管理" class="headerlink" title="UIManager的资源管理"></a>UIManager的资源管理</h3><p>UIManager内部会用GF的对象池模块创建一个对象池，用于缓存UIForm对象的GameObject实例，外部调用OpenUIForm来打开UI时，会先尝试从对象池获取该界面，若对象池中有同类型的空闲实例，则直接取出使用，若没有则从资源模块加载，加载成功后，会注册到对象池中，再交给UIManager使用。而调用CloseUIForm来关闭UI时，UIForm会被加到Queue类型的字段m_RecycleQueue中，在下一次Update时，会把队列所有元素取出，回收到对象池中。</p>
+<h3 id="UIManager中的m-Serial"><a href="#UIManager中的m-Serial" class="headerlink" title="UIManager中的m_Serial"></a>UIManager中的m_Serial</h3><p>UIManager内维护了一个私有字段m_Serial，每次调用OpenUIForm的时候，m_Serial都会自增1，他表示了每个UIForm在其生命周期内的唯一<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=184605643&content_type=Article&match_order=1&q=%E6%A0%87%E8%AF%86%E7%AC%A6&zhida_source=entity">标识符</a>，即使是同一个UIForm实例，被关闭后放回对象池，再被取出来使用，其m_Serial也会发生变化，而且m_Serial在调用OpenUIForm时立刻生成，不需要等资源加载完毕。</p>
+<h3 id="OpenUIForm流程"><a href="#OpenUIForm流程" class="headerlink" title="OpenUIForm流程"></a>OpenUIForm流程</h3><p><img src="/posts/3278/3.jpg" srcset="/img/loading.gif" lazyload alt="3"></p>
+<ol>
+<li>调用UIManager的OpenUIForm接口</li>
+<li>尝试从对象池生成对应的UIForm的GameObject</li>
+</ol>
+<ul>
+<li>若从对象池取出成功，则直接跳至步骤5</li>
+<li>若失败，则到步骤3</li>
+</ul>
+<ol>
+<li>把这次加载UIForm的序列Id记得到m_UIFormsBeingLoaded中</li>
+<li>通过资源模块加载UIForm的资源</li>
+</ol>
+<ul>
+<li>若加载成功，从m_UIFormsBeingLoaded移除这次加载的UIForm的序列Id，把加载出来的资源注册到对象池中，跳到步骤5</li>
+<li>若加载失败，从m_UIFormsBeingLoaded移除这次加载的UIForm的序列Id，并抛出错误，终止流程</li>
+</ul>
+<ol>
+<li>调用UIManager的InternalOpenUIForm，先调用UIForm的OnInit，然后找到把UIForm加入对应的UIGroup中，再调用UIForm的Open，然后调用UIGroup的Refresh，Refresh内部再调用UIForm的OnReveal、OnResume</li>
+</ol>
+<h3 id="CloseUIForm流程"><a href="#CloseUIForm流程" class="headerlink" title="CloseUIForm流程"></a>CloseUIForm流程</h3><p><img src="/posts/3278/4.jpg" srcset="/img/loading.gif" lazyload alt="4"></p>
+<ol>
+<li>调用UIManager的CloseUIForm接口</li>
+<li>判断这个UIForm是否处于加载中（只有通过序列Id来关闭，才会有这个步骤，若通过UIForm关闭，则直接走步骤3）</li>
+</ol>
+<ul>
+<li>正在加载中：m_UIFormsToReleaseOnLoad和m_UIFormsBeingLoaded都加入UIForm的序列Id，终止流程</li>
+<li>不在加载中：跳到步骤3</li>
+</ul>
+<ol>
+<li>从UIGroup中移除该UIForm，并调用UIForm的OnClose后，调用UIGroup的Refresh，Refresh内部再调用UIForm的OnCover、OnPause</li>
+<li>把UIForm进队m_RecycleQueue</li>
+<li>再下一次Update，会把m_RecycleQueue中所有UIForm出队，并调用OnRecycle方法</li>
+<li>把UIForm归还给<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=184605643&content_type=Article&match_order=13&q=%E5%AF%B9%E8%B1%A1%E6%B1%A0&zhida_source=entity">对象池</a></li>
+</ol>
+<h3 id="关闭正在加载的UIForm"><a href="#关闭正在加载的UIForm" class="headerlink" title="关闭正在加载的UIForm"></a>关闭正在加载的UIForm</h3><p>在游戏业务中，如果加载资源方式是<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=184605643&content_type=Article&match_order=1&q=%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD&zhida_source=entity">异步加载</a>，那么我们可能会遇到在打开UI后，需要等待一段时间去加载，而在这期间又触发了特定逻辑，需要取消这个界面的打开，GF对这种情况也提供了很好的支持，只需要在调用OpenUIForm时，保存返回的序列Id，调用CloseUIForm传入这个Id，即可在资源加载完成后销毁这个资源（Unity并不支持取消加载，只能在加载后销毁）。</p>
+<p>上文OpenUIForm和CloseUIForm流程中，可以看到有两个特殊字段m_UIFormsBeingLoaded和m_UIFormsToReleaseOnLoad，m_UIFormsBeingLoaded记录了正在加载的Id，而m_UIFormsToReleaseOnLoad记录了需要在加载完毕直接销毁的Id，在CloseUIForm时，会去判断传入的Id是否在m_UIFormsBeingLoaded中，如果是则从其中移除，然后把Id加入到m_UIFormsToReleaseOnLoad中，在资源加载后的回调中，会判断m_UIFormsToReleaseOnLoad是否包含加载的UIForm的Id，若包含则直接销毁，不会走InternalOpenUIForm流程。</p>
+<h2 id="打开单一UIForm的生命周期流程"><a href="#打开单一UIForm的生命周期流程" class="headerlink" title="打开单一UIForm的生命周期流程"></a>打开单一UIForm的生命周期流程</h2><p><img src="/posts/3278/5.jpg" srcset="/img/loading.gif" lazyload alt="5"></p>
+<h2 id="在同一个UIGroup中相继打开两个UIForm的生命周期流程"><a href="#在同一个UIGroup中相继打开两个UIForm的生命周期流程" class="headerlink" title="在同一个UIGroup中相继打开两个UIForm的生命周期流程"></a>在同一个UIGroup中相继打开两个UIForm的生命周期流程</h2><p><img src="/posts/3278/6.jpg" srcset="/img/loading.gif" lazyload alt="6"></p>
+<h2 id="UIGroup中刷新UI流程"><a href="#UIGroup中刷新UI流程" class="headerlink" title="UIGroup中刷新UI流程"></a>UIGroup中刷新UI流程</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br><span class="hljs-comment"><span class="hljs-doctag">///</span> 刷新界面组。</span><br><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Refresh</span>()</span><br>&#123;<br>    LinkedListNode&lt;UIFormInfo&gt; current = m_UIFormInfos.First;<br>    <span class="hljs-built_in">bool</span> pause = m_Pause;<br>    <span class="hljs-built_in">bool</span> cover = <span class="hljs-literal">false</span>;<br>    <span class="hljs-built_in">int</span> depth = UIFormCount;<br>    <span class="hljs-keyword">while</span> (current != <span class="hljs-literal">null</span> &amp;&amp; current.Value != <span class="hljs-literal">null</span>)<br>    &#123;<br>        LinkedListNode&lt;UIFormInfo&gt; next = current.Next;<br>        current.Value.UIForm.OnDepthChanged(Depth, depth--);<br>        <span class="hljs-keyword">if</span> (current.Value == <span class="hljs-literal">null</span>)<br>        &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (pause)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (!current.Value.Covered)<br>            &#123;<br>                current.Value.Covered = <span class="hljs-literal">true</span>;<br>                current.Value.UIForm.OnCover();<br>                <span class="hljs-keyword">if</span> (current.Value == <span class="hljs-literal">null</span>)<br>                &#123;<br>                    <span class="hljs-keyword">return</span>;<br>                &#125;<br>            &#125;<br><br>            <span class="hljs-keyword">if</span> (!current.Value.Paused)<br>            &#123;<br>                current.Value.Paused = <span class="hljs-literal">true</span>;<br>                current.Value.UIForm.OnPause();<br>                <span class="hljs-keyword">if</span> (current.Value == <span class="hljs-literal">null</span>)<br>                &#123;<br>                    <span class="hljs-keyword">return</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (current.Value.Paused)<br>            &#123;<br>                current.Value.Paused = <span class="hljs-literal">false</span>;<br>                current.Value.UIForm.OnResume();<br>                <span class="hljs-keyword">if</span> (current.Value == <span class="hljs-literal">null</span>)<br>                &#123;<br>                    <span class="hljs-keyword">return</span>;<br>                &#125;<br>            &#125;<br><br>            <span class="hljs-keyword">if</span> (current.Value.UIForm.PauseCoveredUIForm)<br>            &#123;<br>                pause = <span class="hljs-literal">true</span>;<br>            &#125;<br><br>            <span class="hljs-keyword">if</span> (cover)<br>            &#123;<br>                <span class="hljs-keyword">if</span> (!current.Value.Covered)<br>                &#123;<br>                    current.Value.Covered = <span class="hljs-literal">true</span>;<br>                    current.Value.UIForm.OnCover();<br>                    <span class="hljs-keyword">if</span> (current.Value == <span class="hljs-literal">null</span>)<br>                    &#123;<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br>                &#125;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                <span class="hljs-keyword">if</span> (current.Value.Covered)<br>                &#123;<br>                    current.Value.Covered = <span class="hljs-literal">false</span>;<br>                    current.Value.UIForm.OnReveal();<br>                    <span class="hljs-keyword">if</span> (current.Value == <span class="hljs-literal">null</span>)<br>                    &#123;<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br>                &#125;<br><br>                cover = <span class="hljs-literal">true</span>;<br>            &#125;<br>        &#125;<br><br>        current = next;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="/posts/3278/7.jpg" srcset="/img/loading.gif" lazyload alt="7"></p>
+<p>UIGroup中的Refresh方法的具体实现，个人认为是UI模块中最值得拿出来细读的一段代码，该方法以正序遍历内部链表结构，也就是从层级最高的界面逐个迭代到层级最低的界面，并根据实际情况调用UIForm的生命周期方法。</p>
+<p>注意上面流程图中条件判断包括有Covered、Paused和cover、pause，Covered、Paused是指当前正在迭代的UIForm的状态，根据其状态决定是否需要执行OnCover、OnPause、OnReveal、OnResume，而cover和pause是记录着从第一次迭代开始就记录着的状态，只要迭代过程中出现过一次true，则后面的迭代中cover或pause肯定为true，因为上面的界面处于Covered或Paused状态时，下面的界面必然也处于Covered或Paused状态，所以cover或pause肯定为true时，不会执行OnReveal或OnResume。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity/" class="category-chain-item">Unity</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Unity/Unity%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/" class="category-chain-item">Unity游戏框架</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Unity/Unity%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/GameFramework/" class="category-chain-item">GameFramework</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>GameFramework界面（UI）</div>
+      <div>https://yonghengshikong.github.io/posts/3278/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/1966/" title="GameFramework简介">
+                        <span class="hidden-mobile">GameFramework简介</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

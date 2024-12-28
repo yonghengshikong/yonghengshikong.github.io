@@ -1,0 +1,772 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1. Unity 基础知识 Unity 引擎的架构与工作原理 介绍 Unity 引擎的架构和工作原理，了解 Unity 的核心模块和功能，包括编辑器、脚本、物理引擎、渲染管线等。子主题： Unity 编辑器、脚本与组件、GameObject 与 Scene。 Unity 的生命周期：从初始化到销毁 讲解 Unity 中的生命周期，如何理解 Awake、Start、Update、LateUpdate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity 基础知识">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/27814/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. Unity 基础知识 Unity 引擎的架构与工作原理 介绍 Unity 引擎的架构和工作原理，了解 Unity 的核心模块和功能，包括编辑器、脚本、物理引擎、渲染管线等。子主题： Unity 编辑器、脚本与组件、GameObject 与 Scene。 Unity 的生命周期：从初始化到销毁 讲解 Unity 中的生命周期，如何理解 Awake、Start、Update、LateUpdate">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-21T03:01:16.000Z">
+<meta property="article:modified_time" content="2024-12-28T09:51:16.457Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Unity 基础知识 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unity 基础知识"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-21 11:01" pubdate>
+          2024年12月21日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Unity 基础知识</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-Unity-基础知识"><a href="#1-Unity-基础知识" class="headerlink" title="1. Unity 基础知识"></a><a href="https://yonghengshikong.github.io/posts/39444"><strong>1. Unity 基础知识</strong></a></h3><ul>
+<li><strong>Unity 引擎的架构与工作原理</strong> 介绍 Unity 引擎的架构和工作原理，了解 Unity 的核心模块和功能，包括编辑器、脚本、物理引擎、渲染管线等。<br><strong>子主题：</strong> Unity 编辑器、脚本与组件、GameObject 与 Scene。</li>
+<li><strong>Unity 的生命周期：从初始化到销毁</strong> 讲解 Unity 中的生命周期，如何理解 <code>Awake</code>、<code>Start</code>、<code>Update</code>、<code>LateUpdate</code> 等函数的执行顺序，何时调用它们以及如何使用这些生命周期函数。</li>
+</ul>
+<hr>
+<h3 id="2-Unity-脚本与编程"><a href="#2-Unity-脚本与编程" class="headerlink" title="2. Unity 脚本与编程"></a><a href="https://yonghengshikong.github.io/posts/62789/"><strong>2. Unity 脚本与编程</strong></a></h3><ul>
+<li><strong>Unity 脚本的生命周期与组件化设计</strong> 深入讲解如何在 Unity 中设计可复用的脚本组件，如何管理和调试 Unity 脚本，以及如何使用 C# 编写高效的游戏逻辑。</li>
+<li><strong>Unity 中的事件系统与消息传递</strong> 讲解 Unity 的事件系统，如何实现不同对象间的通信，如何使用 Unity 的消息传递机制（如 <code>SendMessage</code>、<code>BroadcastMessage</code>、<code>Event</code> 等）。</li>
+<li><strong>协程与异步操作的使用</strong> 深入探讨协程（Coroutine）的工作原理，以及如何通过协程进行延时操作、异步加载等任务的管理，提升游戏性能和体验。</li>
+<li><strong>Unity 中的脚本组件化设计与组织</strong> 讲解如何在 Unity 中设计可复用和高效的脚本结构，如何组织项目中的脚本模块，如如何划分游戏逻辑、控制器、视图等职责，保持代码的清晰和易维护性。<br><strong>子主题：</strong> 单例模式、组件化设计、依赖注入。</li>
+<li><strong>脚本性能优化与内存管理</strong> 如何优化脚本中的内存使用，减少 GC（垃圾回收）频率，避免性能瓶颈。通过合理使用对象池、优化循环、减少频繁的内存分配等手段来提升游戏性能。</li>
+</ul>
+<hr>
+<h3 id="3-Unity-渲染与图形"><a href="#3-Unity-渲染与图形" class="headerlink" title="3. Unity 渲染与图形"></a><a href="https://yonghengshikong.github.io/posts/28561/"><strong>3. Unity 渲染与图形</strong></a></h3><ul>
+<li><strong>Unity 渲染管线的原理与优化</strong> 深入讲解 Unity 渲染管线（如 Forward 和 Deferred 渲染），以及如何优化游戏中的渲染性能。<br><strong>子主题：</strong> 渲染队列、材质与 Shader、光照与阴影。</li>
+<li><strong>使用 Shader 实现自定义效果</strong> 介绍如何使用 Shader 编写自定义效果，从基础的顶点着色器到复杂的像素着色器，如何利用 Shader 实现光照、反射、折射等效果。</li>
+</ul>
+<hr>
+<h3 id="4-Unity-动画系统"><a href="#4-Unity-动画系统" class="headerlink" title="4. Unity 动画系统"></a><a href="https://yonghengshikong.github.io/posts/43010/"><strong>4. Unity 动画系统</strong></a></h3><ul>
+<li><strong>Unity 动画系统原理：从动画控制器到动画状态机</strong> 讲解 Unity 动画系统的基础，如何使用 Animator 控制角色动画，如何通过状态机和过渡来管理动画的切换。<br><strong>子主题：</strong> 动画事件、Blend Tree、动态调整动画。</li>
+<li><strong>骨骼动画与物体动画的区别与应用</strong> 深入分析骨骼动画与物体动画的区别，何时使用它们，以及如何在 Unity 中使用这些动画技术进行角色与物体的动画处理。</li>
+</ul>
+<hr>
+<h3 id="5-Unity-UI-与用户体验"><a href="#5-Unity-UI-与用户体验" class="headerlink" title="5. Unity UI 与用户体验"></a><a href="https://yonghengshikong.github.io/posts/63931/"><strong>5. Unity UI 与用户体验</strong></a></h3><ul>
+<li><strong>Unity UI 系统的工作原理与使用技巧</strong> 详细讲解 Unity 的 UI 系统，包括 Canvas、Text、Button、Image 等 UI 组件的使用方法，以及如何通过布局管理器来组织 UI。<br><strong>子主题：</strong> 动态 UI 更新、UI 性能优化、触摸与手势识别。</li>
+<li><strong>UI 动画与交互：提升用户体验</strong> 如何通过动画和交互设计提升游戏 UI 的可用性与美观性，如何利用 <code>Animator</code> 和 <code>CanvasGroup</code> 实现动态 UI 效果。</li>
+</ul>
+<hr>
+<h3 id="6-Unity-物理引擎"><a href="#6-Unity-物理引擎" class="headerlink" title="6. Unity 物理引擎"></a><a href="https://yonghengshikong.github.io/posts/61900/"><strong>6. Unity 物理引擎</strong></a></h3><ul>
+<li><strong>Unity 物理引擎的工作原理与优化</strong> 详细讲解 Unity 中的物理引擎原理，包括碰撞检测、刚体模拟、力和重力等。并讨论如何优化物理计算，提升游戏性能。<br><strong>子主题：</strong> <code>Rigidbody</code>、<code>Collider</code>、<code>OnCollisionEnter</code>、<code>OnTriggerEnter</code>。</li>
+<li><strong>使用力与物理材料实现真实感物理效果</strong> 介绍如何使用物理力、摩擦力、弹性等物理材料，来模拟更加真实的物理效果，如物体的滑动、跳跃、碰撞等。</li>
+</ul>
+<hr>
+<h3 id="7-Unity-网络与多人游戏"><a href="#7-Unity-网络与多人游戏" class="headerlink" title="7. Unity 网络与多人游戏"></a><a href="https://yonghengshikong.github.io/posts/41458/"><strong>7. Unity 网络与多人游戏</strong></a></h3><ul>
+<li><strong>Unity 网络基础：从 Unity Networking 到 Mirror</strong> 讲解 Unity 的网络架构和相关 API，如何使用 Unity Networking 或 Mirror 框架来实现多人在线游戏。<br><strong>子主题：</strong> 网络同步、RPC、服务器与客户端架构。</li>
+<li><strong>Unity 中的 WebSocket 与实时通信</strong> 讲解如何在 Unity 中使用 WebSocket 实现实时通信，如何处理客户端与服务器之间的实时数据传输。</li>
+</ul>
+<hr>
+<h3 id="8-Unity-资源管理与优化"><a href="#8-Unity-资源管理与优化" class="headerlink" title="8. Unity 资源管理与优化"></a><a href="https://yonghengshikong.github.io/posts/58560/"><strong>8. Unity 资源管理与优化</strong></a></h3><ul>
+<li><strong>Unity 资源管理：AssetBundle 与 Addressable</strong> 讲解如何使用 <code>AssetBundle</code> 和 <code>Addressable</code> 系统来优化资源的加载与卸载，如何管理大型项目中的资源。<br><strong>子主题：</strong> 异步加载、资源缓存、内存优化。</li>
+<li><strong>Unity 性能优化：从 CPU 到 GPU</strong> 介绍 Unity 中如何进行性能优化，如何使用 Profiler 工具分析和优化游戏的 CPU 和 GPU 性能。</li>
+</ul>
+<hr>
+<h3 id="9-Unity-存档与数据管理"><a href="#9-Unity-存档与数据管理" class="headerlink" title="9. Unity 存档与数据管理"></a><a href="https://yonghengshikong.github.io/posts/24463/"><strong>9. Unity 存档与数据管理</strong></a></h3><ul>
+<li><strong>Unity 存档系统的设计与实现</strong> 讲解如何设计和实现游戏的存档系统，包括如何保存玩家的进度、物品、关卡等数据，如何使用 <code>PlayerPrefs</code> 和文件系统。</li>
+<li><strong>Unity 中的本地化与国际化支持</strong> 如何通过 Unity 的 Localization Package 来支持多语言和区域设置，如何管理游戏中的文本、图片、音效等多语言资源。</li>
+</ul>
+<hr>
+<h3 id="10-Unity-音频系统"><a href="#10-Unity-音频系统" class="headerlink" title="10. Unity 音频系统"></a><a href="https://yonghengshikong.github.io/posts/63726/"><strong>10. Unity 音频系统</strong></a></h3><ul>
+<li><strong>Unity 音频系统的基础与使用</strong> 介绍 Unity 音频系统的基本原理，如何在游戏中加载和播放音频文件，如何通过 <code>AudioSource</code> 和 <code>AudioClip</code> 进行音频管理。<br><strong>子主题：</strong> 音频播放控制、音效与背景音乐、音量调节、循环播放。</li>
+<li><strong>音频效果与处理：3D 音效与混响</strong> 讲解如何使用 Unity 实现 3D 音效的空间化，包括如何通过 <code>AudioListener</code> 和 <code>AudioSource</code> 实现立体声效和定位音效，如何使用混响、延迟等音频效果来提升沉浸感。</li>
+<li><strong>Unity 中的音频优化技巧</strong> 讨论音频文件的优化，如何使用压缩格式、调整音频质量、控制音频加载和播放的时机，避免音频资源的浪费导致性能问题。</li>
+</ul>
+<hr>
+<h3 id="11-Unity-跨平台与多平台适配"><a href="#11-Unity-跨平台与多平台适配" class="headerlink" title="11. Unity 跨平台与多平台适配"></a><a href="https://yonghengshikong.github.io/posts/4184/"><strong>11. Unity 跨平台与多平台适配</strong></a></h3><ul>
+<li><strong>跨平台开发与构建流程</strong> 如何在 Unity 中开发跨平台游戏，如何处理不同平台之间的差异（如输入、分辨率、性能、内存等），确保游戏在 Android、iOS、PC、Console 等多个平台的兼容性。<br><strong>子主题：</strong> 平台特有 API、平台间差异适配、设备性能优化。</li>
+<li><strong>Unity 中的多分辨率与屏幕适配</strong> 讲解如何使用 Unity 中的 <code>CanvasScaler</code> 和屏幕分辨率适配技术，确保游戏在不同尺寸和分辨率的屏幕上都能有良好的显示效果。</li>
+</ul>
+<hr>
+<h3 id="12-Unity-性能优化与调试"><a href="#12-Unity-性能优化与调试" class="headerlink" title="12. Unity 性能优化与调试"></a><a href="https://yonghengshikong.github.io/posts/16666/"><strong>12. Unity 性能优化与调试</strong></a></h3><ul>
+<li><strong>Unity 性能调试与优化工具</strong> 介绍如何使用 Unity Profiler 进行性能调试，如何通过分析 CPU、GPU、内存和网络的性能来发现和解决性能瓶颈。<br><strong>子主题：</strong> 渲染优化、内存优化、异步加载与对象池。</li>
+<li><strong>常见性能问题与优化策略</strong> 讨论 Unity 中常见的性能问题，如过多的 Draw Call、内存泄漏、频繁的 GC 等，以及如何通过对象池、合批、减小物体多样性等方法进行优化。</li>
+<li><strong>Unity 内存管理与垃圾回收（GC）</strong> 深入讲解 Unity 中的内存管理机制，如何避免 GC 引发的性能问题，如何合理管理资源加载和卸载，使用对象池来减少内存分配。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity/" class="category-chain-item">Unity</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Unity/Unity%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="category-chain-item">Unity基础知识</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unity 基础知识</div>
+      <div>https://yonghengshikong.github.io/posts/27814/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/27814/" title="Unity TextMeshPro使用中文字体">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Unity TextMeshPro使用中文字体</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/12109/" title="Unity 资源管理：Resources、AssetBundle 和 Addressable 的对比详解">
+                        <span class="hidden-mobile">Unity 资源管理：Resources、AssetBundle 和 Addressable 的对比详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

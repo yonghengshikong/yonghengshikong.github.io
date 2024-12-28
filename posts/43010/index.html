@@ -1,0 +1,772 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Unity 动画系统：动画控制、状态机与骨骼动画的实际使用与 API 调用Unity 提供了强大的动画系统，可以帮助开发者制作和管理游戏中的各种动画效果。在实际的开发过程中，我们不仅需要理解动画控制器、状态机和骨骼动画的基础概念，还需要通过 API 调用来控制和操作动画的播放、暂停、状态切换等。本篇博客将结合实际使用，深入讲解 Unity 动画系统的 API 调用，帮助开发者更好地在项目中使用动画">
+<meta property="og:type" content="article">
+<meta property="og:title" content="04、Unity 动画系统：动画控制、状态机与骨骼动画">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/43010/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Unity 动画系统：动画控制、状态机与骨骼动画的实际使用与 API 调用Unity 提供了强大的动画系统，可以帮助开发者制作和管理游戏中的各种动画效果。在实际的开发过程中，我们不仅需要理解动画控制器、状态机和骨骼动画的基础概念，还需要通过 API 调用来控制和操作动画的播放、暂停、状态切换等。本篇博客将结合实际使用，深入讲解 Unity 动画系统的 API 调用，帮助开发者更好地在项目中使用动画">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-04T03:01:16.000Z">
+<meta property="article:modified_time" content="2024-12-28T08:49:37.765Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>04、Unity 动画系统：动画控制、状态机与骨骼动画 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="04、Unity 动画系统：动画控制、状态机与骨骼动画"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-04 11:01" pubdate>
+          2024年12月4日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">04、Unity 动画系统：动画控制、状态机与骨骼动画</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Unity-动画系统：动画控制、状态机与骨骼动画的实际使用与-API-调用"><a href="#Unity-动画系统：动画控制、状态机与骨骼动画的实际使用与-API-调用" class="headerlink" title="Unity 动画系统：动画控制、状态机与骨骼动画的实际使用与 API 调用"></a>Unity 动画系统：动画控制、状态机与骨骼动画的实际使用与 API 调用</h1><p>Unity 提供了强大的动画系统，可以帮助开发者制作和管理游戏中的各种动画效果。在实际的开发过程中，我们不仅需要理解动画控制器、状态机和骨骼动画的基础概念，还需要通过 API 调用来控制和操作动画的播放、暂停、状态切换等。本篇博客将结合实际使用，深入讲解 Unity 动画系统的 API 调用，帮助开发者更好地在项目中使用动画。</p>
+<hr>
+<h3 id="1-Unity-动画系统原理：从动画控制器到动画状态机"><a href="#1-Unity-动画系统原理：从动画控制器到动画状态机" class="headerlink" title="1. Unity 动画系统原理：从动画控制器到动画状态机"></a><strong>1. Unity 动画系统原理：从动画控制器到动画状态机</strong></h3><h4 id="1-1-动画控制器与-Animator-组件"><a href="#1-1-动画控制器与-Animator-组件" class="headerlink" title="1.1 动画控制器与 Animator 组件"></a>1.1 <strong>动画控制器与 Animator 组件</strong></h4><p>在 Unity 中，<strong>Animator</strong> 组件是管理和控制角色动画的核心组件，通常附加到带有模型的 GameObject 上。通过 Animator 控制器，可以实现动画的播放、切换和过渡。以下是一些常用的 Animator API：</p>
+<ul>
+<li><code>Animator.Play(string stateName)</code>：直接播放指定的动画状态。</li>
+<li><code>Animator.SetTrigger(string triggerName)</code>：设置触发器，通常用于控制动画的过渡。</li>
+<li><code>Animator.SetBool(string parameterName, bool value)</code>：设置布尔值参数，用于控制状态机中的过渡条件。</li>
+<li><code>Animator.SetFloat(string parameterName, float value)</code>：设置浮动值参数，例如角色的速度。</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 播放指定的动画状态</span><br>Animator animator = GetComponent&lt;Animator&gt;();<br>animator.Play(<span class="hljs-string">&quot;Run&quot;</span>);<br><br><span class="hljs-comment">// 设置布尔参数触发动画过渡</span><br>animator.SetBool(<span class="hljs-string">&quot;IsJumping&quot;</span>, <span class="hljs-literal">true</span>);<br><br><span class="hljs-comment">// 设置触发器以激活某个动作</span><br>animator.SetTrigger(<span class="hljs-string">&quot;Attack&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-2-动画状态机与过渡"><a href="#1-2-动画状态机与过渡" class="headerlink" title="1.2 动画状态机与过渡"></a>1.2 <strong>动画状态机与过渡</strong></h4><p>动画状态机是通过 <strong>Animator Controller</strong> 创建的，它定义了多个动画状态和状态之间的过渡条件。在代码中，我们可以通过动态设置 Animator 参数来控制动画的切换。</p>
+<p>以下是一些控制动画过渡的常用 API：</p>
+<ul>
+<li><code>Animator.CrossFade(string stateName, float transitionDuration)</code>：跨越淡入到指定动画状态，适用于平滑过渡。</li>
+<li><code>Animator.IsInTransition(int layerIndex)</code>：判断当前是否处于动画过渡状态。</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 跨越淡入到“Jump”动画，持续 0.3 秒</span><br>animator.CrossFade(<span class="hljs-string">&quot;Jump&quot;</span>, <span class="hljs-number">0.3f</span>);<br><br><span class="hljs-comment">// 判断是否处于过渡状态</span><br><span class="hljs-keyword">if</span> (animator.IsInTransition(<span class="hljs-number">0</span>))<br>&#123;<br>    Debug.Log(<span class="hljs-string">&quot;Currently transitioning between states.&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-动画事件与动态控制"><a href="#2-动画事件与动态控制" class="headerlink" title="2. 动画事件与动态控制"></a><strong>2. 动画事件与动态控制</strong></h3><p>动画事件是 Unity 中的一种机制，允许在动画播放过程中在指定的时间点触发函数。通过动画事件，可以实现在动画的特定帧上触发音效、执行脚本或调用其他游戏逻辑。</p>
+<h4 id="2-1-如何添加动画事件"><a href="#2-1-如何添加动画事件" class="headerlink" title="2.1 如何添加动画事件"></a>2.1 <strong>如何添加动画事件</strong></h4><ol>
+<li>打开 Animation 窗口，选择需要添加事件的动画片段。</li>
+<li>在时间轴上选择事件的触发点，右键点击并选择 <strong>Add Event</strong>。</li>
+<li>在 Inspector 窗口中为事件选择对应的函数。</li>
+</ol>
+<h4 id="2-2-通过代码调用动画事件"><a href="#2-2-通过代码调用动画事件" class="headerlink" title="2.2 通过代码调用动画事件"></a>2.2 <strong>通过代码调用动画事件</strong></h4><p>虽然动画事件一般是在编辑器中设置的，但你也可以通过代码动态地控制动画事件的触发。通过 <code>AnimationEvent</code> 类，你可以在代码中添加和修改动画事件。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c#">AnimationClip clip = animator.runtimeAnimatorController.animationClips[<span class="hljs-number">0</span>];<br><br><span class="hljs-comment">// 创建一个动画事件</span><br>AnimationEvent animationEvent = <span class="hljs-keyword">new</span> AnimationEvent();<br>animationEvent.time = <span class="hljs-number">1.0f</span>; <span class="hljs-comment">// 设置触发时间</span><br>animationEvent.functionName = <span class="hljs-string">&quot;OnAttack&quot;</span>; <span class="hljs-comment">// 设置调用的函数名称</span><br><br><span class="hljs-comment">// 将动画事件添加到动画片段</span><br>clip.AddEvent(animationEvent);<br><br><span class="hljs-comment">// 在目标脚本中实现 OnAttack 函数</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnAttack</span>()</span><br>&#123;<br>    Debug.Log(<span class="hljs-string">&quot;Attack animation triggered!&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-Blend-Tree（混合树）与动画平滑过渡"><a href="#3-Blend-Tree（混合树）与动画平滑过渡" class="headerlink" title="3. Blend Tree（混合树）与动画平滑过渡"></a><strong>3. Blend Tree（混合树）与动画平滑过渡</strong></h3><p>Blend Tree 是 Unity 动画系统中的一个重要工具，它允许你根据参数（如速度、方向等）在多个动画片段之间平滑过渡。在实际开发中，我们通常使用 Blend Tree 来处理复杂的动画效果，如角色的移动状态。</p>
+<h4 id="3-1-使用-Blend-Tree-动态调整动画"><a href="#3-1-使用-Blend-Tree-动态调整动画" class="headerlink" title="3.1 使用 Blend Tree 动态调整动画"></a>3.1 <strong>使用 Blend Tree 动态调整动画</strong></h4><p>Blend Tree 通过混合多个动画来实现平滑过渡，例如通过角色的速度和方向来切换跑步、行走或站立动画。以下是通过 API 动态控制 Blend Tree 的示例：</p>
+<ul>
+<li><code>Animator.SetFloat(string parameterName, float value)</code>：通过设置浮动值参数来影响 Blend Tree 的权重。</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 假设我们有一个 Blend Tree 参数 Speed 来控制角色的移动状态</span><br>Animator animator = GetComponent&lt;Animator&gt;();<br><span class="hljs-built_in">float</span> speed = <span class="hljs-number">5.0f</span>; <span class="hljs-comment">// 角色的移动速度</span><br>animator.SetFloat(<span class="hljs-string">&quot;Speed&quot;</span>, speed);<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-动态调整-Blend-Tree-的参数"><a href="#3-2-动态调整-Blend-Tree-的参数" class="headerlink" title="3.2 动态调整 Blend Tree 的参数"></a>3.2 <strong>动态调整 Blend Tree 的参数</strong></h4><p>在实际开发中，你可能会根据游戏中的实时情况动态调整 Blend Tree 的参数。例如，根据角色的速度动态调整角色的行走和跑步动画。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>&#123;<br>    <span class="hljs-comment">// 假设角色通过输入控制其移动</span><br>    <span class="hljs-built_in">float</span> speed = Mathf.Abs(Input.GetAxis(<span class="hljs-string">&quot;Vertical&quot;</span>)) + Mathf.Abs(Input.GetAxis(<span class="hljs-string">&quot;Horizontal&quot;</span>));<br>    animator.SetFloat(<span class="hljs-string">&quot;Speed&quot;</span>, speed);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-骨骼动画与物体动画的区别与应用"><a href="#4-骨骼动画与物体动画的区别与应用" class="headerlink" title="4. 骨骼动画与物体动画的区别与应用"></a><strong>4. 骨骼动画与物体动画的区别与应用</strong></h3><p>在 Unity 中，骨骼动画和物体动画的使用场景各不相同。骨骼动画主要用于角色或复杂物体的动画，而物体动画则常用于 UI 元素和简单物体的动画。</p>
+<h4 id="4-1-骨骼动画的-API-调用"><a href="#4-1-骨骼动画的-API-调用" class="headerlink" title="4.1 骨骼动画的 API 调用"></a>4.1 <strong>骨骼动画的 API 调用</strong></h4><p>骨骼动画通常用于控制角色的动作。Unity 提供了多种 API 来控制骨骼动画的播放和混合。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 获取骨骼动画的某个具体部位（如手臂）</span><br>Transform leftArm = animator.GetBoneTransform(HumanBodyBones.LeftUpperArm);<br>leftArm.Rotate(Vector3.up, <span class="hljs-number">30f</span> * Time.deltaTime); <span class="hljs-comment">// 让左臂旋转</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-2-物体动画的-API-调用"><a href="#4-2-物体动画的-API-调用" class="headerlink" title="4.2 物体动画的 API 调用"></a>4.2 <strong>物体动画的 API 调用</strong></h4><p>物体动画通常通过 <code>Transform</code> 控制物体的位置、旋转和缩放。以下是控制物体动画的常用 API：</p>
+<ul>
+<li><code>Transform.Translate(Vector3 translation)</code>：平移物体。</li>
+<li><code>Transform.Rotate(Vector3 eulerAngles)</code>：旋转物体。</li>
+<li><code>Transform.Scale(Vector3 scale)</code>：缩放物体。</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 控制物体位置移动</span><br>transform.Translate(Vector3.forward * Time.deltaTime * <span class="hljs-number">5</span>);<br><br><span class="hljs-comment">// 控制物体旋转</span><br>transform.Rotate(Vector3.up, <span class="hljs-number">90</span> * Time.deltaTime);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-动画性能优化与最佳实践"><a href="#5-动画性能优化与最佳实践" class="headerlink" title="5. 动画性能优化与最佳实践"></a><strong>5. 动画性能优化与最佳实践</strong></h3><p>在大型游戏中，动画的性能可能会成为瓶颈。以下是一些常见的动画性能优化技巧：</p>
+<ul>
+<li><strong>避免频繁的动画切换</strong>：频繁的动画切换会增加计算量，尽量避免不必要的状态变化。</li>
+<li>**使用 Animator Controller 的 <strong>Layer</strong> 和 <strong>Sub-State Machine</strong> 来隔离不同类型的动画，减少冗余的状态机计算。</li>
+<li><strong>动态加载与卸载动画</strong>：当不需要某些动画时，动态地卸载 Animator Controller，避免占用内存。</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 动态加载 Animator Controller</span><br>animator.runtimeAnimatorController = Resources.Load&lt;RuntimeAnimatorController&gt;(<span class="hljs-string">&quot;Animators/CharacterRun&quot;</span>);<br><br><span class="hljs-comment">// 动态卸载不需要的 Animator Controller</span><br>animator.runtimeAnimatorController = <span class="hljs-literal">null</span>;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p>Unity 的动画系统不仅强大且灵活，通过掌握 Animator Controller、动画状态机、Blend Tree 和动画事件，你可以为游戏中的角色和物体创建丰富的动画效果。在实际开发中，合理使用 API 来控制动画播放、切换和优化性能，将使你的项目更加流畅和高效。希望本篇博客能帮助你更好地理解 Unity 动画系统的实际使用，并在开发中充分利用其强大的功能。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity/" class="category-chain-item">Unity</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Unity/Unity%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="category-chain-item">Unity基础知识</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>04、Unity 动画系统：动画控制、状态机与骨骼动画</div>
+      <div>https://yonghengshikong.github.io/posts/43010/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/63931/" title="05、Unity UI 与用户体验：系统原理、交互设计与性能优化">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">05、Unity UI 与用户体验：系统原理、交互设计与性能优化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/28561/" title="03、Unity 渲染与图形：渲染管线、优化与自定义 Shader">
+                        <span class="hidden-mobile">03、Unity 渲染与图形：渲染管线、优化与自定义 Shader</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
