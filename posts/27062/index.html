@@ -1,0 +1,839 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="C# 泛型（Generic）1.泛型的基本概念泛型（Generic）是 C#中一种强大的类型系统特性，允许你定义类、结构、接口、方法等，使其可以使用任意类型作为参数。泛型的主要用途包括： • 类型安全：确保集合中的所有元素都是同一类型，避免类型转换错误。 • 代码复用：编写通用的类和方法，减少重复代码。 • 性能优化：避免装箱和拆箱操作，提高性能。 2.泛型的语法2.1 泛型类泛型类是一种可以使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#泛型（Generic）">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/27062/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C# 泛型（Generic）1.泛型的基本概念泛型（Generic）是 C#中一种强大的类型系统特性，允许你定义类、结构、接口、方法等，使其可以使用任意类型作为参数。泛型的主要用途包括： • 类型安全：确保集合中的所有元素都是同一类型，避免类型转换错误。 • 代码复用：编写通用的类和方法，减少重复代码。 • 性能优化：避免装箱和拆箱操作，提高性能。 2.泛型的语法2.1 泛型类泛型类是一种可以使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-16T14:01:53.743Z">
+<meta property="article:modified_time" content="2025-01-16T14:47:27.583Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C#泛型（Generic） - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C#泛型（Generic）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-16 22:01" pubdate>
+          2025年1月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C#泛型（Generic）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="C-泛型（Generic）"><a href="#C-泛型（Generic）" class="headerlink" title="C# 泛型（Generic）"></a>C# 泛型（Generic）</h1><h2 id="1-泛型的基本概念"><a href="#1-泛型的基本概念" class="headerlink" title="1.泛型的基本概念"></a>1.泛型的基本概念</h2><p>泛型（Generic）是 C#中一种强大的类型系统特性，允许你定义类、结构、接口、方法等，使其可以使用任意类型作为参数。泛型的主要用途包括：</p>
+<p>• 类型安全：确保集合中的所有元素都是同一类型，避免类型转换错误。</p>
+<p>• 代码复用：编写通用的类和方法，减少重复代码。</p>
+<p>• 性能优化：避免装箱和拆箱操作，提高性能。</p>
+<h2 id="2-泛型的语法"><a href="#2-泛型的语法" class="headerlink" title="2.泛型的语法"></a>2.泛型的语法</h2><h3 id="2-1-泛型类"><a href="#2-1-泛型类" class="headerlink" title="2.1 泛型类"></a>2.1 泛型类</h3><p>泛型类是一种可以使用任意类型作为参数的类。定义泛型类时，使用<code>&lt;T&gt;</code>表示类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericClass</span>&lt;<span class="hljs-title">T</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-keyword">public</span> T Value<br>    &#123;<br>        <span class="hljs-keyword">get</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>; &#125;<br>        <span class="hljs-keyword">set</span> &#123; <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>; &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>使用泛型类时，需要指定具体的类型参数：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">MyGenericClass&lt;<span class="hljs-built_in">int</span>&gt; intClass = <span class="hljs-keyword">new</span> MyGenericClass&lt;<span class="hljs-built_in">int</span>&gt;();<br>intClass.Value = <span class="hljs-number">10</span>;<br><br>MyGenericClass&lt;<span class="hljs-built_in">string</span>&gt; stringClass = <span class="hljs-keyword">new</span> MyGenericClass&lt;<span class="hljs-built_in">string</span>&gt;();<br>stringClass.Value = <span class="hljs-string">&quot;Hello, World!&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-2-泛型方法"><a href="#2-2-泛型方法" class="headerlink" title="2.2 泛型方法"></a>2.2 泛型方法</h3><p>泛型方法是一种可以使用任意类型作为参数的方法。定义泛型方法时，使用<code>&lt;T&gt;</code>表示类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericMethods</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">GetDefault</span>&lt;<span class="hljs-title">T</span>&gt;()</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">default</span>(T);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>使用泛型方法时，可以省略类型参数，编译器会自动推断类型：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">MyGenericMethods methods = <span class="hljs-keyword">new</span> MyGenericMethods();<br><span class="hljs-built_in">int</span> defaultValue = methods.GetDefault&lt;<span class="hljs-built_in">int</span>&gt;(); <span class="hljs-comment">// 显式指定类型</span><br><span class="hljs-built_in">string</span> stringValue = methods.GetDefault(); <span class="hljs-comment">// 编译器自动推断类型</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-3-泛型接口"><a href="#2-3-泛型接口" class="headerlink" title="2.3 泛型接口"></a>2.3 泛型接口</h3><p>泛型接口是一种可以使用任意类型作为参数的接口。定义泛型接口时，使用<code>&lt;T&gt;</code>表示类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">IGenericInterface</span>&lt;<span class="hljs-title">T</span>&gt;<br>&#123;<br>    <span class="hljs-function">T <span class="hljs-title">GetValue</span>()</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">SetValue</span>(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>实现泛型接口时，需要指定具体的类型参数：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericClass</span>&lt;<span class="hljs-title">T</span>&gt; : <span class="hljs-title">IGenericInterface</span>&lt;<span class="hljs-title">T</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">GetValue</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SetValue</span>(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span><br>    &#123;<br>        <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-4-泛型结构"><a href="#2-4-泛型结构" class="headerlink" title="2.4 泛型结构"></a>2.4 泛型结构</h3><p>泛型结构是一种可以使用任意类型作为参数的结构。定义泛型结构时，使用<code>&lt;T&gt;</code>表示类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">struct</span> MyGenericStruct&lt;T&gt;<br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-keyword">public</span> T Value<br>    &#123;<br>        <span class="hljs-keyword">get</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>; &#125;<br>        <span class="hljs-keyword">set</span> &#123; <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>; &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>使用泛型结构时，需要指定具体的类型参数：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">MyGenericStruct&lt;<span class="hljs-built_in">int</span>&gt; intStruct = <span class="hljs-keyword">new</span> MyGenericStruct&lt;<span class="hljs-built_in">int</span>&gt;();<br>intStruct.Value = <span class="hljs-number">20</span>;<br><br>MyGenericStruct&lt;<span class="hljs-built_in">string</span>&gt; stringStruct = <span class="hljs-keyword">new</span> MyGenericStruct&lt;<span class="hljs-built_in">string</span>&gt;();<br>stringStruct.Value = <span class="hljs-string">&quot;Hello, World!&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-泛型的约束"><a href="#3-泛型的约束" class="headerlink" title="3.泛型的约束"></a>3.泛型的约束</h2><p>泛型可以使用约束来限制类型参数的范围。常见的约束包括：</p>
+<p>• 类约束：<code>where T : class</code>，限制<code>T</code>必须是引用类型。</p>
+<p>• 结构约束：<code>where T : struct</code>，限制<code>T</code>必须是值类型。</p>
+<p>• 构造函数约束：<code>where T : new()</code>，限制<code>T</code>必须有无参数的构造函数。</p>
+<p>• 基类约束：<code>where T : BaseClass</code>，限制<code>T</code>必须继承自<code>BaseClass</code>。</p>
+<p>• 接口约束：<code>where T : IInterface</code>，限制<code>T</code>必须实现<code>IInterface</code>。</p>
+<h3 id="3-1-类约束"><a href="#3-1-类约束" class="headerlink" title="3.1 类约束"></a>3.1 类约束</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericClass</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span> : <span class="hljs-keyword">class</span><br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-keyword">public</span> T Value<br>    &#123;<br>        <span class="hljs-keyword">get</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>; &#125;<br>        <span class="hljs-keyword">set</span> &#123; <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>; &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-2-结构约束"><a href="#3-2-结构约束" class="headerlink" title="3.2 结构约束"></a>3.2 结构约束</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericClass</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span> : <span class="hljs-title">struct</span><br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-keyword">public</span> T Value<br>    &#123;<br>        <span class="hljs-keyword">get</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>; &#125;<br>        <span class="hljs-keyword">set</span> &#123; <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>; &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-3-构造函数约束"><a href="#3-3-构造函数约束" class="headerlink" title="3.3 构造函数约束"></a>3.3 构造函数约束</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericClass</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span> : <span class="hljs-title">new</span>()<br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyGenericClass</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">value</span> = <span class="hljs-keyword">new</span> T();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> T Value<br>    &#123;<br>        <span class="hljs-keyword">get</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>; &#125;<br>        <span class="hljs-keyword">set</span> &#123; <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>; &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-4-基类约束"><a href="#3-4-基类约束" class="headerlink" title="3.4 基类约束"></a>3.4 基类约束</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">BaseClass</span><br>&#123;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericClass</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span> : <span class="hljs-title">BaseClass</span><br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-keyword">public</span> T Value<br>    &#123;<br>        <span class="hljs-keyword">get</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>; &#125;<br>        <span class="hljs-keyword">set</span> &#123; <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>; &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-5-接口约束"><a href="#3-5-接口约束" class="headerlink" title="3.5 接口约束"></a>3.5 接口约束</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">IMyInterface</span><br>&#123;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericClass</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span> : <span class="hljs-title">IMyInterface</span><br>&#123;<br>    <span class="hljs-keyword">private</span> T <span class="hljs-keyword">value</span>;<br><br>    <span class="hljs-keyword">public</span> T Value<br>    &#123;<br>        <span class="hljs-keyword">get</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>; &#125;<br>        <span class="hljs-keyword">set</span> &#123; <span class="hljs-keyword">this</span>.<span class="hljs-keyword">value</span> = <span class="hljs-keyword">value</span>; &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-泛型的高级用法"><a href="#4-泛型的高级用法" class="headerlink" title="4.泛型的高级用法"></a>4.泛型的高级用法</h2><h4 id="4-1-泛型委托"><a href="#4-1-泛型委托" class="headerlink" title="4.1 泛型委托"></a>4.1 泛型委托</h4><p>泛型委托是一种可以使用任意类型作为参数的委托。定义泛型委托时，使用<code>&lt;T&gt;</code>表示类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">delegate</span> T <span class="hljs-title">MyGenericDelegate</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span>;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericMethods</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">GetDefault</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>使用泛型委托时，需要指定具体的类型参数：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">MyGenericDelegate&lt;<span class="hljs-built_in">int</span>&gt; intDelegate = <span class="hljs-keyword">new</span> MyGenericDelegate&lt;<span class="hljs-built_in">int</span>&gt;(methods.GetDefault);<br><span class="hljs-built_in">int</span> defaultValue = intDelegate(<span class="hljs-number">10</span>);<br><br>MyGenericDelegate&lt;<span class="hljs-built_in">string</span>&gt; stringDelegate = <span class="hljs-keyword">new</span> MyGenericDelegate&lt;<span class="hljs-built_in">string</span>&gt;(methods.GetDefault);<br><span class="hljs-built_in">string</span> stringValue = stringDelegate(<span class="hljs-string">&quot;Hello, World!&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-2-泛型事件"><a href="#4-2-泛型事件" class="headerlink" title="4.2 泛型事件"></a>4.2 泛型事件</h3><p>泛型事件是一种可以使用任意类型作为参数的事件。定义泛型事件时，使用<code>&lt;T&gt;</code>表示类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">MyGenericEventHandler</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, T e</span>)</span>;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyPublisher</span>&lt;<span class="hljs-title">T</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">event</span> MyGenericEventHandler&lt;T&gt; MyEvent;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">RaiseEvent</span>(<span class="hljs-params">T e</span>)</span><br>    &#123;<br>        MyEvent?.Invoke(<span class="hljs-keyword">this</span>, e);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>使用泛型事件时，需要指定具体的类型参数：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyEventArgs</span> : <span class="hljs-title">EventArgs</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Message &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MySubscriber</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnMyEvent</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, MyEventArgs e</span>)</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">$&quot;Event received: Message = <span class="hljs-subst">&#123;e.Message&#125;</span>&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        MyPublisher&lt;MyEventArgs&gt; publisher = <span class="hljs-keyword">new</span> MyPublisher&lt;MyEventArgs&gt;();<br>        MySubscriber subscriber = <span class="hljs-keyword">new</span> MySubscriber();<br><br>        publisher.MyEvent += subscriber.OnMyEvent;<br><br>        MyEventArgs args = <span class="hljs-keyword">new</span> MyEventArgs &#123; Message = <span class="hljs-string">&quot;Hello, World!&quot;</span> &#125;;<br>        publisher.RaiseEvent(args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-3-泛型方法的类型推断"><a href="#4-3-泛型方法的类型推断" class="headerlink" title="4.3 泛型方法的类型推断"></a>4.3 泛型方法的类型推断</h3><p>泛型方法的类型参数可以由编译器自动推断，无需显式指定类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyGenericMethods</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">GetDefault</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">value</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        MyGenericMethods methods = <span class="hljs-keyword">new</span> MyGenericMethods();<br>        <span class="hljs-built_in">int</span> defaultValue = methods.GetDefault(<span class="hljs-number">10</span>); <span class="hljs-comment">// 编译器自动推断类型</span><br>        <span class="hljs-built_in">string</span> stringValue = methods.GetDefault(<span class="hljs-string">&quot;Hello, World!&quot;</span>); <span class="hljs-comment">// 编译器自动推断类型</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-泛型的性能优势"><a href="#5-泛型的性能优势" class="headerlink" title="5.泛型的性能优势"></a>5.泛型的性能优势</h2><h3 id="5-1-避免装箱和拆箱"><a href="#5-1-避免装箱和拆箱" class="headerlink" title="5.1 避免装箱和拆箱"></a>5.1 避免装箱和拆箱</h3><p>使用泛型可以避免装箱和拆箱操作，提高性能。装箱和拆箱是值类型和引用类型之间的转换操作，会带来性能开销。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; intList = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br>intList.Add(<span class="hljs-number">10</span>); <span class="hljs-comment">// 无需装箱</span><br><br>ArrayList arrayList = <span class="hljs-keyword">new</span> ArrayList();<br>arrayList.Add(<span class="hljs-number">10</span>); <span class="hljs-comment">// 需要装箱</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-生成类型特定的代码"><a href="#5-2-生成类型特定的代码" class="headerlink" title="5.2 生成类型特定的代码"></a>5.2 生成类型特定的代码</h3><p>泛型在编译时生成类型特定的代码，确保类型安全，避免运行时类型转换错误。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; intList = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br><span class="hljs-built_in">int</span> <span class="hljs-keyword">value</span> = intList[<span class="hljs-number">0</span>]; <span class="hljs-comment">// 无需类型转换</span><br><br>ArrayList arrayList = <span class="hljs-keyword">new</span> ArrayList();<br><span class="hljs-built_in">int</span> <span class="hljs-keyword">value</span> = (<span class="hljs-built_in">int</span>)arrayList[<span class="hljs-number">0</span>]; <span class="hljs-comment">// 需要类型转换</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-泛型的使用场景"><a href="#6-泛型的使用场景" class="headerlink" title="6.泛型的使用场景"></a>6.泛型的使用场景</h2><h3 id="6-1-集合"><a href="#6-1-集合" class="headerlink" title="6.1 集合"></a>6.1 集合</h3><p>泛型集合是泛型最常用的场景之一。<code>List&lt;T&gt;</code>、<code>Dictionary&lt;TKey, TValue&gt;</code>、<code>Queue&lt;T&gt;</code>、<code>Stack&lt;T&gt;</code>等泛型集合提供了类型安全的集合操作</p>
+<h3 id="6-2-方法"><a href="#6-2-方法" class="headerlink" title="6.2 方法"></a>6.2 方法</h3><p>泛型方法允许你编写通用的方法，这些方法可以处理任意类型的参数，同时保持类型安全。这在编写工具类或库时特别有用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Utility</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> T <span class="hljs-title">Max</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T[] array</span>) <span class="hljs-keyword">where</span> T : IComparable&lt;T&gt;</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (array == <span class="hljs-literal">null</span> || array.Length == <span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ArgumentException(<span class="hljs-string">&quot;Array cannot be null or empty.&quot;</span>);<br>        &#125;<br><br>        T max = array[<span class="hljs-number">0</span>];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt; array.Length; i++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (array[i].CompareTo(max) &gt; <span class="hljs-number">0</span>)<br>            &#123;<br>                max = array[i];<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> max;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        <span class="hljs-built_in">int</span>[] intArray = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span> &#125;;<br>        <span class="hljs-built_in">int</span> maxInt = Utility.Max(intArray);<br>        Console.WriteLine(<span class="hljs-string">$&quot;Max int: <span class="hljs-subst">&#123;maxInt&#125;</span>&quot;</span>); <span class="hljs-comment">// 输出 5</span><br><br>        <span class="hljs-built_in">double</span>[] doubleArray = &#123; <span class="hljs-number">1.1</span>, <span class="hljs-number">3.3</span>, <span class="hljs-number">2.2</span>, <span class="hljs-number">5.5</span>, <span class="hljs-number">4.4</span> &#125;;<br>        <span class="hljs-built_in">double</span> maxDouble = Utility.Max(doubleArray);<br>        Console.WriteLine(<span class="hljs-string">$&quot;Max double: <span class="hljs-subst">&#123;maxDouble&#125;</span>&quot;</span>); <span class="hljs-comment">// 输出 5.5</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-3-类和结构"><a href="#6-3-类和结构" class="headerlink" title="6.3 类和结构"></a>6.3 类和结构</h3><p>泛型类和结构允许你创建通用的数据结构，这些结构可以处理任意类型的对象，同时保持类型安全。这在创建自定义集合或数据容器时非常有用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Pair</span>&lt;<span class="hljs-title">T1</span>, <span class="hljs-title">T2</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">public</span> T1 First &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> T2 Second &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Pair</span>(<span class="hljs-params">T1 first, T2 second</span>)</span><br>    &#123;<br>        First = first;<br>        Second = second;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        Pair&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; pair = <span class="hljs-keyword">new</span> Pair&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt;(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;Hello&quot;</span>);<br>        Console.WriteLine(<span class="hljs-string">$&quot;First: <span class="hljs-subst">&#123;pair.First&#125;</span>, Second: <span class="hljs-subst">&#123;pair.Second&#125;</span>&quot;</span>); <span class="hljs-comment">// 输出 First: 1, Second: Hello</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-4-接口"><a href="#6-4-接口" class="headerlink" title="6.4 接口"></a>6.4 接口</h3><p>泛型接口允许你定义通用的接口，这些接口可以处理任意类型的对象，同时保持类型安全。这在创建通用的服务或组件时非常有用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">IRepository</span>&lt;<span class="hljs-title">T</span>&gt;<br>&#123;<br>    <span class="hljs-function">T <span class="hljs-title">GetById</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> id</span>)</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Add</span>(<span class="hljs-params">T entity</span>)</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>(<span class="hljs-params">T entity</span>)</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Delete</span>(<span class="hljs-params">T entity</span>)</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">UserRepository</span> : <span class="hljs-title">IRepository</span>&lt;<span class="hljs-title">User</span>&gt;<br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">GetById</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> id</span>)</span><br>    &#123;<br>        <span class="hljs-comment">// 实现获取用户逻辑</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> User &#123; Id = id, Name = <span class="hljs-string">&quot;John Doe&quot;</span> &#125;;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Add</span>(<span class="hljs-params">User entity</span>)</span><br>    &#123;<br>        <span class="hljs-comment">// 实现添加用户逻辑</span><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>(<span class="hljs-params">User entity</span>)</span><br>    &#123;<br>        <span class="hljs-comment">// 实现更新用户逻辑</span><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Delete</span>(<span class="hljs-params">User entity</span>)</span><br>    &#123;<br>        <span class="hljs-comment">// 实现删除用户逻辑</span><br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        IRepository&lt;User&gt; userRepository = <span class="hljs-keyword">new</span> UserRepository();<br>        User user = userRepository.GetById(<span class="hljs-number">1</span>);<br>        Console.WriteLine(<span class="hljs-string">$&quot;User: <span class="hljs-subst">&#123;user.Name&#125;</span>&quot;</span>); <span class="hljs-comment">// 输出 User: John Doe</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="7-泛型的类型参数"><a href="#7-泛型的类型参数" class="headerlink" title="7.泛型的类型参数"></a>7.泛型的类型参数</h2><h3 id="7-1-类型参数的命名约定"><a href="#7-1-类型参数的命名约定" class="headerlink" title="7.1 类型参数的命名约定"></a>7.1 类型参数的命名约定</h3><p>类型参数通常使用单个大写字母来命名，常见的命名约定如下：</p>
+<p><strong>• <code>T</code>：通用类型参数</strong></p>
+<p><strong>• <code>TKey</code>、<code>TValue</code>：键值对中的键和值类型</strong></p>
+<p><strong>• <code>TItem</code>、<code>TElement</code>：集合中的元素类型</strong></p>
+<p><strong>• <code>TInput</code>、<code>TOutput</code>：输入和输出类型</strong></p>
+<p><strong>• <code>TResult</code>：方法的返回类型</strong></p>
+<h3 id="7-2-多个类型参数"><a href="#7-2-多个类型参数" class="headerlink" title="7.2 多个类型参数"></a>7.2 多个类型参数</h3><p>可以定义多个类型参数，以支持更复杂的泛型结构。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Dictionary</span>&lt;<span class="hljs-title">TKey</span>, <span class="hljs-title">TValue</span>&gt;<br>&#123;<br>    <span class="hljs-comment">// 实现字典逻辑</span><br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Tuple</span>&lt;<span class="hljs-title">T1</span>, <span class="hljs-title">T2</span>, <span class="hljs-title">T3</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">public</span> T1 Item1 &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> T2 Item2 &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> T3 Item3 &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Tuple</span>(<span class="hljs-params">T1 item1, T2 item2, T3 item3</span>)</span><br>    &#123;<br>        Item1 = item1;<br>        Item2 = item2;<br>        Item3 = item3;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; dictionary = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt;();<br>        dictionary[<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;One&quot;</span>;<br>        dictionary[<span class="hljs-number">2</span>] = <span class="hljs-string">&quot;Two&quot;</span>;<br><br>        Tuple&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">double</span>&gt; tuple = <span class="hljs-keyword">new</span> Tuple&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">double</span>&gt;(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;Hello&quot;</span>, <span class="hljs-number">3.14</span>);<br>        Console.WriteLine(<span class="hljs-string">$&quot;Item1: <span class="hljs-subst">&#123;tuple.Item1&#125;</span>, Item2: <span class="hljs-subst">&#123;tuple.Item2&#125;</span>, Item3: <span class="hljs-subst">&#123;tuple.Item3&#125;</span>&quot;</span>); <span class="hljs-comment">// 输出 Item1: 1, Item2: Hello, Item3: 3.14</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="8-泛型的类型推断"><a href="#8-泛型的类型推断" class="headerlink" title="8.泛型的类型推断"></a>8.泛型的类型推断</h2><h3 id="8-1-方法类型推断"><a href="#8-1-方法类型推断" class="headerlink" title="8.1 方法类型推断"></a>8.1 方法类型推断</h3><p>在调用泛型方法时，编译器可以自动推断类型参数，无需显式指定类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Utility</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> T <span class="hljs-title">Max</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T[] array</span>) <span class="hljs-keyword">where</span> T : IComparable&lt;T&gt;</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (array == <span class="hljs-literal">null</span> || array.Length == <span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ArgumentException(<span class="hljs-string">&quot;Array cannot be null or empty.&quot;</span>);<br>        &#125;<br><br>        T max = array[<span class="hljs-number">0</span>];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt; array.Length; i++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (array[i].CompareTo(max) &gt; <span class="hljs-number">0</span>)<br>            &#123;<br>                max = array[i];<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> max;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        <span class="hljs-built_in">int</span>[] intArray = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span> &#125;;<br>        <span class="hljs-built_in">int</span> maxInt = Utility.Max(intArray); <span class="hljs-comment">// 编译器自动推断类型</span><br><br>        <span class="hljs-built_in">double</span>[] doubleArray = &#123; <span class="hljs-number">1.1</span>, <span class="hljs-number">3.3</span>, <span class="hljs-number">2.2</span>, <span class="hljs-number">5.5</span>, <span class="hljs-number">4.4</span> &#125;;<br>        <span class="hljs-built_in">double</span> maxDouble = Utility.Max(doubleArray); <span class="hljs-comment">// 编译器自动推断类型</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-2-类和结构类型推断"><a href="#8-2-类和结构类型推断" class="headerlink" title="8.2 类和结构类型推断"></a>8.2 类和结构类型推断</h3><p>在创建泛型类或结构的实例时，编译器也可以自动推断类型参数，但通常需要显式指定类型参数。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Pair</span>&lt;<span class="hljs-title">T1</span>, <span class="hljs-title">T2</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">public</span> T1 First &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-keyword">public</span> T2 Second &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Pair</span>(<span class="hljs-params">T1 first, T2 second</span>)</span><br>    &#123;<br>        First = first;<br>        Second = second;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        Pair&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; pair = <span class="hljs-keyword">new</span> Pair&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt;(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;Hello&quot;</span>); <span class="hljs-comment">// 显式指定类型参数</span><br>        Console.WriteLine(<span class="hljs-string">$&quot;First: <span class="hljs-subst">&#123;pair.First&#125;</span>, Second: <span class="hljs-subst">&#123;pair.Second&#125;</span>&quot;</span>); <span class="hljs-comment">// 输出 First: 1, Second: Hello</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C#</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C#</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C#泛型（Generic）</div>
+      <div>https://yonghengshikong.github.io/posts/27062/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/30874/" title="C#匿名方法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C#匿名方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/60787/" title="C#集合(Collection)">
+                        <span class="hidden-mobile">C#集合(Collection)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

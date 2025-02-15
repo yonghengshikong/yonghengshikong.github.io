@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="如何在 Cocos Creator 中优化 Spine 动画：针对 MMORPG 游戏的实践在开发 MMORPG 游戏时，角色的动画效果往往由 Spine 动画控制。随着游戏角色和场景的增多，动画的数量也会迅速增加，如何优化大量 Spine 动画 的性能，成为开发过程中亟待解决的问题。 本文将探讨在 Cocos Creator 中如何优化 Spine 动画，包括资源共享、动态加载、减少纹理分辨率、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在 Cocos Creator 中优化 Spine 动画">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/59850/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如何在 Cocos Creator 中优化 Spine 动画：针对 MMORPG 游戏的实践在开发 MMORPG 游戏时，角色的动画效果往往由 Spine 动画控制。随着游戏角色和场景的增多，动画的数量也会迅速增加，如何优化大量 Spine 动画 的性能，成为开发过程中亟待解决的问题。 本文将探讨在 Cocos Creator 中如何优化 Spine 动画，包括资源共享、动态加载、减少纹理分辨率、">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-04T06:52:28.029Z">
+<meta property="article:modified_time" content="2025-01-16T14:47:27.597Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="Cocos Creator">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>如何在 Cocos Creator 中优化 Spine 动画 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="如何在 Cocos Creator 中优化 Spine 动画"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-04 14:52" pubdate>
+          2025年1月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">如何在 Cocos Creator 中优化 Spine 动画</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="如何在-Cocos-Creator-中优化-Spine-动画：针对-MMORPG-游戏的实践"><a href="#如何在-Cocos-Creator-中优化-Spine-动画：针对-MMORPG-游戏的实践" class="headerlink" title="如何在 Cocos Creator 中优化 Spine 动画：针对 MMORPG 游戏的实践"></a><strong>如何在 Cocos Creator 中优化 Spine 动画：针对 MMORPG 游戏的实践</strong></h3><p>在开发 <strong>MMORPG</strong> 游戏时，角色的动画效果往往由 <strong>Spine</strong> 动画控制。随着游戏角色和场景的增多，动画的数量也会迅速增加，如何优化大量 <strong>Spine 动画</strong> 的性能，成为开发过程中亟待解决的问题。</p>
+<p>本文将探讨在 <strong>Cocos Creator</strong> 中如何优化 <strong>Spine 动画</strong>，包括资源共享、动态加载、减少纹理分辨率、动画更新频率降低、剔除不可见动画以及其他优化手段，以提高游戏性能和流畅度。</p>
+<hr>
+<h3 id="1-资源共享与动态加载"><a href="#1-资源共享与动态加载" class="headerlink" title="1. 资源共享与动态加载"></a><strong>1. 资源共享与动态加载</strong></h3><p>动态加载和卸载资源是减少内存占用和避免资源浪费的重要手段。在 <strong>MMORPG</strong> 游戏中，不可能在一开始就加载所有 <strong>Spine</strong> 动画，动态加载和卸载 <strong>Spine 动画资源</strong> 是必不可少的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 动态加载 Spine 动画资源</span><br>cc.<span class="hljs-property">resources</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&#x27;spine/character_animation&#x27;</span>, cc.<span class="hljs-property">sp</span>.<span class="hljs-property">SkeletonData</span>, <span class="hljs-function">(<span class="hljs-params">err, skeletonData</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (err) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to load Spine resource:&#x27;</span>, err);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">let</span> skeletonNode = <span class="hljs-keyword">new</span> cc.<span class="hljs-title class_">Node</span>(<span class="hljs-string">&#x27;Character&#x27;</span>);<br>    <span class="hljs-keyword">let</span> spine = skeletonNode.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br>    spine.<span class="hljs-property">skeletonData</span> = skeletonData;<br>    <br>    <span class="hljs-comment">// 设置动画播放</span><br>    spine.<span class="hljs-title function_">setAnimation</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;run&#x27;</span>, <span class="hljs-literal">true</span>);<br>    <br>    <span class="hljs-comment">// 将角色添加到场景中</span><br>    cc.<span class="hljs-property">director</span>.<span class="hljs-title function_">getScene</span>().<span class="hljs-title function_">addChild</span>(skeletonNode);<br>&#125;);<br><br><span class="hljs-comment">// 在场景中卸载不再需要的 Spine 动画</span><br>cc.<span class="hljs-property">resources</span>.<span class="hljs-title function_">release</span>(<span class="hljs-string">&#x27;spine/character_animation&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-减少纹理分辨率与打包"><a href="#2-减少纹理分辨率与打包" class="headerlink" title="2. 减少纹理分辨率与打包"></a><strong>2. 减少纹理分辨率与打包</strong></h3><p>在 <strong>Cocos Creator</strong> 中，我们可以通过将多个 <strong>Spine 动画</strong> 的纹理打包成 <strong>SpriteAtlas</strong> 来减少纹理切换，提高渲染性能。这对于 <strong>MMORPG</strong> 游戏尤其重要，因为角色数量庞大，减少纹理切换会显著提升游戏性能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 加载纹理图集</span><br>cc.<span class="hljs-property">resources</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&#x27;spine/character_atlas&#x27;</span>, cc.<span class="hljs-property">SpriteAtlas</span>, <span class="hljs-function">(<span class="hljs-params">err, atlas</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (err) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to load texture atlas:&#x27;</span>, err);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">let</span> skeletonNode = <span class="hljs-keyword">new</span> cc.<span class="hljs-title class_">Node</span>(<span class="hljs-string">&#x27;Character&#x27;</span>);<br>    <span class="hljs-keyword">let</span> spine = skeletonNode.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br>    <br>    <span class="hljs-comment">// 设置纹理图集</span><br>    spine.<span class="hljs-title function_">setAttachment</span>(<span class="hljs-string">&#x27;body&#x27;</span>, atlas.<span class="hljs-title function_">getSpriteFrame</span>(<span class="hljs-string">&#x27;body&#x27;</span>));<br>    spine.<span class="hljs-title function_">setAttachment</span>(<span class="hljs-string">&#x27;head&#x27;</span>, atlas.<span class="hljs-title function_">getSpriteFrame</span>(<span class="hljs-string">&#x27;head&#x27;</span>));<br><br>    cc.<span class="hljs-property">director</span>.<span class="hljs-title function_">getScene</span>().<span class="hljs-title function_">addChild</span>(skeletonNode);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-减少骨骼数量与精简动画"><a href="#3-减少骨骼数量与精简动画" class="headerlink" title="3. 减少骨骼数量与精简动画"></a><strong>3. 减少骨骼数量与精简动画</strong></h3><p>减少每个角色的骨骼数量可以大大减少渲染负担。精简动画中不必要的骨骼节点，或许可以通过隐藏不必要的骨骼来提高性能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 动态设置骨骼节点（例如仅启用少数几个关键骨骼）</span><br><span class="hljs-keyword">let</span> spine = skeletonNode.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br>spine.<span class="hljs-property">skeletonData</span> = skeletonData;<br><br><span class="hljs-comment">// 禁用一些不必要的骨骼</span><br>spine.<span class="hljs-property">skeleton</span>.<span class="hljs-title function_">setSlotVisible</span>(<span class="hljs-string">&#x27;extra_bone&#x27;</span>, <span class="hljs-literal">false</span>);  <span class="hljs-comment">// 隐藏不必要的骨骼</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-动画更新频率降低"><a href="#4-动画更新频率降低" class="headerlink" title="4. 动画更新频率降低"></a><strong>4. 动画更新频率降低</strong></h3><p>如果某些动画不需要每帧更新，降低动画的更新频率也是优化性能的一种手段。可以通过降低动画的 <code>timeScale</code> 或定时更新动画来减少性能开销。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 控制 Spine 动画的更新频率（例如：每 2 帧更新一次）</span><br><span class="hljs-keyword">let</span> spine = skeletonNode.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br>spine.<span class="hljs-property">skeletonData</span> = skeletonData;<br>spine.<span class="hljs-title function_">setAnimation</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;idle&#x27;</span>, <span class="hljs-literal">true</span>);<br><br><span class="hljs-comment">// 设置更新间隔（比如每两帧更新一次）</span><br>cc.<span class="hljs-property">game</span>.<span class="hljs-title function_">on</span>(cc.<span class="hljs-property">game</span>.<span class="hljs-property">EVENT_HIDE</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    spine.<span class="hljs-property">timeScale</span> = <span class="hljs-number">0.5</span>;  <span class="hljs-comment">// 减慢更新频率</span><br>&#125;);<br><br>cc.<span class="hljs-property">game</span>.<span class="hljs-title function_">on</span>(cc.<span class="hljs-property">game</span>.<span class="hljs-property">EVENT_SHOW</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    spine.<span class="hljs-property">timeScale</span> = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 恢复正常更新频率</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-剔除不可见的-Spine-动画"><a href="#5-剔除不可见的-Spine-动画" class="headerlink" title="5. 剔除不可见的 Spine 动画"></a><strong>5. 剔除不可见的 Spine 动画</strong></h3><p>为了减少不必要的计算和渲染，可以根据角色是否在视野内来动态控制 <strong>Spine 动画</strong> 的启用与禁用。如果角色不在视野内，则暂停或销毁该动画。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 检查角色是否在视野内</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">checkIfInView</span>(<span class="hljs-params">characterNode</span>) &#123;<br>    <span class="hljs-keyword">let</span> camera = cc.<span class="hljs-property">Camera</span>.<span class="hljs-property">main</span>;<br>    <span class="hljs-keyword">let</span> worldPos = characterNode.<span class="hljs-title function_">convertToWorldSpaceAR</span>(cc.<span class="hljs-title function_">v2</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>));<br>    <span class="hljs-keyword">let</span> viewRect = cc.<span class="hljs-property">view</span>.<span class="hljs-title function_">getVisibleSize</span>();<br>    <br>    <span class="hljs-comment">// 假设角色范围在视野矩形范围内</span><br>    <span class="hljs-keyword">if</span> (worldPos.<span class="hljs-property">x</span> &lt; <span class="hljs-number">0</span> || worldPos.<span class="hljs-property">x</span> &gt; viewRect.<span class="hljs-property">width</span> || worldPos.<span class="hljs-property">y</span> &lt; <span class="hljs-number">0</span> || worldPos.<span class="hljs-property">y</span> &gt; viewRect.<span class="hljs-property">height</span>) &#123;<br>        characterNode.<span class="hljs-property">active</span> = <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 不在视野内，禁用动画</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        characterNode.<span class="hljs-property">active</span> = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// 在视野内，启用动画</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-异步加载和缓存动画数据"><a href="#6-异步加载和缓存动画数据" class="headerlink" title="6. 异步加载和缓存动画数据"></a><strong>6. 异步加载和缓存动画数据</strong></h3><p>通过异步加载和缓存已经加载的 <strong>Spine 动画资源</strong>，避免重复加载资源，提升效率。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 异步加载 Spine 动画资源</span><br>cc.<span class="hljs-property">resources</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&#x27;spine/character_animation&#x27;</span>, cc.<span class="hljs-property">sp</span>.<span class="hljs-property">SkeletonData</span>, <span class="hljs-function">(<span class="hljs-params">err, skeletonData</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (err) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to load Spine resource:&#x27;</span>, err);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 缓存加载的数据</span><br>    <span class="hljs-keyword">let</span> cachedSkeletonData = skeletonData;<br>    <br>    <span class="hljs-comment">// 创建并播放 Spine 动画</span><br>    <span class="hljs-keyword">let</span> skeletonNode = <span class="hljs-keyword">new</span> cc.<span class="hljs-title class_">Node</span>(<span class="hljs-string">&#x27;Character&#x27;</span>);<br>    <span class="hljs-keyword">let</span> spine = skeletonNode.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br>    spine.<span class="hljs-property">skeletonData</span> = cachedSkeletonData;<br>    spine.<span class="hljs-title function_">setAnimation</span>(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;attack&#x27;</span>, <span class="hljs-literal">false</span>);<br>    <br>    <span class="hljs-comment">// 添加到场景中</span><br>    cc.<span class="hljs-property">director</span>.<span class="hljs-title function_">getScene</span>().<span class="hljs-title function_">addChild</span>(skeletonNode);<br>&#125;);<br><br><span class="hljs-comment">// 卸载不再需要的 Spine 资源</span><br>cc.<span class="hljs-property">resources</span>.<span class="hljs-title function_">release</span>(<span class="hljs-string">&#x27;spine/character_animation&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-合并多个-Spine-动画的渲染"><a href="#7-合并多个-Spine-动画的渲染" class="headerlink" title="7. 合并多个 Spine 动画的渲染"></a><strong>7. 合并多个 Spine 动画的渲染</strong></h3><p>如果多个 <strong>Spine 动画</strong> 使用相同的资源，可以通过合并多个动画的渲染来减少渲染调用，从而提高性能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 通过批量渲染合并多个角色的 Spine 动画</span><br><span class="hljs-keyword">let</span> skeletonNode1 = <span class="hljs-keyword">new</span> cc.<span class="hljs-title class_">Node</span>(<span class="hljs-string">&#x27;Character1&#x27;</span>);<br><span class="hljs-keyword">let</span> skeletonNode2 = <span class="hljs-keyword">new</span> cc.<span class="hljs-title class_">Node</span>(<span class="hljs-string">&#x27;Character2&#x27;</span>);<br><span class="hljs-keyword">let</span> skeletonNode3 = <span class="hljs-keyword">new</span> cc.<span class="hljs-title class_">Node</span>(<span class="hljs-string">&#x27;Character3&#x27;</span>);<br><br><span class="hljs-comment">// 添加 Spine 组件</span><br><span class="hljs-keyword">let</span> spine1 = skeletonNode1.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br><span class="hljs-keyword">let</span> spine2 = skeletonNode2.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br><span class="hljs-keyword">let</span> spine3 = skeletonNode3.<span class="hljs-title function_">addComponent</span>(cc.<span class="hljs-property">sp</span>.<span class="hljs-property">Skeleton</span>);<br><br><span class="hljs-comment">// 设置相同的 SkeletonData（可以复用相同的资源）</span><br>spine1.<span class="hljs-property">skeletonData</span> = skeletonData1;<br>spine2.<span class="hljs-property">skeletonData</span> = skeletonData2;<br>spine3.<span class="hljs-property">skeletonData</span> = skeletonData3;<br><br>cc.<span class="hljs-property">director</span>.<span class="hljs-title function_">getScene</span>().<span class="hljs-title function_">addChild</span>(skeletonNode1);<br>cc.<span class="hljs-property">director</span>.<span class="hljs-title function_">getScene</span>().<span class="hljs-title function_">addChild</span>(skeletonNode2);<br>cc.<span class="hljs-property">director</span>.<span class="hljs-title function_">getScene</span>().<span class="hljs-title function_">addChild</span>(skeletonNode3);<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-利用-Cocos-Creator-的性能工具"><a href="#8-利用-Cocos-Creator-的性能工具" class="headerlink" title="8. 利用 Cocos Creator 的性能工具"></a><strong>8. 利用 Cocos Creator 的性能工具</strong></h3><p>使用 <strong>Cocos Creator</strong> 内置的 <strong>性能调试工具</strong>（Profiler）来分析和优化 <strong>Spine 动画</strong> 的性能瓶颈。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 启用性能分析</span><br>cc.<span class="hljs-property">game</span>.<span class="hljs-title function_">setFPS</span>(<span class="hljs-number">60</span>);  <span class="hljs-comment">// 设置帧率</span><br>cc.<span class="hljs-property">profiler</span>.<span class="hljs-title function_">enable</span>();<br><br><span class="hljs-comment">// 在调试时查看性能数据</span><br>cc.<span class="hljs-property">profiler</span>.<span class="hljs-title function_">printStats</span>();<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p>通过 <strong>资源共享</strong>、<strong>动态加载</strong>、<strong>减少纹理分辨率</strong>、<strong>减少骨骼和更新频率</strong>、<strong>剔除不可见动画</strong> 等优化手段，开发者可以在 <strong>Cocos Creator</strong> 中有效优化 <strong>Spine 动画</strong> 的性能，特别是在 <strong>MMORPG</strong> 游戏中，确保流畅的游戏体验。使用合适的技术手段和工具可以大大提升游戏的帧率，并减少因大量动画资源加载而带来的性能瓶颈。</p>
+<p>希望本文的内容能够帮助你在开发 <strong>MMORPG</strong> 游戏时，提高 <strong>Spine 动画</strong> 的渲染效率和游戏性能，打造更加流畅和高效的游戏体验！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Cocos-Creator/" class="category-chain-item">Cocos Creator</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Cocos-Creator/" class="print-no-link">#Cocos Creator</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>如何在 Cocos Creator 中优化 Spine 动画</div>
+      <div>https://yonghengshikong.github.io/posts/59850/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/33099/" title="C#数据类型">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C#数据类型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/3278/" title="GameFramework界面（UI）">
+                        <span class="hidden-mobile">GameFramework界面（UI）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

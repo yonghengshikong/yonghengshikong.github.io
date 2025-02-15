@@ -1,0 +1,941 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="C#集合（Collection）详解在 C#中，集合（Collection）是一组对象的集合，用于存储、管理和操作一组数据。集合提供了灵活的方式来处理数据，支持动态大小、自动扩展、数据排序等功能。本文将详细介绍 C#集合的各个方面，包括基本概念、常用集合类型、泛型集合、非泛型集合、集合的常用操作等。 1.集合的基本概念集合是一种数据结构，用于存储一组对象。集合可以是动态的，支持自动扩展和收缩，也可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#集合(Collection)">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/60787/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C#集合（Collection）详解在 C#中，集合（Collection）是一组对象的集合，用于存储、管理和操作一组数据。集合提供了灵活的方式来处理数据，支持动态大小、自动扩展、数据排序等功能。本文将详细介绍 C#集合的各个方面，包括基本概念、常用集合类型、泛型集合、非泛型集合、集合的常用操作等。 1.集合的基本概念集合是一种数据结构，用于存储一组对象。集合可以是动态的，支持自动扩展和收缩，也可">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-16T13:42:40.735Z">
+<meta property="article:modified_time" content="2025-01-16T14:47:27.600Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C#集合(Collection) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C#集合(Collection)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-16 21:42" pubdate>
+          2025年1月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C#集合(Collection)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="C-集合（Collection）详解"><a href="#C-集合（Collection）详解" class="headerlink" title="C#集合（Collection）详解"></a>C#集合（Collection）详解</h1><p>在 C#中，集合（Collection）是一组对象的集合，用于存储、管理和操作一组数据。集合提供了灵活的方式来处理数据，支持动态大小、自动扩展、数据排序等功能。本文将详细介绍 C#集合的各个方面，包括基本概念、常用集合类型、泛型集合、非泛型集合、集合的常用操作等。</p>
+<h2 id="1-集合的基本概念"><a href="#1-集合的基本概念" class="headerlink" title="1.集合的基本概念"></a>1.集合的基本概念</h2><p>集合是一种数据结构，用于存储一组对象。集合可以是动态的，支持自动扩展和收缩，也可以是静态的，具有固定的大小。集合的主要用途包括：</p>
+<p>• 数据存储：存储一组对象，支持动态大小。</p>
+<p>• 数据操作：提供方法来添加、删除、查找和排序数据。</p>
+<p>• 数据遍历：支持遍历集合中的所有元素。</p>
+<h2 id="2-常用集合类型"><a href="#2-常用集合类型" class="headerlink" title="2.常用集合类型"></a>2.常用集合类型</h2><h3 id="2-1-泛型集合"><a href="#2-1-泛型集合" class="headerlink" title="2.1 泛型集合"></a>2.1 泛型集合</h3><p>泛型集合提供了类型安全的集合，确保集合中的所有元素都是同一类型。常用的泛型集合包括：</p>
+<p>• List：动态数组，支持自动扩展和收缩。</p>
+<p>• Dictionary&lt;TKey,TValue&gt;：键值对集合，支持快速查找。</p>
+<p>• Queue：先进先出（FIFO）队列。</p>
+<p>• Stack：后进先出（LIFO）栈。</p>
+<p>• HashSet：无序集合，支持快速查找和去重。</p>
+<p>• LinkedList：双向链表，支持高效的插入和删除操作。</p>
+<h3 id="2-2-非泛型集合"><a href="#2-2-非泛型集合" class="headerlink" title="2.2 非泛型集合"></a>2.2 非泛型集合</h3><p>非泛型集合不提供类型安全，但可以存储任何类型的对象。常用的非泛型集合包括：</p>
+<p>• ArrayList：动态数组，支持自动扩展和收缩。</p>
+<p>• Hashtable：键值对集合，支持快速查找。</p>
+<p>• Queue：先进先出（FIFO）队列。</p>
+<p>• Stack：后进先出（LIFO）栈。</p>
+<h2 id="3-泛型集合"><a href="#3-泛型集合" class="headerlink" title="3.泛型集合"></a>3.泛型集合</h2><h3 id="3-1-List"><a href="#3-1-List" class="headerlink" title="3.1 List"></a>3.1 List</h3><p><code>List&lt;T&gt;</code>是一个动态数组，支持自动扩展和收缩。它提供了多种方法来添加、删除和查找元素。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; numbers = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br>numbers.Add(<span class="hljs-number">1</span>);<br>numbers.Add(<span class="hljs-number">2</span>);<br>numbers.Add(<span class="hljs-number">3</span>);<br><br>Console.WriteLine(numbers[<span class="hljs-number">0</span>]); <span class="hljs-comment">// 输出 1</span><br><br>numbers.RemoveAt(<span class="hljs-number">1</span>);<br>Console.WriteLine(numbers[<span class="hljs-number">1</span>]); <span class="hljs-comment">// 输出 3</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-2-Dictionary"><a href="#3-2-Dictionary" class="headerlink" title="3.2 Dictionary&lt;TKey,TValue&gt;"></a>3.2 Dictionary&lt;TKey,TValue&gt;</h3><p><code>Dictionary&lt;TKey, TValue&gt;</code>是一个键值对集合，支持快速查找。它提供了多种方法来添加、删除和查找键值对。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; dictionary = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt;();<br>dictionary[<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;One&quot;</span>;<br>dictionary[<span class="hljs-number">2</span>] = <span class="hljs-string">&quot;Two&quot;</span>;<br><br>Console.WriteLine(dictionary[<span class="hljs-number">1</span>]); <span class="hljs-comment">// 输出 One</span><br><br>dictionary.Remove(<span class="hljs-number">2</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-3-Queue"><a href="#3-3-Queue" class="headerlink" title="3.3 Queue"></a>3.3 Queue</h3><p><code>Queue&lt;T&gt;</code>是一个先进先出（FIFO）队列，支持高效的插入和删除操作。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Queue&lt;<span class="hljs-built_in">int</span>&gt; queue = <span class="hljs-keyword">new</span> Queue&lt;<span class="hljs-built_in">int</span>&gt;();<br>queue.Enqueue(<span class="hljs-number">1</span>);<br>queue.Enqueue(<span class="hljs-number">2</span>);<br>queue.Enqueue(<span class="hljs-number">3</span>);<br><br>Console.WriteLine(queue.Dequeue()); <span class="hljs-comment">// 输出 1</span><br>Console.WriteLine(queue.Peek()); <span class="hljs-comment">// 输出 2</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-4-Stack"><a href="#3-4-Stack" class="headerlink" title="3.4 Stack"></a>3.4 Stack</h3><p><code>Stack&lt;T&gt;</code>是一个后进先出（LIFO）栈，支持高效的插入和删除操作。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Stack&lt;<span class="hljs-built_in">int</span>&gt; stack = <span class="hljs-keyword">new</span> Stack&lt;<span class="hljs-built_in">int</span>&gt;();<br>stack.Push(<span class="hljs-number">1</span>);<br>stack.Push(<span class="hljs-number">2</span>);<br>stack.Push(<span class="hljs-number">3</span>);<br><br>Console.WriteLine(stack.Pop()); <span class="hljs-comment">// 输出 3</span><br>Console.WriteLine(stack.Peek()); <span class="hljs-comment">// 输出 2</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-5-HashSet"><a href="#3-5-HashSet" class="headerlink" title="3.5 HashSet"></a>3.5 HashSet</h3><p><code>HashSet&lt;T&gt;</code>是一个无序集合，支持快速查找和去重。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">HashSet&lt;<span class="hljs-built_in">int</span>&gt; <span class="hljs-keyword">set</span> = <span class="hljs-keyword">new</span> HashSet&lt;<span class="hljs-built_in">int</span>&gt;();<br><span class="hljs-keyword">set</span>.Add(<span class="hljs-number">1</span>);<br><span class="hljs-keyword">set</span>.Add(<span class="hljs-number">2</span>);<br><span class="hljs-keyword">set</span>.Add(<span class="hljs-number">3</span>);<br><br>Console.WriteLine(<span class="hljs-keyword">set</span>.Contains(<span class="hljs-number">2</span>)); <span class="hljs-comment">// 输出 True</span><br><br><span class="hljs-keyword">set</span>.Remove(<span class="hljs-number">2</span>);<br>Console.WriteLine(<span class="hljs-keyword">set</span>.Contains(<span class="hljs-number">2</span>)); <span class="hljs-comment">// 输出 False</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-6-LinkedList"><a href="#3-6-LinkedList" class="headerlink" title="3.6 LinkedList"></a>3.6 LinkedList</h3><p><code>LinkedList&lt;T&gt;</code>是一个双向链表，支持高效的插入和删除操作。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">LinkedList&lt;<span class="hljs-built_in">int</span>&gt; linkedList = <span class="hljs-keyword">new</span> LinkedList&lt;<span class="hljs-built_in">int</span>&gt;();<br>linkedList.AddLast(<span class="hljs-number">1</span>);<br>linkedList.AddLast(<span class="hljs-number">2</span>);<br>linkedList.AddLast(<span class="hljs-number">3</span>);<br><br>Console.WriteLine(linkedList.First.Value); <span class="hljs-comment">// 输出 1</span><br><br>linkedList.RemoveFirst();<br>Console.WriteLine(linkedList.First.Value); <span class="hljs-comment">// 输出 2</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-非泛型集合"><a href="#4-非泛型集合" class="headerlink" title="4.非泛型集合"></a>4.非泛型集合</h2><h3 id="4-1-ArrayList"><a href="#4-1-ArrayList" class="headerlink" title="4.1 ArrayList"></a>4.1 ArrayList</h3><p><code>ArrayList</code>是一个动态数组，支持自动扩展和收缩。它可以存储任何类型的对象。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">ArrayList list = <span class="hljs-keyword">new</span> ArrayList();<br>list.Add(<span class="hljs-number">1</span>);<br>list.Add(<span class="hljs-string">&quot;Two&quot;</span>);<br>list.Add(<span class="hljs-number">3.0</span>);<br><br>Console.WriteLine(list[<span class="hljs-number">0</span>]); <span class="hljs-comment">// 输出 1</span><br><br>list.RemoveAt(<span class="hljs-number">1</span>);<br>Console.WriteLine(list[<span class="hljs-number">1</span>]); <span class="hljs-comment">// 输出 3.0</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-2-Hashtable"><a href="#4-2-Hashtable" class="headerlink" title="4.2 Hashtable"></a>4.2 Hashtable</h3><p><code>Hashtable</code>是一个键值对集合，支持快速查找。它可以存储任何类型的键和值。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Hashtable hashtable = <span class="hljs-keyword">new</span> Hashtable();<br>hashtable[<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;One&quot;</span>;<br>hashtable[<span class="hljs-number">2</span>] = <span class="hljs-string">&quot;Two&quot;</span>;<br><br>Console.WriteLine(hashtable[<span class="hljs-number">1</span>]); <span class="hljs-comment">// 输出 One</span><br><br>hashtable.Remove(<span class="hljs-number">2</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-3-Queue"><a href="#4-3-Queue" class="headerlink" title="4.3 Queue"></a>4.3 Queue</h3><p><code>Queue</code>是一个先进先出（FIFO）队列，支持高效的插入和删除操作。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Queue queue = <span class="hljs-keyword">new</span> Queue();<br>queue.Enqueue(<span class="hljs-number">1</span>);<br>queue.Enqueue(<span class="hljs-string">&quot;Two&quot;</span>);<br>queue.Enqueue(<span class="hljs-number">3.0</span>);<br><br>Console.WriteLine(queue.Dequeue()); <span class="hljs-comment">// 输出 1</span><br>Console.WriteLine(queue.Peek()); <span class="hljs-comment">// 输出 Two</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-4-Stack"><a href="#4-4-Stack" class="headerlink" title="4.4 Stack"></a>4.4 Stack</h3><p><code>Stack</code>是一个后进先出（LIFO）栈，支持高效的插入和删除操作。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Stack stack = <span class="hljs-keyword">new</span> Stack();<br>stack.Push(<span class="hljs-number">1</span>);<br>stack.Push(<span class="hljs-string">&quot;Two&quot;</span>);<br>stack.Push(<span class="hljs-number">3.0</span>);<br><br>Console.WriteLine(stack.Pop()); <span class="hljs-comment">// 输出 3.0</span><br>Console.WriteLine(stack.Peek()); <span class="hljs-comment">// 输出 Two</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-集合的常用操作"><a href="#5-集合的常用操作" class="headerlink" title="5.集合的常用操作"></a>5.集合的常用操作</h2><h3 id="5-1-添加元素"><a href="#5-1-添加元素" class="headerlink" title="5.1 添加元素"></a>5.1 添加元素</h3><p>大多数集合提供了<code>Add</code>方法来添加元素。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; list = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br>list.Add(<span class="hljs-number">1</span>);<br>list.Add(<span class="hljs-number">2</span>);<br>list.Add(<span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-删除元素"><a href="#5-2-删除元素" class="headerlink" title="5.2 删除元素"></a>5.2 删除元素</h3><p>大多数集合提供了<code>Remove</code>方法来删除元素。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; list = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br>list.Add(<span class="hljs-number">1</span>);<br>list.Add(<span class="hljs-number">2</span>);<br>list.Add(<span class="hljs-number">3</span>);<br><br>list.Remove(<span class="hljs-number">2</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-3-查找元素"><a href="#5-3-查找元素" class="headerlink" title="5.3 查找元素"></a>5.3 查找元素</h3><p>大多数集合提供了<code>Contains</code>方法来查找元素。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; list = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br>list.Add(<span class="hljs-number">1</span>);<br>list.Add(<span class="hljs-number">2</span>);<br>list.Add(<span class="hljs-number">3</span>);<br><br><span class="hljs-built_in">bool</span> contains = list.Contains(<span class="hljs-number">2</span>); <span class="hljs-comment">// 输出 True</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-4-遍历集合"><a href="#5-4-遍历集合" class="headerlink" title="5.4 遍历集合"></a>5.4 遍历集合</h3><p>可以使用<code>foreach</code>循环来遍历集合中的所有元素。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; list = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br>list.Add(<span class="hljs-number">1</span>);<br>list.Add(<span class="hljs-number">2</span>);<br>list.Add(<span class="hljs-number">3</span>);<br><br><span class="hljs-keyword">foreach</span> (<span class="hljs-built_in">int</span> item <span class="hljs-keyword">in</span> list)<br>&#123;<br>    Console.WriteLine(item); <span class="hljs-comment">// 输出 1, 2, 3</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-5-排序集合"><a href="#5-5-排序集合" class="headerlink" title="5.5 排序集合"></a>5.5 排序集合</h3><p>可以使用<code>Sort</code>方法来排序集合中的元素。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; list = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br>list.Add(<span class="hljs-number">3</span>);<br>list.Add(<span class="hljs-number">1</span>);<br>list.Add(<span class="hljs-number">2</span>);<br><br>list.Sort();<br><br><span class="hljs-keyword">foreach</span> (<span class="hljs-built_in">int</span> item <span class="hljs-keyword">in</span> list)<br>&#123;<br>    Console.WriteLine(item); <span class="hljs-comment">// 输出 1, 2, 3</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-集合的高级用法"><a href="#6-集合的高级用法" class="headerlink" title="6.集合的高级用法"></a>6.集合的高级用法</h2><h3 id="6-1-自定义集合"><a href="#6-1-自定义集合" class="headerlink" title="6.1 自定义集合"></a>6.1 自定义集合</h3><p>可以创建自定义集合类，继承自<code>Collection&lt;T&gt;</code>或<code>KeyedCollection&lt;TKey, TValue&gt;</code>。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyCollection</span> : <span class="hljs-title">Collection</span>&lt;<span class="hljs-title">int</span>&gt;<br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddRange</span>(<span class="hljs-params">IEnumerable&lt;<span class="hljs-built_in">int</span>&gt; items</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">foreach</span> (<span class="hljs-built_in">int</span> item <span class="hljs-keyword">in</span> items)<br>        &#123;<br>            Add(item);<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        MyCollection collection = <span class="hljs-keyword">new</span> MyCollection();<br>        collection.AddRange(<span class="hljs-keyword">new</span> <span class="hljs-built_in">int</span>[] &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> &#125;);<br><br>        <span class="hljs-keyword">foreach</span> (<span class="hljs-built_in">int</span> item <span class="hljs-keyword">in</span> collection)<br>        &#123;<br>            Console.WriteLine(item); <span class="hljs-comment">// 输出 1, 2, 3</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-2-线程安全集合"><a href="#6-2-线程安全集合" class="headerlink" title="6.2 线程安全集合"></a>6.2 线程安全集合</h3><p>可以使用<code>ConcurrentBag&lt;T&gt;</code>、<code>ConcurrentQueue&lt;T&gt;</code>和<code>ConcurrentStack&lt;T&gt;</code>等线程安全集合。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Collections.Concurrent;<br><br>ConcurrentQueue&lt;<span class="hljs-built_in">int</span>&gt; queue = <span class="hljs-keyword">new</span> ConcurrentQueue&lt;<span class="hljs-built_in">int</span>&gt;();<br>queue.Enqueue(<span class="hljs-number">1</span>);<br>queue.Enqueue(<span class="hljs-number">2</span>);<br>queue.Enqueue(<span class="hljs-number">3</span>);<br><br><span class="hljs-built_in">int</span> result;<br>queue.TryDequeue(<span class="hljs-keyword">out</span> result);<br>Console.WriteLine(result); <span class="hljs-comment">// 输出 1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-3-异步集合"><a href="#6-3-异步集合" class="headerlink" title="6.3 异步集合"></a>6.3 异步集合</h3><p>可以使用<code>Channel&lt;T&gt;</code>来实现异步集合操作。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Threading.Tasks.Channels;<br><br><span class="hljs-function"><span class="hljs-keyword">async</span> Task <span class="hljs-title">MainAsync</span>()</span><br>&#123;<br>    Channel&lt;<span class="hljs-built_in">int</span>&gt; channel = Channel.CreateUnbounded&lt;<span class="hljs-built_in">int</span>&gt;();<br><br>    Task producer = Task.Run(<span class="hljs-keyword">async</span> () =&gt;<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">3</span>; i++)<br>        &#123;<br>            <span class="hljs-keyword">await</span> channel.Writer.WriteAsync(i);<br>        &#125;<br>        channel.Writer.Complete();<br>    &#125;);<br><br>    Task consumer = Task.Run(<span class="hljs-keyword">async</span> () =&gt;<br>    &#123;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">await</span> channel.Reader.WaitToReadAsync())<br>        &#123;<br>            <span class="hljs-built_in">int</span> item;<br>            <span class="hljs-keyword">if</span>(channel.Reader.TryRead(<span class="hljs-keyword">out</span> item))<br>            &#123;<br>                onsole.WriteLine(item);<span class="hljs-comment">//输出 1,2,3</span><br>            &#125;<br>        &#125;<br>    &#125;);<br>    <span class="hljs-keyword">await</span> Task.WhenAll(producer, consumer);<br>&#125;<br>MainAsync().Wait();<br></code></pre></td></tr></table></figure>
+
+<h2 id="7-集合的性能考虑"><a href="#7-集合的性能考虑" class="headerlink" title="7. 集合的性能考虑"></a>7. 集合的性能考虑</h2><h3 id="7-1-选择合适的集合类型"><a href="#7-1-选择合适的集合类型" class="headerlink" title="7.1 选择合适的集合类型"></a>7.1 选择合适的集合类型</h3><p>不同的集合类型有不同的性能特点。选择合适的集合类型可以显著提高程序的性能。</p>
+<ul>
+<li>**List<T>**：适用于频繁的读取操作，但插入和删除操作较慢。</T></li>
+<li>**LinkedList<T>**：适用于频繁的插入和删除操作，但读取操作较慢。</T></li>
+<li>**Dictionary&lt;TKey, TValue&gt;**：适用于需要快速查找的键值对数据。</li>
+<li>**HashSet<T>**：适用于需要快速查找和去重的无序数据。</T></li>
+<li><strong>Queue<T></T></strong> 和 **Stack<T>**：适用于需要先进先出或后进先出的数据结构。</T></li>
+</ul>
+<h3 id="7-2-预分配容量"><a href="#7-2-预分配容量" class="headerlink" title="7.2 预分配容量"></a>7.2 预分配容量</h3><p>对于 <code>List&lt;T&gt;</code> 和 <code>Dictionary&lt;TKey, TValue&gt;</code> 等集合，预分配容量可以减少动态扩展的开销。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c#">List&lt;<span class="hljs-built_in">int</span>&gt; list = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;(<span class="hljs-number">1000</span>); <span class="hljs-comment">// 预分配容量为 1000</span><br>Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; dictionary = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt;(<span class="hljs-number">1000</span>); <span class="hljs-comment">// 预分配容量为 1000</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-3-使用线程安全集合"><a href="#7-3-使用线程安全集合" class="headerlink" title="7.3 使用线程安全集合"></a>7.3 使用线程安全集合</h3><p>在多线程环境中，使用线程安全集合可以避免数据竞争和同步问题。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Collections.Concurrent;<br><br>ConcurrentBag&lt;<span class="hljs-built_in">int</span>&gt; bag = <span class="hljs-keyword">new</span> ConcurrentBag&lt;<span class="hljs-built_in">int</span>&gt;();<br>bag.Add(<span class="hljs-number">1</span>);<br>bag.Add(<span class="hljs-number">2</span>);<br>bag.Add(<span class="hljs-number">3</span>);<br><br><span class="hljs-built_in">int</span> result;<br>bag.TryTake(<span class="hljs-keyword">out</span> result);<br>Console.WriteLine(result); <span class="hljs-comment">// 输出 1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-4-使用异步集合"><a href="#7-4-使用异步集合" class="headerlink" title="7.4 使用异步集合"></a>7.4 使用异步集合</h3><p>在异步编程中，使用异步集合可以提高程序的响应性和性能。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Threading.Tasks.Channels;<br><br><span class="hljs-function"><span class="hljs-keyword">async</span> Task <span class="hljs-title">MainAsync</span>()</span><br>&#123;<br>    Channel&lt;<span class="hljs-built_in">int</span>&gt; channel = Channel.CreateUnbounded&lt;<span class="hljs-built_in">int</span>&gt;();<br><br>    Task producer = Task.Run(<span class="hljs-keyword">async</span> () =&gt;<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">3</span>; i++)<br>        &#123;<br>            <span class="hljs-keyword">await</span> channel.Writer.WriteAsync(i);<br>        &#125;<br>        channel.Writer.Complete();<br>    &#125;);<br><br>    Task consumer = Task.Run(<span class="hljs-keyword">async</span> () =&gt;<br>    &#123;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">await</span> channel.Reader.WaitToReadAsync())<br>        &#123;<br>            <span class="hljs-built_in">int</span> item;<br>            <span class="hljs-keyword">if</span> (channel.Reader.TryRead(<span class="hljs-keyword">out</span> item))<br>            &#123;<br>                Console.WriteLine(item); <span class="hljs-comment">// 输出 1, 2, 3</span><br>            &#125;<br>        &#125;<br>    &#125;);<br><br>    <span class="hljs-keyword">await</span> Task.WhenAll(producer, consumer);<br>&#125;<br><br>MainAsync().Wait();<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="8-集合的实用技巧"><a href="#8-集合的实用技巧" class="headerlink" title="8.集合的实用技巧"></a>8.集合的实用技巧</h2><h4 id="8-1-使用-LINQ-查询集合"><a href="#8-1-使用-LINQ-查询集合" class="headerlink" title="8.1 使用 LINQ 查询集合"></a>8.1 使用 LINQ 查询集合</h4><p>LINQ（Language-Integrated Query）提供了一种强大的查询语法，可以用于查询和操作集合。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; numbers = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt; &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> &#125;;<br><br><span class="hljs-keyword">var</span> evenNumbers = numbers.Where(n =&gt; n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>);<br><br><span class="hljs-keyword">foreach</span> (<span class="hljs-built_in">int</span> number <span class="hljs-keyword">in</span> evenNumbers)<br>&#123;<br>    Console.WriteLine(number); <span class="hljs-comment">// 输出 2, 4</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-2-使用集合的扩展方法"><a href="#8-2-使用集合的扩展方法" class="headerlink" title="8.2 使用集合的扩展方法"></a>8.2 使用集合的扩展方法</h3><p>.NET 提供了许多集合的扩展方法，可以用于简化集合的操作。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; numbers = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt; &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> &#125;;<br><br><span class="hljs-built_in">bool</span> contains = numbers.Any(n =&gt; n &gt; <span class="hljs-number">3</span>); <span class="hljs-comment">// 输出 True</span><br><span class="hljs-built_in">int</span> sum = numbers.Sum(); <span class="hljs-comment">// 输出 15</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-3-使用集合的转换方法"><a href="#8-3-使用集合的转换方法" class="headerlink" title="8.3 使用集合的转换方法"></a>8.3 使用集合的转换方法</h3><p>可以使用集合的转换方法，将一种集合类型转换为另一种集合类型。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; numbers = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt; &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> &#125;;<br><br><span class="hljs-built_in">int</span>[] array = numbers.ToArray();<br>Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; dictionary = numbers.ToDictionary(n =&gt; n, n =&gt; n.ToString());<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-4-使用集合的并行操作"><a href="#8-4-使用集合的并行操作" class="headerlink" title="8.4 使用集合的并行操作"></a>8.4 使用集合的并行操作</h3><p>可以使用并行操作来提高集合的处理速度。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Threading.Tasks;<br><br>List&lt;<span class="hljs-built_in">int</span>&gt; numbers = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt; &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> &#125;;<br><br>Parallel.ForEach(numbers, (number) =&gt;<br>&#123;<br>    Console.WriteLine(number); <span class="hljs-comment">// 并行输出 1, 2, 3, 4, 5</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="9-总结"><a href="#9-总结" class="headerlink" title="9.总结"></a>9.总结</h2><table>
+<thead>
+<tr>
+<th>集合类型</th>
+<th>插入速度</th>
+<th>删除速度</th>
+<th>查找速度</th>
+<th>内存占用</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>List&lt;T&gt;</code></td>
+<td>中</td>
+<td>中（尾部快，头部慢）</td>
+<td>快</td>
+<td>低</td>
+<td>需要快速访问和遍历的有序集合</td>
+</tr>
+<tr>
+<td><code>Dictionary&lt;TKey, TValue&gt;</code></td>
+<td>快</td>
+<td>快</td>
+<td>快</td>
+<td>中</td>
+<td>需要快速查找的键值对数据</td>
+</tr>
+<tr>
+<td><code>HashSet&lt;T&gt;</code></td>
+<td>快</td>
+<td>快</td>
+<td>快</td>
+<td>中</td>
+<td>需要快速去重和检查元素是否存在</td>
+</tr>
+<tr>
+<td><code>LinkedList&lt;T&gt;</code></td>
+<td>快</td>
+<td>快</td>
+<td>慢</td>
+<td>中</td>
+<td>需要频繁插入和删除操作的无序集合</td>
+</tr>
+<tr>
+<td><code>Queue&lt;T&gt;</code></td>
+<td>快</td>
+<td>快</td>
+<td>慢</td>
+<td>低</td>
+<td>需要先进先出（FIFO）操作的集合</td>
+</tr>
+<tr>
+<td><code>Stack&lt;T&gt;</code></td>
+<td>快</td>
+<td>快</td>
+<td>慢</td>
+<td>低</td>
+<td>需要后进先出（LIFO）操作的集合</td>
+</tr>
+<tr>
+<td><code>SortedList&lt;TKey, TValue&gt;</code></td>
+<td>中</td>
+<td>中</td>
+<td>快</td>
+<td>高</td>
+<td>需要自动排序且经常进行快速访问的集合</td>
+</tr>
+<tr>
+<td><code>SortedSet&lt;T&gt;</code></td>
+<td>中</td>
+<td>中</td>
+<td>快</td>
+<td>高</td>
+<td>需要自动排序且经常进行快速访问的集合</td>
+</tr>
+<tr>
+<td><code>ArrayList</code></td>
+<td>中</td>
+<td>中（尾部快，头部慢）</td>
+<td>慢</td>
+<td>低</td>
+<td>需要动态大小但不关心类型安全的集合</td>
+</tr>
+<tr>
+<td><code>Hashtable</code></td>
+<td>快</td>
+<td>快</td>
+<td>快</td>
+<td>中</td>
+<td>需要快速查找的键值对数据，不关心类型安全</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C#</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C#</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C#集合(Collection)</div>
+      <div>https://yonghengshikong.github.io/posts/60787/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/27062/" title="C#泛型（Generic）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C#泛型（Generic）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/20217/" title="C#事件(Event)">
+                        <span class="hidden-mobile">C#事件(Event)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

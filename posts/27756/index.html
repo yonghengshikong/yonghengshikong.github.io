@@ -1,0 +1,886 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="C# 字符串在 C# 编程中，字符串（string）是最常用的数据类型之一。无论是用户界面、日志记录还是数据处理，字符串都扮演着重要角色。本文将全面讲解 C# 中字符串的用法、操作技巧及其背后的技术原理，帮助你掌握字符串的使用。  什么是字符串？在 C# 中，字符串是一种引用类型（System.String），用来表示一系列 Unicode 字符。字符串是不可变的，这意味着字符串一旦创建，其内容就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# 字符串">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/27756/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C# 字符串在 C# 编程中，字符串（string）是最常用的数据类型之一。无论是用户界面、日志记录还是数据处理，字符串都扮演着重要角色。本文将全面讲解 C# 中字符串的用法、操作技巧及其背后的技术原理，帮助你掌握字符串的使用。  什么是字符串？在 C# 中，字符串是一种引用类型（System.String），用来表示一系列 Unicode 字符。字符串是不可变的，这意味着字符串一旦创建，其内容就">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-16T09:05:00.508Z">
+<meta property="article:modified_time" content="2025-01-16T14:47:27.580Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C# 字符串 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C# 字符串"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-16 17:05" pubdate>
+          2025年1月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C# 字符串</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="C-字符串"><a href="#C-字符串" class="headerlink" title="C# 字符串"></a>C# 字符串</h1><p>在 C# 编程中，字符串（<code>string</code>）是最常用的数据类型之一。无论是用户界面、日志记录还是数据处理，字符串都扮演着重要角色。本文将全面讲解 C# 中字符串的用法、操作技巧及其背后的技术原理，帮助你掌握字符串的使用。</p>
+<hr>
+<h2 id="什么是字符串？"><a href="#什么是字符串？" class="headerlink" title="什么是字符串？"></a><strong>什么是字符串？</strong></h2><p>在 C# 中，字符串是一种引用类型（<code>System.String</code>），用来表示一系列 Unicode 字符。字符串是不可变的，这意味着字符串一旦创建，其内容就无法更改。</p>
+<h3 id="字符串不可变性"><a href="#字符串不可变性" class="headerlink" title="字符串不可变性"></a><strong>字符串不可变性</strong></h3><p>不可变性是字符串的一个核心特性。例如：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;Hello&quot;</span>;<br>str += <span class="hljs-string">&quot; World&quot;</span>;  <span class="hljs-comment">// 实际上会创建一个新的字符串对象</span><br>Console.WriteLine(str); <span class="hljs-comment">// 输出：Hello World</span><br></code></pre></td></tr></table></figure>
+
+<p>上述代码中，<code>str += &quot; World&quot;</code> 会生成一个新的字符串对象，原来的字符串并未修改。</p>
+<h3 id="字符串赋值与引用特性"><a href="#字符串赋值与引用特性" class="headerlink" title="字符串赋值与引用特性"></a><strong>字符串赋值与引用特性</strong></h3><p>虽然字符串是引用类型，但由于其不可变特性，当将一个字符串赋值给另一个字符串时，新的字符串变量会独立于原有变量。例如：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str1 = <span class="hljs-string">&quot;Hello&quot;</span>;<br><span class="hljs-built_in">string</span> str2 = str1;<br>str2 = <span class="hljs-string">&quot;World&quot;</span>;<br>Console.WriteLine(str1); <span class="hljs-comment">// 输出：Hello</span><br>Console.WriteLine(str2); <span class="hljs-comment">// 输出：World</span><br></code></pre></td></tr></table></figure>
+
+<p>在上面的代码中，<code>str2</code> 的值被修改后，<code>str1</code> 的值并未受到影响。这是因为字符串的不可变性使得修改操作实际上创建了一个新的字符串对象，而不是更改原有的对象。</p>
+<h3 id="字符串的存储"><a href="#字符串的存储" class="headerlink" title="字符串的存储"></a><strong>字符串的存储</strong></h3><p>字符串是以 Unicode 格式存储的，这使得 C# 能够支持多语言字符。</p>
+<hr>
+<h2 id="字符串的基本声明与创建"><a href="#字符串的基本声明与创建" class="headerlink" title="字符串的基本声明与创建"></a><strong>字符串的基本声明与创建</strong></h2><h3 id="1-普通字符串"><a href="#1-普通字符串" class="headerlink" title="1. 普通字符串"></a><strong>1. 普通字符串</strong></h3><p>普通字符串用双引号包裹：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> normalString = <span class="hljs-string">&quot;Hello, World!&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-转义字符串"><a href="#2-转义字符串" class="headerlink" title="2. 转义字符串"></a><strong>2. 转义字符串</strong></h3><p>可以通过反斜杠 <code>\</code> 来表示特殊字符：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> escapedString = <span class="hljs-string">&quot;Hello,\nWorld!&quot;</span>; <span class="hljs-comment">// 输出时会换行</span><br></code></pre></td></tr></table></figure>
+
+<p>常见转义字符：</p>
+<ul>
+<li><code>\n</code>：换行</li>
+<li><code>\t</code>：制表符</li>
+<li><code>\\</code>：反斜杠</li>
+<li><code>\&quot;</code>：双引号</li>
+</ul>
+<h3 id="3-逐字字符串"><a href="#3-逐字字符串" class="headerlink" title="3. 逐字字符串"></a><strong>3. 逐字字符串</strong></h3><p>逐字字符串以 <code>@</code> 开头，忽略转义符：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> rawString = <span class="hljs-string">@&quot;C:\\Program Files\\MyApp&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>适用于文件路径等场景。</p>
+<h3 id="4-多行字符串"><a href="#4-多行字符串" class="headerlink" title="4. 多行字符串"></a><strong>4. 多行字符串</strong></h3><p>C# 11 引入了多行字符串字面量：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> multiLineString = <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">Line 1</span><br><span class="hljs-string">    Line 2 (Indented)</span><br><span class="hljs-string">Line 3</span><br><span class="hljs-string">&quot;</span><span class="hljs-string">&quot;&quot;</span>;<br>Console.WriteLine(multiLineString);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="字符串的操作方式"><a href="#字符串的操作方式" class="headerlink" title="字符串的操作方式"></a><strong>字符串的操作方式</strong></h2><h3 id="1-字符串连接"><a href="#1-字符串连接" class="headerlink" title="1. 字符串连接"></a><strong>1. 字符串连接</strong></h3><ul>
+<li><p>使用 <code>+</code>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> firstName = <span class="hljs-string">&quot;John&quot;</span>;<br><span class="hljs-built_in">string</span> lastName = <span class="hljs-string">&quot;Doe&quot;</span>;<br><span class="hljs-built_in">string</span> fullName = firstName + <span class="hljs-string">&quot; &quot;</span> + lastName;<br>Console.WriteLine(fullName); <span class="hljs-comment">// 输出：John Doe</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用 <code>String.Concat</code>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> fullName = <span class="hljs-built_in">string</span>.Concat(<span class="hljs-string">&quot;John&quot;</span>, <span class="hljs-string">&quot; &quot;</span>, <span class="hljs-string">&quot;Doe&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用 <code>String.Join</code>（适合拼接数组）：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span>[] words = &#123; <span class="hljs-string">&quot;Hello&quot;</span>, <span class="hljs-string">&quot;World&quot;</span> &#125;;<br><span class="hljs-built_in">string</span> sentence = <span class="hljs-built_in">string</span>.Join(<span class="hljs-string">&quot; &quot;</span>, words);<br>Console.WriteLine(sentence); <span class="hljs-comment">// 输出：Hello World</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用 <code>StringBuilder</code>（推荐用于频繁拼接）：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Text;<br><br>StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();<br>sb.Append(<span class="hljs-string">&quot;Hello&quot;</span>);<br>sb.Append(<span class="hljs-string">&quot;, &quot;</span>);<br>sb.Append(<span class="hljs-string">&quot;World&quot;</span>);<br>Console.WriteLine(sb.ToString()); <span class="hljs-comment">// 输出：Hello, World</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-字符串插值"><a href="#2-字符串插值" class="headerlink" title="2. 字符串插值"></a><strong>2. 字符串插值</strong></h3><p>字符串插值从 C# 6 引入，是更直观的字符串构建方式。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> name = <span class="hljs-string">&quot;Alice&quot;</span>;<br><span class="hljs-built_in">int</span> age = <span class="hljs-number">25</span>;<br><span class="hljs-built_in">string</span> interpolatedString = <span class="hljs-string">$&quot;My name is <span class="hljs-subst">&#123;name&#125;</span> and I am <span class="hljs-subst">&#123;age&#125;</span> years old.&quot;</span>;<br>Console.WriteLine(interpolatedString);<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-格式化字符串"><a href="#3-格式化字符串" class="headerlink" title="3. 格式化字符串"></a><strong>3. 格式化字符串</strong></h3><p>传统的格式化方式：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> name = <span class="hljs-string">&quot;Alice&quot;</span>;<br><span class="hljs-built_in">int</span> age = <span class="hljs-number">25</span>;<br><span class="hljs-built_in">string</span> formattedString = <span class="hljs-built_in">string</span>.Format(<span class="hljs-string">&quot;My name is &#123;0&#125; and I am &#123;1&#125; years old.&quot;</span>, name, age);<br>Console.WriteLine(formattedString);<br></code></pre></td></tr></table></figure>
+
+<p>现代开发中更推荐字符串插值。</p>
+<h3 id="4-子字符串"><a href="#4-子字符串" class="headerlink" title="4. 子字符串"></a><strong>4. 子字符串</strong></h3><p>从字符串中提取部分内容：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;Hello, World!&quot;</span>;<br><span class="hljs-built_in">string</span> substring = str.Substring(<span class="hljs-number">7</span>, <span class="hljs-number">5</span>); <span class="hljs-comment">// 从索引 7 开始，长度为 5</span><br>Console.WriteLine(substring); <span class="hljs-comment">// 输出：World</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-替换字符串"><a href="#5-替换字符串" class="headerlink" title="5. 替换字符串"></a><strong>5. 替换字符串</strong></h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;Hello, World!&quot;</span>;<br><span class="hljs-built_in">string</span> replacedStr = str.Replace(<span class="hljs-string">&quot;World&quot;</span>, <span class="hljs-string">&quot;C#&quot;</span>);<br>Console.WriteLine(replacedStr); <span class="hljs-comment">// 输出：Hello, C#!</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-字符串拆分"><a href="#6-字符串拆分" class="headerlink" title="6. 字符串拆分"></a><strong>6. 字符串拆分</strong></h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;apple,banana,cherry&quot;</span>;<br><span class="hljs-built_in">string</span>[] fruits = str.Split(<span class="hljs-string">&#x27;,&#x27;</span>);<br><span class="hljs-keyword">foreach</span> (<span class="hljs-built_in">string</span> fruit <span class="hljs-keyword">in</span> fruits)<br>&#123;<br>    Console.WriteLine(fruit);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-去除空白"><a href="#7-去除空白" class="headerlink" title="7. 去除空白"></a><strong>7. 去除空白</strong></h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;   Hello, World!   &quot;</span>;<br>Console.WriteLine(str.Trim());    <span class="hljs-comment">// 去除前后空白</span><br>Console.WriteLine(str.TrimStart()); <span class="hljs-comment">// 去除前空白</span><br>Console.WriteLine(str.TrimEnd());   <span class="hljs-comment">// 去除后空白</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="8-判断字符串是否匹配模式"><a href="#8-判断字符串是否匹配模式" class="headerlink" title="8. 判断字符串是否匹配模式"></a><strong>8. 判断字符串是否匹配模式</strong></h3><ul>
+<li><p>使用 </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">StartsWith</span><br></code></pre></td></tr></table></figure>
+
+<p> 和 </p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">EndsWith</span><br></code></pre></td></tr></table></figure>
+
+<p>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;Hello, World!&quot;</span>;<br>Console.WriteLine(str.StartsWith(<span class="hljs-string">&quot;Hello&quot;</span>)); <span class="hljs-comment">// 输出：True</span><br>Console.WriteLine(str.EndsWith(<span class="hljs-string">&quot;World!&quot;</span>)); <span class="hljs-comment">// 输出：True</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用 </p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-built_in">Contains</span><br></code></pre></td></tr></table></figure>
+
+<p> 检查子字符串：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str = <span class="hljs-string">&quot;Hello, World!&quot;</span>;<br>Console.WriteLine(str.Contains(<span class="hljs-string">&quot;World&quot;</span>)); <span class="hljs-comment">// 输出：True</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="字符串的比较"><a href="#字符串的比较" class="headerlink" title="字符串的比较"></a><strong>字符串的比较</strong></h2><h3 id="1-区分大小写的比较"><a href="#1-区分大小写的比较" class="headerlink" title="1. 区分大小写的比较"></a><strong>1. 区分大小写的比较</strong></h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str1 = <span class="hljs-string">&quot;hello&quot;</span>;<br><span class="hljs-built_in">string</span> str2 = <span class="hljs-string">&quot;Hello&quot;</span>;<br>Console.WriteLine(str1 == str2); <span class="hljs-comment">// 输出：False</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-忽略大小写的比较"><a href="#2-忽略大小写的比较" class="headerlink" title="2. 忽略大小写的比较"></a><strong>2. 忽略大小写的比较</strong></h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-built_in">string</span> str1 = <span class="hljs-string">&quot;hello&quot;</span>;<br><span class="hljs-built_in">string</span> str2 = <span class="hljs-string">&quot;Hello&quot;</span>;<br><span class="hljs-built_in">bool</span> areEqual = <span class="hljs-built_in">string</span>.Equals(str1, str2, StringComparison.OrdinalIgnoreCase);<br>Console.WriteLine(areEqual); <span class="hljs-comment">// 输出：True</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="常用字符串方法"><a href="#常用字符串方法" class="headerlink" title="常用字符串方法"></a><strong>常用字符串方法</strong></h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Length</code></td>
+<td>获取字符串长度</td>
+<td><code>str.Length</code></td>
+</tr>
+<tr>
+<td><code>ToUpper</code></td>
+<td>转换为大写</td>
+<td><code>str.ToUpper()</code></td>
+</tr>
+<tr>
+<td><code>ToLower</code></td>
+<td>转换为小写</td>
+<td><code>str.ToLower()</code></td>
+</tr>
+<tr>
+<td><code>Contains</code></td>
+<td>检查是否包含子字符串</td>
+<td><code>str.Contains(&quot;World&quot;)</code></td>
+</tr>
+<tr>
+<td><code>StartsWith</code></td>
+<td>检查是否以某字符串开头</td>
+<td><code>str.StartsWith(&quot;Hello&quot;)</code></td>
+</tr>
+<tr>
+<td><code>EndsWith</code></td>
+<td>检查是否以某字符串结尾</td>
+<td><code>str.EndsWith(&quot;!&quot;)</code></td>
+</tr>
+<tr>
+<td><code>IndexOf</code></td>
+<td>获取子字符串的索引位置</td>
+<td><code>str.IndexOf(&quot;World&quot;)</code></td>
+</tr>
+<tr>
+<td><code>LastIndexOf</code></td>
+<td>获取最后一次出现的索引位置</td>
+<td><code>str.LastIndexOf(&quot;o&quot;)</code></td>
+</tr>
+<tr>
+<td><code>IsNullOrEmpty</code></td>
+<td>检查是否为空或空字符串</td>
+<td><code>string.IsNullOrEmpty(str)</code></td>
+</tr>
+<tr>
+<td><code>IsNullOrWhiteSpace</code></td>
+<td>检查是否为空或仅包含空白字符</td>
+<td><code>string.IsNullOrWhiteSpace(str)</code></td>
+</tr>
+<tr>
+<td><code>Split</code></td>
+<td>按指定分隔符拆分字符串</td>
+<td><code>str.Split(&#39;,&#39;)</code></td>
+</tr>
+<tr>
+<td><code>Replace</code></td>
+<td>替换子字符串</td>
+<td><code>str.Replace(&quot;old&quot;, &quot;new&quot;)</code></td>
+</tr>
+<tr>
+<td><code>Substring</code></td>
+<td>提取子字符串</td>
+<td><code>str.Substring(0, 5)</code></td>
+</tr>
+<tr>
+<td><code>Trim</code></td>
+<td>去除空白</td>
+<td><code>str.Trim()</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a><strong>性能优化建议</strong></h2><ol>
+<li><strong>频繁拼接字符串时使用 <code>StringBuilder</code></strong><ul>
+<li>普通拼接会创建多个字符串对象，增加内存占用。</li>
+</ul>
+</li>
+<li><strong>避免重复调用不可变方法</strong><ul>
+<li>例如：<code>str.ToUpper()</code> 会返回新的字符串，多次调用可能影响性能。</li>
+</ul>
+</li>
+<li><strong>选择合适的比较方式</strong><ul>
+<li>使用 <code>StringComparison</code> 来避免不必要的大小写敏感比较。</li>
+</ul>
+</li>
+<li><strong>善用缓存</strong><ul>
+<li>对于频繁使用的字符串结果，可以进行缓存。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>C# 的字符串处理功能非常强大，从基础的声明到高级的操作应有尽有。在日常开发中，理解字符串的不可变性、合理选择操作方式，并关注性能优化，能够让你的代码更加高效优雅。希望本文能帮助你全面掌握 C# 字符串的使用技巧！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C#</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C#</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C# 字符串</div>
+      <div>https://yonghengshikong.github.io/posts/27756/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/17473/" title="C#结构体(Struct)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C#结构体(Struct)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/38509/" title="C#可空类型(Nullable)">
+                        <span class="hidden-mobile">C#可空类型(Nullable)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

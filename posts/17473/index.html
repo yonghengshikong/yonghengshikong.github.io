@@ -1,0 +1,780 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="C# 结构体（Struct）在 C# 中，结构体（struct）是一种值类型（value type），用于组织和存储相关数据。 在 C# 中，结构体是值类型数据结构，这样使得一个单一变量可以存储各种数据类型的相关数据。 struct 关键字用于创建结构体。 结构体是用来代表一个记录，假设您想跟踪图书馆中书的动态，您可能想跟踪每本书的以下属性：  Title Author Subject Book">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#结构体(Struct)">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/17473/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C# 结构体（Struct）在 C# 中，结构体（struct）是一种值类型（value type），用于组织和存储相关数据。 在 C# 中，结构体是值类型数据结构，这样使得一个单一变量可以存储各种数据类型的相关数据。 struct 关键字用于创建结构体。 结构体是用来代表一个记录，假设您想跟踪图书馆中书的动态，您可能想跟踪每本书的以下属性：  Title Author Subject Book">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-16T09:06:10.421Z">
+<meta property="article:modified_time" content="2025-01-16T14:47:27.599Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>C#结构体(Struct) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="C#结构体(Struct)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-16 17:06" pubdate>
+          2025年1月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">C#结构体(Struct)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="C-结构体（Struct）"><a href="#C-结构体（Struct）" class="headerlink" title="C# 结构体（Struct）"></a>C# 结构体（Struct）</h1><p><strong>在 C# 中，结构体（struct）是一种值类型（value type）</strong>，用于组织和存储相关数据。</p>
+<p>在 C# 中，结构体是值类型数据结构，这样使得一个单一变量可以存储各种数据类型的相关数据。</p>
+<p><strong>struct</strong> 关键字用于创建结构体。</p>
+<p>结构体是用来代表一个记录，假设您想跟踪图书馆中书的动态，您可能想跟踪每本书的以下属性：</p>
+<ul>
+<li>Title</li>
+<li>Author</li>
+<li>Subject</li>
+<li>Book ID</li>
+</ul>
+<h2 id="定义结构体"><a href="#定义结构体" class="headerlink" title="定义结构体"></a>定义结构体</h2><p>为了定义一个结构体，您必须使用 <strong>struct</strong> 语句。</p>
+<p><strong>struct</strong> 语句为程序定义了一个带有多个成员的新的数据类型。</p>
+<p>例如，您可以按照如下的方式声明 Book 结构：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">struct</span> Books<br>&#123;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> title;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> author;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> subject;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> book_id;<br>&#125;;  <br></code></pre></td></tr></table></figure>
+
+<p>下面的程序演示了结构的用法：</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> System.Text;<br>     <br><span class="hljs-keyword">struct</span> Books<br>&#123;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> title;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> author;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> subject;<br>   <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> book_id;<br>&#125;;  <br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">testStructure</span><br>&#123;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>   &#123;<br><br>      Books Book1;        <span class="hljs-comment">/* 声明 Book1，类型为 Books */</span><br>      Books Book2;        <span class="hljs-comment">/* 声明 Book2，类型为 Books */</span><br><br>      <span class="hljs-comment">/* book 1 详述 */</span><br>      Book1.title = <span class="hljs-string">&quot;C Programming&quot;</span>;<br>      Book1.author = <span class="hljs-string">&quot;Nuha Ali&quot;</span>; <br>      Book1.subject = <span class="hljs-string">&quot;C Programming Tutorial&quot;</span>;<br>      Book1.book_id = <span class="hljs-number">6495407</span>;<br><br>      <span class="hljs-comment">/* book 2 详述 */</span><br>      Book2.title = <span class="hljs-string">&quot;Telecom Billing&quot;</span>;<br>      Book2.author = <span class="hljs-string">&quot;Zara Ali&quot;</span>;<br>      Book2.subject =  <span class="hljs-string">&quot;Telecom Billing Tutorial&quot;</span>;<br>      Book2.book_id = <span class="hljs-number">6495700</span>;<br><br>      <span class="hljs-comment">/* 打印 Book1 信息 */</span><br>      Console.WriteLine( <span class="hljs-string">&quot;Book 1 title : &#123;0&#125;&quot;</span>, Book1.title);<br>      Console.WriteLine(<span class="hljs-string">&quot;Book 1 author : &#123;0&#125;&quot;</span>, Book1.author);<br>      Console.WriteLine(<span class="hljs-string">&quot;Book 1 subject : &#123;0&#125;&quot;</span>, Book1.subject);<br>      Console.WriteLine(<span class="hljs-string">&quot;Book 1 book_id :&#123;0&#125;&quot;</span>, Book1.book_id);<br><br>      <span class="hljs-comment">/* 打印 Book2 信息 */</span><br>      Console.WriteLine(<span class="hljs-string">&quot;Book 2 title : &#123;0&#125;&quot;</span>, Book2.title);<br>      Console.WriteLine(<span class="hljs-string">&quot;Book 2 author : &#123;0&#125;&quot;</span>, Book2.author);<br>      Console.WriteLine(<span class="hljs-string">&quot;Book 2 subject : &#123;0&#125;&quot;</span>, Book2.subject);<br>      Console.WriteLine(<span class="hljs-string">&quot;Book 2 book_id : &#123;0&#125;&quot;</span>, Book2.book_id);       <br><br>      Console.ReadKey();<br><br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当上面的代码被编译和执行时，它会产生下列结果：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">Book </span><span class="hljs-number">1</span> title : C Programming<br><span class="hljs-keyword">Book </span><span class="hljs-number">1</span> author : Nuha Ali<br><span class="hljs-keyword">Book </span><span class="hljs-number">1</span> <span class="hljs-keyword">subject </span>: C Programming Tutorial<br><span class="hljs-keyword">Book </span><span class="hljs-number">1</span> <span class="hljs-keyword">book_id </span>: <span class="hljs-number">6495407</span><br><span class="hljs-keyword">Book </span><span class="hljs-number">2</span> title : Telecom <span class="hljs-keyword">Billing</span><br><span class="hljs-keyword"></span><span class="hljs-keyword">Book </span><span class="hljs-number">2</span> author : Zara Ali<br><span class="hljs-keyword">Book </span><span class="hljs-number">2</span> <span class="hljs-keyword">subject </span>: Telecom <span class="hljs-keyword">Billing </span>Tutorial<br><span class="hljs-keyword">Book </span><span class="hljs-number">2</span> <span class="hljs-keyword">book_id </span>: <span class="hljs-number">6495700</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="C-结构的特点"><a href="#C-结构的特点" class="headerlink" title="C# 结构的特点"></a>C# 结构的特点</h2><p>结构提供了一种轻量级的数据类型，适用于表示简单的数据结构，具有较好的性能特性和值语义：</p>
+<ul>
+<li>结构可带有方法、字段、索引、属性、运算符方法和事件，适用于表示轻量级数据的情况，如坐标、范围、日期、时间等。</li>
+<li>结构可定义构造函数，但不能定义析构函数。但是，您不能为结构定义无参构造函数。无参构造函数(默认)是自动定义的，且不能被改变。</li>
+<li>与类不同，结构不能继承其他的结构或类。</li>
+<li>结构不能作为其他结构或类的基础结构。</li>
+<li>结构可实现一个或多个接口。</li>
+<li>结构成员不能指定为 abstract、virtual 或 protected。</li>
+<li>当您使用 <strong>New</strong> 操作符创建一个结构对象时，会调用适当的构造函数来创建结构。与类不同，结构可以不使用 New 操作符即可被实例化。</li>
+<li>如果不使用 New 操作符，只有在所有的字段都被初始化之后，字段才被赋值，对象才被使用。</li>
+<li>结构变量通常分配在栈上，这使得它们的创建和销毁速度更快。但是，如果将结构用作类的字段，且这个类是引用类型，那么结构将存储在堆上。</li>
+<li>结构默认情况下是可变的，这意味着你可以修改它们的字段。但是，如果结构定义为只读，那么它的字段将是不可变的。</li>
+</ul>
+<h2 id="类-vs-结构"><a href="#类-vs-结构" class="headerlink" title="类 vs 结构"></a>类 vs 结构</h2><p>类和结构在设计和使用时有不同的考虑因素，类适合表示复杂的对象和行为，支持继承和多态性，而结构则更适合表示轻量级数据和值类型，以提高性能并避免引用的管理开销。</p>
+<p>类和结构有以下几个基本的不同点：</p>
+<p><strong>值类型 vs 引用类型：</strong></p>
+<ul>
+<li><strong>结构是值类型（Value Type）：</strong> 结构是值类型，它们在栈上分配内存，而不是在堆上。当将结构实例传递给方法或赋值给另一个变量时，将复制整个结构的内容。</li>
+<li><strong>类是引用类型（Reference Type）：</strong> 类是引用类型，它们在堆上分配内存。当将类实例传递给方法或赋值给另一个变量时，实际上是传递引用（内存地址）而不是整个对象的副本。</li>
+</ul>
+<p><strong>继承和多态性：</strong></p>
+<ul>
+<li><strong>结构不能继承：</strong> 结构不能继承其他结构或类，也不能作为其他结构或类的基类。</li>
+<li><strong>类支持继承：</strong> 类支持继承和多态性，可以通过派生新类来扩展现有类的功能。</li>
+</ul>
+<p><strong>默认构造函数：</strong></p>
+<ul>
+<li><strong>结构不能有无参数的构造函数：</strong> 结构不能包含无参数的构造函数。</li>
+<li><strong>类可以有无参数的构造函数：</strong> 类可以包含无参数的构造函数，如果没有提供构造函数，系统会提供默认的无参数构造函数。</li>
+</ul>
+<p><strong>赋值行为：</strong></p>
+<ul>
+<li>类型为类的变量在赋值时存储的是引用，因此两个变量指向同一个对象。</li>
+<li>结构变量在赋值时会复制整个结构，因此每个变量都有自己的独立副本。</li>
+</ul>
+<p><strong>传递方式：</strong></p>
+<ul>
+<li>类型为类的对象在方法调用时通过引用传递，这意味着在方法中对对象所做的更改会影响到原始对象。</li>
+<li>结构对象通常通过值传递，这意味着传递的是结构的副本，而不是原始结构对象本身。因此，在方法中对结构所做的更改不会影响到原始对象。</li>
+</ul>
+<p><strong>可空性：</strong></p>
+<ul>
+<li>**结构体是值类型，不能直接设置为 **null**：**因为 <strong>null</strong> 是引用类型的默认值，而不是值类型的默认值。如果你需要表示结构体变量的缺失或无效状态，可以使用 <strong>Nullable<T></T></strong> 或称为 <strong>T?</strong> 的可空类型。</li>
+<li><strong>类默认可为null：</strong> 类的实例默认可以为 <code>null</code>，因为它们是引用类型。</li>
+</ul>
+<p><strong>性能和内存分配：</strong></p>
+<ul>
+<li><strong>结构通常更轻量：</strong> 由于结构是值类型且在栈上分配内存，它们通常比类更轻量，适用于简单的数据表示。</li>
+<li><strong>类可能有更多开销：</strong> 由于类是引用类型，可能涉及更多的内存开销和管理。</li>
+</ul>
+<p>以下实例中，MyStruct 是一个结构，而 MyClass 是一个类。</p>
+<p>注释部分演示了结构不能包含无参数的构造函数、不能继承以及结构的实例复制是复制整个结构的内容。与之相反，类可以包含无参数的构造函数，可以继承，并且实例复制是复制引用。</p>
+<h2 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><br><span class="hljs-comment">// 结构声明</span><br><span class="hljs-keyword">struct</span> MyStruct<br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> X;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Y;<br><br>    <span class="hljs-comment">// 结构不能有无参数的构造函数</span><br>    <span class="hljs-comment">// public MyStruct()</span><br>    <span class="hljs-comment">// &#123;</span><br>    <span class="hljs-comment">// &#125;</span><br><br>    <span class="hljs-comment">// 有参数的构造函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyStruct</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x, <span class="hljs-built_in">int</span> y</span>)</span><br>    &#123;<br>        X = x;<br>        Y = y;<br>    &#125;<br><br>    <span class="hljs-comment">// 结构不能继承</span><br>    <span class="hljs-comment">// struct MyDerivedStruct : MyBaseStruct</span><br>    <span class="hljs-comment">// &#123;</span><br>    <span class="hljs-comment">// &#125;</span><br>&#125;<br><br><span class="hljs-comment">// 类声明</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> X;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Y;<br><br>    <span class="hljs-comment">// 类可以有无参数的构造函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyClass</span>()</span><br>    &#123;<br>    &#125;<br><br>    <span class="hljs-comment">// 有参数的构造函数</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyClass</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x, <span class="hljs-built_in">int</span> y</span>)</span><br>    &#123;<br>        X = x;<br>        Y = y;<br>    &#125;<br><br>    <span class="hljs-comment">// 类支持继承</span><br>    <span class="hljs-comment">// class MyDerivedClass : MyBaseClass</span><br>    <span class="hljs-comment">// &#123;</span><br>    <span class="hljs-comment">// &#125;</span><br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>()</span><br>    &#123;<br>        <span class="hljs-comment">// 结构是值类型，分配在栈上</span><br>        MyStruct structInstance1 = <span class="hljs-keyword">new</span> MyStruct(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);<br>        MyStruct structInstance2 = structInstance1; <span class="hljs-comment">// 复制整个结构</span><br><br>        <span class="hljs-comment">// 类是引用类型，分配在堆上</span><br>        MyClass classInstance1 = <span class="hljs-keyword">new</span> MyClass(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>);<br>        MyClass classInstance2 = classInstance1; <span class="hljs-comment">// 复制引用，指向同一个对象</span><br><br>        <span class="hljs-comment">// 修改结构实例不影响其他实例</span><br>        structInstance1.X = <span class="hljs-number">5</span>;<br>        Console.WriteLine(<span class="hljs-string">$&quot;Struct: <span class="hljs-subst">&#123;structInstance1.X&#125;</span>, <span class="hljs-subst">&#123;structInstance2.X&#125;</span>&quot;</span>);<br><br>        <span class="hljs-comment">// 修改类实例会影响其他实例</span><br>        classInstance1.X = <span class="hljs-number">6</span>;<br>        Console.WriteLine(<span class="hljs-string">$&quot;Class: <span class="hljs-subst">&#123;classInstance1.X&#125;</span>, <span class="hljs-subst">&#123;classInstance2.X&#125;</span>&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>针对上述讨论，让我们重写前面的实例：</p>
+<h2 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System;<br><span class="hljs-keyword">using</span> System.Text;<br>     <br><span class="hljs-keyword">struct</span> Books<br>&#123;<br>   <span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span> title;<br>   <span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span> author;<br>   <span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span> subject;<br>   <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> book_id;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setValues</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> t, <span class="hljs-built_in">string</span> a, <span class="hljs-built_in">string</span> s, <span class="hljs-built_in">int</span> id</span>)</span><br>   &#123;<br>      title = t;<br>      author = a;<br>      subject = s;<br>      book_id =id; <br>   &#125;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">display</span>()</span><br>   &#123;<br>      Console.WriteLine(<span class="hljs-string">&quot;Title : &#123;0&#125;&quot;</span>, title);<br>      Console.WriteLine(<span class="hljs-string">&quot;Author : &#123;0&#125;&quot;</span>, author);<br>      Console.WriteLine(<span class="hljs-string">&quot;Subject : &#123;0&#125;&quot;</span>, subject);<br>      Console.WriteLine(<span class="hljs-string">&quot;Book_id :&#123;0&#125;&quot;</span>, book_id);<br>   &#125;<br><br>&#125;;  <br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">testStructure</span><br>&#123;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>   &#123;<br><br>      Books Book1 = <span class="hljs-keyword">new</span> Books(); <span class="hljs-comment">/* 声明 Book1，类型为 Books */</span><br>      Books Book2 = <span class="hljs-keyword">new</span> Books(); <span class="hljs-comment">/* 声明 Book2，类型为 Books */</span><br><br>      <span class="hljs-comment">/* book 1 详述 */</span><br>      Book1.setValues(<span class="hljs-string">&quot;C Programming&quot;</span>,<br>      <span class="hljs-string">&quot;Nuha Ali&quot;</span>, <span class="hljs-string">&quot;C Programming Tutorial&quot;</span>,<span class="hljs-number">6495407</span>);<br><br>      <span class="hljs-comment">/* book 2 详述 */</span><br>      Book2.setValues(<span class="hljs-string">&quot;Telecom Billing&quot;</span>,<br>      <span class="hljs-string">&quot;Zara Ali&quot;</span>, <span class="hljs-string">&quot;Telecom Billing Tutorial&quot;</span>, <span class="hljs-number">6495700</span>);<br><br>      <span class="hljs-comment">/* 打印 Book1 信息 */</span><br>      Book1.display();<br><br>      <span class="hljs-comment">/* 打印 Book2 信息 */</span><br>      Book2.display(); <br><br>      Console.ReadKey();<br><br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当上面的代码被编译和执行时，它会产生下列结果：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ada">Title : <span class="hljs-type">C</span> Programming<br>Author : <span class="hljs-type">Nuha</span> Ali<br>Subject : <span class="hljs-type">C</span> Programming Tutorial<br>Book_id : 6495407<br>Title : <span class="hljs-type">Telecom</span> Billing<br>Author : <span class="hljs-type">Zara</span> Ali<br>Subject : <span class="hljs-type">Telecom</span> Billing Tutorial<br>Book_id : 6495700<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/C/" class="category-chain-item">C#</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C#</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>C#结构体(Struct)</div>
+      <div>https://yonghengshikong.github.io/posts/17473/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/1568/" title="C# 泛型类型约束">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C# 泛型类型约束</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/27756/" title="C# 字符串">
+                        <span class="hidden-mobile">C# 字符串</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
