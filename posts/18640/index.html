@@ -1,0 +1,910 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="iOS上架分发流程及打包详解1. 准备账号 个人账号：每年99美元，可以上架项目到App Store，账号内最多添加100台测试设备，需要先在网站上添加设备的udid，并生成描述文件。 公司账号：每年99美元，可以上架项目到App Store，账号内最多添加100台测试设备，需要先在网站上添加设备的udid，并生成描述文件。 企业账号：每年299美元，无法上架APP，只供企业内部测试使用，最多添加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS上架分发流程及打包详解">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/18640/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="iOS上架分发流程及打包详解1. 准备账号 个人账号：每年99美元，可以上架项目到App Store，账号内最多添加100台测试设备，需要先在网站上添加设备的udid，并生成描述文件。 公司账号：每年99美元，可以上架项目到App Store，账号内最多添加100台测试设备，需要先在网站上添加设备的udid，并生成描述文件。 企业账号：每年299美元，无法上架APP，只供企业内部测试使用，最多添加">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a2ff524ba311f0f7-1742303178766-1.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-be0210bd7390f8df.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-14996a15e8ea1b0f.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-277a3a1803635caa.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-8e4ec4f6f9a4e149.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-b50d0ed7813321d8.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-2a113a1291fad6c3.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-b595dd1592cc46a9.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-21204ae14313afe7.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-422c1b21d2f1066a.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-887e0bd361049d15.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/417/format/webp">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-6262f1c273ecc3d7.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-24afca81779cc44d.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-c8656245365c7a80.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-91996e7f172b5b21.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-5adabc74a822b87a.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-451336b39ede143a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/355/format/webp">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a61f69fe3b261c74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/435/format/webp">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-e9dc09f84248a28e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/686/format/webp">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-ccd548cfd4f220d3.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-e497f441e44e99c4.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-8692a21ca059bceb.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-c0b360a220a274d0.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-0b205c2450698e31.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-4215e47d93dbb578.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-cc98b348c7d1ac53.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-f55988e28757089a.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a653117eb55a3366.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-bed2b32ef46d1de8.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-dcbdff0f6a349da4.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-aa2f6d5a718f9e1e.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-41b2e67c82028c21.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-7df63f837940fb31.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-8500a94f95cf423f.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-89c5659cf006e561.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-6331b5dabe80210f.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-d56fc277d9e02f72.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-4ef7bfc4bb0f958e.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-e551f6f369b913da.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-2b1fe3fd3a223a5e.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-fe5d9fc8fbc9e0d7.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-6233df3b7cf07ecb.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-73bf1d55328909f3.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-7afb812fed79b123.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-bc6a18663ee7986b.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-55e5d0b68148f1d3.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-d321c77ffba0af53.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a597ad108bc41278.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-afbdc87a59957202.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-21b97c57fd22de9c.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-fd48fa37222de530.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a72dc1b6b9d11bdd.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a88052ac99c1add5.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-1790823f621c2d68.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-c75dad099bf0668a.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-bdf22d03acad4244.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-4bb01434b46a0bcc.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-3ae07f5043e877ea.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-0c87eb092e93a9e1.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-b53d5f3d62dcf64a.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-fa2b6c4f19c16e65.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-63e5ff2e91ae376a.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a9767736fa048373.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-7cd684fc6e6d5375.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-34f5b1bf4b86b7e9.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-bf0f6fd7603231a3.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-b5d1d08aa116627f.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-cea5c2b3e8821fa9.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-192d1548313c52fe.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-8bb66b4cfafe528f.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-79539a15739114f1.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-3fe319824b088175.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-eca18753e6520c39.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-ebfcd0b382358fd2.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-e359ce43821f74e9.png">
+<meta property="og:image" content="https://yonghengshikong.github.io/posts/18640/3794267-2cf95d04115e49df.png">
+<meta property="article:published_time" content="2025-03-18T13:00:28.049Z">
+<meta property="article:modified_time" content="2025-03-18T14:00:00.879Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="IOS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yonghengshikong.github.io/posts/18640/3794267-a2ff524ba311f0f7-1742303178766-1.png">
+  
+  
+  
+  <title>iOS上架分发流程及打包详解 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="iOS上架分发流程及打包详解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-18 21:00" pubdate>
+          2025年3月18日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">iOS上架分发流程及打包详解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="iOS上架分发流程及打包详解"><a href="#iOS上架分发流程及打包详解" class="headerlink" title="iOS上架分发流程及打包详解"></a>iOS上架分发流程及打包详解</h1><h1 id="1-准备账号"><a href="#1-准备账号" class="headerlink" title="1. 准备账号"></a>1. 准备账号</h1><ul>
+<li><strong>个人账号：</strong>每年99美元，可以上架项目到App Store，账号内最多添加100台测试设备，需要先在网站上添加设备的udid，并生成描述文件。</li>
+<li><strong>公司账号：</strong>每年99美元，可以上架项目到App Store，账号内最多添加100台测试设备，需要先在网站上添加设备的udid，并生成描述文件。</li>
+<li><strong>企业账号：</strong>每年299美元，无法上架APP，只供企业内部测试使用，最多添加10000台测试设备，使用企业账号进行分发APP时不需要预先在开发者网站加入设备的udid，用户只需要安装并信任描述文件就行。</li>
+</ul>
+<h1 id="2-登录开发者网站，新建APPID"><a href="#2-登录开发者网站，新建APPID" class="headerlink" title="2. 登录开发者网站，新建APPID"></a>2. 登录开发者网站，新建APPID</h1><p>点击链接：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://developer.apple.com/account">苹果开发者网站</a>，进入网站首页(图2-1)，点击红框的地方进入证书管理网页(图2-2)</p>
+<p><img src="/posts/18640/3794267-a2ff524ba311f0f7-1742303178766-1.png" srcset="/img/loading.gif" lazyload alt="2-1"></p>
+<p><img src="/posts/18640/3794267-be0210bd7390f8df.png" srcset="/img/loading.gif" lazyload alt="2-2"></p>
+<p>点击图2-2的那个蓝色加号，添加appid，如图2-3和2-4，选择下一步</p>
+<p><img src="/posts/18640/3794267-14996a15e8ea1b0f.png" srcset="/img/loading.gif" lazyload alt="2-3"></p>
+<p><img src="/posts/18640/3794267-277a3a1803635caa.png" srcset="/img/loading.gif" lazyload alt="2-4"></p>
+<p>来到2-5的页面，按照图内提示填写信息</p>
+<p><img src="/posts/18640/3794267-8e4ec4f6f9a4e149.png" srcset="/img/loading.gif" lazyload alt="2-5"></p>
+<p>页面底下要选择功能（Capabilities）或者服务（App Services），例如地图，推送，NFC，你的APP用到什么功能就勾选哪个，服务同理（图2-6）。</p>
+<p><img src="/posts/18640/3794267-b50d0ed7813321d8.png" srcset="/img/loading.gif" lazyload alt="2-6"></p>
+<p>点击右上角continue，进入到下一个页面(图2-7)，该页面是给你预览的，看看信息正不正确。如果register按钮不可点击，说明你的bundle ID不符合要求，要back到上一个页面重新填写.点击register完成，回到2-2图示位置，选中左边的“identifiers”，可以在右侧列表中看到刚刚新建的APPID。</p>
+<p><img src="/posts/18640/3794267-2a113a1291fad6c3.png" srcset="/img/loading.gif" lazyload alt="2-7"></p>
+<h1 id="3-新建证书"><a href="#3-新建证书" class="headerlink" title="3. 新建证书"></a>3. 新建证书</h1><p>新建证书之前，需要在你的苹果电脑上面从机构请求证书，打开电脑的钥匙串，然后点击左上角的菜单，从证书颁发机构请求证书</p>
+<p><img src="/posts/18640/3794267-b595dd1592cc46a9.png" srcset="/img/loading.gif" lazyload alt="before-1"></p>
+<p><img src="/posts/18640/3794267-21204ae14313afe7.png" srcset="/img/loading.gif" lazyload alt="before-2"></p>
+<p>电子邮件就填写你的开发者账号邮箱，常用名称自行定义，选中存储到磁盘，点击继续，下载一个文件到你的电脑里面，扩展名是“ .certSigningRequest”</p>
+<p><img src="/posts/18640/3794267-422c1b21d2f1066a.png" srcset="/img/loading.gif" lazyload alt="before-3"></p>
+<p>下面可以来看开发者网站的证书了。<br> 如图3-1所示，点击蓝色加号，进入到3-2页面，如果你的电脑是初次安装这些证书，请先拉到页面最底部（图3-3），依次点击四个蓝色链接，下载文件并且安装好，否则等你新建好证书之后，安装到你的钥匙串里会发现证书不受信任，还需要手动设置信任才行</p>
+<p><img src="/posts/18640/3794267-887e0bd361049d15.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/417/format/webp" srcset="/img/loading.gif" lazyload alt="3-1"></p>
+<p><img src="/posts/18640/3794267-6262f1c273ecc3d7.png" srcset="/img/loading.gif" lazyload alt="3-2"></p>
+<p><img src="/posts/18640/3794267-24afca81779cc44d.png" srcset="/img/loading.gif" lazyload alt="3-3"></p>
+<p>下面会依次介绍开发证书，发布证书，推送证书。<br> 如图所示，前面四个都可以使用，不过前两个需要你的xcode版本是在11及之后才行，红框里的说明支持分发模式，这个后面打包的时候再详细说明。</p>
+<p><img src="/posts/18640/3794267-c8656245365c7a80.png" srcset="/img/loading.gif" lazyload alt="3-4"></p>
+<h2 id="3-1-开发证书和发布证书"><a href="#3-1-开发证书和发布证书" class="headerlink" title="3.1 开发证书和发布证书"></a>3.1 开发证书和发布证书</h2><p>选中图3-4中的第一个选项，然后到下一步页面点击“choose file”，选择上面从证书颁发机构请求的证书，然后点击下一步就可以下载证书了，到文件夹里吗找到证书，双击进行安装到钥匙串。</p>
+<p><img src="/posts/18640/3794267-91996e7f172b5b21.png" srcset="/img/loading.gif" lazyload alt="3-5"></p>
+<p>新建发布证书的时候选中图3-6所示，然后下一步，后面的流程和开发证书一样，最后下载下来双击要装打到钥匙串。</p>
+<p><img src="/posts/18640/3794267-5adabc74a822b87a.png" srcset="/img/loading.gif" lazyload alt="3-6"></p>
+<p>访达中和钥匙串中证书如图所示</p>
+<p><img src="/posts/18640/3794267-451336b39ede143a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/355/format/webp" srcset="/img/loading.gif" lazyload alt="3-7"></p>
+<p><img src="/posts/18640/3794267-a61f69fe3b261c74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/435/format/webp" srcset="/img/loading.gif" lazyload alt="3-8"></p>
+<h2 id="3-2-推送证书"><a href="#3-2-推送证书" class="headerlink" title="3.2 推送证书"></a>3.2 推送证书</h2><p>如图3-9所示，选中第一个证书创建测试推送证书，点击下一步到图3-10，然后选择你在第一步里面创建的那个APPID，点击下一步到2-11，选择钥匙串里面颁发的那个，点击下一步然后下载证书，生产推送证书创建方式也是一样的。</p>
+<p><img src="/posts/18640/3794267-e9dc09f84248a28e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/686/format/webp" srcset="/img/loading.gif" lazyload alt="3-9"></p>
+<p><img src="/posts/18640/3794267-ccd548cfd4f220d3.png" srcset="/img/loading.gif" lazyload alt="3-10"></p>
+<p><img src="/posts/18640/3794267-e497f441e44e99c4.png" srcset="/img/loading.gif" lazyload alt="3-11"></p>
+<p>推送证书在访达中和钥匙串中如图所示</p>
+<p><img src="/posts/18640/3794267-8692a21ca059bceb.png" srcset="/img/loading.gif" lazyload alt="3-12"></p>
+<p><img src="/posts/18640/3794267-c0b360a220a274d0.png" srcset="/img/loading.gif" lazyload alt="3-13"></p>
+<h1 id="4-添加测试设备"><a href="#4-添加测试设备" class="headerlink" title="4. 添加测试设备"></a>4. 添加测试设备</h1><p>如果是直接上架到App Store的可以跳过这一步，上架到类似蒲公英平台的，需要仔细看这一步。不过如果你是小白，还是建议上架完之后回过来看一下这个功能，以后肯定会用到<br> 点开图4-1所示的蓝色加号，进入到设备添加页面</p>
+<p><img src="/posts/18640/3794267-0b205c2450698e31.png" srcset="/img/loading.gif" lazyload alt="4-1"></p>
+<p>可以看到页面分为左右两块，<br> 左边是单个添加，<em>Platform</em>选择设备类型，<em>Device Name</em>表示设备名称，可以自行填写，<em>Device Name</em>即设备的udid，udid的获取方式可以自行百度，或者使用蒲公英网站一个工具获取：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.pgyer.com/tools/udid">udid获取</a><br> 右侧的批量添加，可以点击<em>Download sample files</em>来下载模板，然后点击<em>Choose File</em>来上传。<br> 不过是使用单个添加设备，还是批量添加设备，<strong>设备的总数量都不能超过100个</strong>。</p>
+<p><img src="/posts/18640/3794267-4215e47d93dbb578.png" srcset="/img/loading.gif" lazyload alt="4-2"></p>
+<h1 id="5-创建描述文件"><a href="#5-创建描述文件" class="headerlink" title="5. 创建描述文件"></a>5. 创建描述文件</h1><p>如图5-1，点击蓝色加号，进入5-2的页面，描述文件也分开发证书和发布两种模式。</p>
+<p><img src="/posts/18640/3794267-cc98b348c7d1ac53.png" srcset="/img/loading.gif" lazyload alt="5-1"></p>
+<p><img src="/posts/18640/3794267-f55988e28757089a.png" srcset="/img/loading.gif" lazyload alt="5-2"></p>
+<h2 id="5-1-创建开发描述文件"><a href="#5-1-创建开发描述文件" class="headerlink" title="5.1 创建开发描述文件"></a>5.1 创建开发描述文件</h2><p>上架App Store的可以跳过次步骤。如图5-3，选中** Development**的第一个，如果你开发的是手表或者电脑的程序就选择第二个第三个，然后点击下一步到图5-4，在这里还要选择对应的APPID，点击下一步到图5-5选择证书，如果有多个开发证书，就全选，表示所有证书都能使用这个描述文件，点击下一步到5-6，选择设备，然后点击下一步填写一个名称，自己能区分就行。点击download进行下载，然后双击安装到本地。</p>
+<p><img src="/posts/18640/3794267-a653117eb55a3366.png" srcset="/img/loading.gif" lazyload alt="5-3"></p>
+<p><img src="/posts/18640/3794267-bed2b32ef46d1de8.png" srcset="/img/loading.gif" lazyload alt="5-4"></p>
+<p><img src="/posts/18640/3794267-dcbdff0f6a349da4.png" srcset="/img/loading.gif" lazyload alt="5-5"></p>
+<p><img src="/posts/18640/3794267-aa2f6d5a718f9e1e.png" srcset="/img/loading.gif" lazyload alt="5-6"></p>
+<h2 id="5-2-创建分发描述文件"><a href="#5-2-创建分发描述文件" class="headerlink" title="5.2 创建分发描述文件"></a>5.2 创建分发描述文件</h2><p>如果是上架到App Store的可以跳过这一步，如果是上架到类似蒲公英平台的，就需要这一步。如图5-7所示，选择** Distribution**的第一个，如果是tv项目选择第二个，点击下一步，后面的步骤和开发描述文件一样</p>
+<p><img src="/posts/18640/3794267-41b2e67c82028c21.png" srcset="/img/loading.gif" lazyload alt="5-7"></p>
+<h2 id="5-3-创建发布描述文件"><a href="#5-3-创建发布描述文件" class="headerlink" title="5.3 创建发布描述文件"></a>5.3 创建发布描述文件</h2><p>上架到App Store的话，如图5-8所示，点击下一步，除了不用选择设备，其他的步骤和创建开发描述文件一样，最后也下载下来安装到本地</p>
+<p><img src="/posts/18640/3794267-7df63f837940fb31.png" srcset="/img/loading.gif" lazyload alt="5-8"></p>
+<p><strong>开发，分发，发布的描述文件在访达中的后缀都是一样的(. mobileprovision)，无法区分所以最好在填写名称的时候标注好。</strong><br> 如果你是创建的开发或者分发的描述文件，想看一下选中的设备里面有没有包含想要的设备，可以在命令行中用 vim 或者cat的命令来打开描述文件。<br> 打开Mac电脑自带的终端，输入”vim “或者“cat ”，记得加空格。然后把描述文件拖到终端，会自动填充文件路径，按下回车键就可以看到描述文件里面的内容了</p>
+<p><img src="/posts/18640/3794267-8500a94f95cf423f.png" srcset="/img/loading.gif" lazyload alt="5-9"></p>
+<p>可以用鼠标滚轮上下滚动，或者键盘上下键来查看信息。<br>*<key>ProvisionedDevices</key>*下面的列表就是你选中的那些设备的udid。<br> “<key>aps-environment</key>”下面string标签的文本表示描述文件的类型，因为分发和发布都是一样打出来的包都可以直接安装到手机，所以这两个是一样的。<br> 开发：<string>development</string><br> 分发：<string>production</string><br> 发布：<string>production</string><br> 同时按下“command”键和”F”键进行查找，粘贴设备的udid，如果能搜索到，就证明设备已经被选中。<br> 如果是用vim命令查看的文件，英文模式输入法下依次按下“I”键，“esc”键，然后输入冒号“:”，会看到左下角出来冒号，再输入“q”，然后回车就能退到终端页面。如果是cat命令查看的文件，直接按一下回车就好。</p>
+<h1 id="6-在App-Store-Connect网站新建一个APP项目"><a href="#6-在App-Store-Connect网站新建一个APP项目" class="headerlink" title="6. 在App Store Connect网站新建一个APP项目"></a>6. 在App Store Connect网站新建一个APP项目</h1><p>打开<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://appstoreconnect.apple.com/apps">App Store Connect</a>，在首页的左上角店家蓝色加号，选择新建APP会跳出来图6-2所示按照提示填写即可。名称不可以App Store商店中其他的APP名称重复。其中套装ID是选择APPID的，SKU一般都写bundle ID。然后点击创建。</p>
+<p><img src="/posts/18640/3794267-89c5659cf006e561.png" srcset="/img/loading.gif" lazyload alt="6-1"></p>
+<p><img src="/posts/18640/3794267-6331b5dabe80210f.png" srcset="/img/loading.gif" lazyload alt="6-2"></p>
+<h2 id="6-1-进入准备提交页面，填写审核内容"><a href="#6-1-进入准备提交页面，填写审核内容" class="headerlink" title="6.1 进入准备提交页面，填写审核内容"></a>6.1 进入准备提交页面，填写审核内容</h2><p>预览图需要无透明度的图片，不能使用模拟器的截屏(但是偶尔也可以通过)。</p>
+<p><img src="/posts/18640/3794267-d56fc277d9e02f72.png" srcset="/img/loading.gif" lazyload alt="6-3"></p>
+<p>推广文本非必填，<br> 描述属于必填项，对APP进行简介。<br> 此版本新增内容是更新APP版本的时候填写，说明添加或者修改了那些功能。</p>
+<p><img src="/posts/18640/3794267-4ef7bfc4bb0f958e.png" srcset="/img/loading.gif" lazyload alt="6-4"></p>
+<p>关键词：App Store搜索APP时的联想词，比如火影手游可以加上“火影忍者，横版格斗，热血手游”，圣斗士星矢手游“圣斗士，星矢，卡牌，公平竞技(当然并不公平)”。网易云音乐“网易，音乐，听歌”<br> 技术支持网址：填写你公司的官网。如果你帮别人开发的，填他给你提供的网址。</p>
+<p>营销网址：可选型<br> 版本：这个月应该不用解释了吧，第一版一般都是1.0.0<br> 版权：非网址</p>
+<p><img src="/posts/18640/3794267-e551f6f369b913da.png" srcset="/img/loading.gif" lazyload alt="6-5"></p>
+<p>根据你自己的需求看看是否需要填写这三个信息</p>
+<p><img src="/posts/18640/3794267-2b1fe3fd3a223a5e.png" srcset="/img/loading.gif" lazyload alt="6-6"></p>
+<p>构建版本：选择提交审核的二进制文件，现在还没开始打包，等打包后就会有“选择构建版本”的按钮<br> 登录信息：苹果审核 的时候，如果你的APP需要登录才可以，就勾选一下，并且提供一个账号。<br> 联系信息：填写你或者技术主管的联系方式，苹果审核中，如果遇到什么问题，可以通过这里和你们沟通。不过我没遇到过苹果打电话或者发邮件给你。<br> 备注：填写一些信息帮助审核。最好录制一个演示视频来展示APP的功能。APP中有NFC，定位这种功能，自觉录制就行。不能直接进行录屏，必须要用另一个手机从第三角度进行拍摄。</p>
+<p><img src="/posts/18640/3794267-fe5d9fc8fbc9e0d7.png" srcset="/img/loading.gif" lazyload alt="6-7"></p>
+<p>附件：提供图片，语音或者短视频来帮助审核。<br> 下面三个应该不用解释了。</p>
+<p><img src="/posts/18640/3794267-6233df3b7cf07ecb.png" srcset="/img/loading.gif" lazyload alt="6-8"></p>
+<h2 id="6-2-APP信息"><a href="#6-2-APP信息" class="headerlink" title="6.2 APP信息"></a>6.2 APP信息</h2><p>设置名称，副标题，APP类型别。Apple ID是你的APP在App Store中的唯一标识，APP内检测版本更新会用的到。</p>
+<p><img src="/posts/18640/3794267-73bf1d55328909f3.png" srcset="/img/loading.gif" lazyload alt="6-9"></p>
+<p>内容版权：如果APP内有嵌入广告等，就选是</p>
+<p><img src="/posts/18640/3794267-7afb812fed79b123.png" srcset="/img/loading.gif" lazyload alt="6-10"></p>
+<p>年龄分级，如实选择就行</p>
+<p><img src="/posts/18640/3794267-bc6a18663ee7986b.png" srcset="/img/loading.gif" lazyload alt="6-11"></p>
+<p>许可协议：如果没有，就不用管</p>
+<p><img src="/posts/18640/3794267-55e5d0b68148f1d3.png" srcset="/img/loading.gif" lazyload alt="6-12"></p>
+<h2 id="6-3-价格与销售范围"><a href="#6-3-价格与销售范围" class="headerlink" title="6.3 价格与销售范围"></a>6.3 价格与销售范围</h2><p>免费的就选择免费就行，销售范围勾选APP面向客户的国家和地区，税务类别默认App Store软件，如果是游戏或者音乐，选择对应的类别。</p>
+<p><img src="/posts/18640/3794267-d321c77ffba0af53.png" srcset="/img/loading.gif" lazyload alt="6-13"></p>
+<h2 id="6-4-APP隐私"><a href="#6-4-APP隐私" class="headerlink" title="6.4 APP隐私"></a>6.4 APP隐私</h2><p>隐私政策网址，里面叙述一下APP用到哪些权限，cookie如何处理，责任声明。</p>
+<p><img src="/posts/18640/3794267-a597ad108bc41278.png" srcset="/img/loading.gif" lazyload alt="6-14"></p>
+<p>数据收集，如果APP内没有记录用户任何行为，就选择否。像美团，淘宝那些喜欢搜集用户行为的，就要如实选择。</p>
+<p><img src="/posts/18640/3794267-afbdc87a59957202.png" srcset="/img/loading.gif" lazyload alt="6-15"></p>
+<h2 id="6-5-APP审核"><a href="#6-5-APP审核" class="headerlink" title="6.5 APP审核"></a>6.5 APP审核</h2><p>这里会记录历史审核内容，点击进<em>APP提交内容</em>，进入详情页面，消息那里会看到和苹果审核团队的沟通记录</p>
+<p><img src="/posts/18640/3794267-21b97c57fd22de9c.png" srcset="/img/loading.gif" lazyload alt="6-16"></p>
+<h2 id="6-6-功能模块"><a href="#6-6-功能模块" class="headerlink" title="6.6 功能模块"></a>6.6 功能模块</h2><p>账户内有付费内容，订阅等功能的自行设置，没有的话忽略。</p>
+<p><img src="/posts/18640/3794267-fd48fa37222de530.png" srcset="/img/loading.gif" lazyload alt="6-17"></p>
+<h2 id="6-7-TestFlight页面"><a href="#6-7-TestFlight页面" class="headerlink" title="6.7 TestFlight页面"></a>6.7 TestFlight页面</h2><p>构建版本记录了你打包上传过的二进制文件，如果正在审核中，对应的构建版本后面会跟“正在审核”的描述，图内是审核完成后的。图6-7那里选择构建版本的时候，就是选择这里的内容。</p>
+<p><img src="/posts/18640/3794267-a72dc1b6b9d11bdd.png" srcset="/img/loading.gif" lazyload alt="6-18"></p>
+<p>点击进对应的构建版本详情，群组中，可以添加测试组，独立测试员可以添加一个其他的测试账号</p>
+<p><img src="/posts/18640/3794267-a88052ac99c1add5.png" srcset="/img/loading.gif" lazyload alt="6-19"></p>
+<p><img src="/posts/18640/3794267-1790823f621c2d68.png" srcset="/img/loading.gif" lazyload alt="6-20"></p>
+<p>内部测试：点击内部测试后面的蓝色加号添加一个测试组，点击测试员后面的蓝色加号再添加测试人员，添加的测试人员，必须是你在用户和访问中添加好的开发者邮箱。添加后，邮箱内会受到一封邮件，查看详情会得到一组大写的邀请码，testflight中的构建版本审核完成后，测试人员在手机上下载“TestFlight”APP，登录上开发者账号，通过邀请码即可获取APP。下拉到底部可以给这个群组指定测试某一个构建版本</p>
+<p><img src="/posts/18640/3794267-c75dad099bf0668a.png" srcset="/img/loading.gif" lazyload alt="6-21"></p>
+<p><img src="/posts/18640/3794267-bdf22d03acad4244.png" srcset="/img/loading.gif" lazyload alt="6-22"></p>
+<p><img src="/posts/18640/3794267-4bb01434b46a0bcc.png" srcset="/img/loading.gif" lazyload alt="6-23"></p>
+<p><img src="/posts/18640/3794267-3ae07f5043e877ea.png" srcset="/img/loading.gif" lazyload alt="6-24"></p>
+<p>外部测试：外部测试添加测试员和图6-20相同</p>
+<p><img src="/posts/18640/3794267-0c87eb092e93a9e1.png" srcset="/img/loading.gif" lazyload alt="6-25"></p>
+<h1 id="7-在xcode中打包项目并上传文件"><a href="#7-在xcode中打包项目并上传文件" class="headerlink" title="7. 在xcode中打包项目并上传文件"></a>7. 在xcode中打包项目并上传文件</h1><p>先用xcode打开项目</p>
+<h2 id="7-1-xcode中的配置"><a href="#7-1-xcode中的配置" class="headerlink" title="7.1 xcode中的配置"></a>7.1 xcode中的配置</h2><p>TARGETS里面设置版本号version和构建版本build，构建版本就是图6-18中“版本1.0.0”下面的1和2，在你打包上传完成后，如果发现源码还有问题，修改后还需要再上传的话，就保持版本号不变，构建版本要+1。</p>
+<p><img src="/posts/18640/3794267-b53d5f3d62dcf64a.png" srcset="/img/loading.gif" lazyload alt="7-1"></p>
+<p>设置证书：可以通过勾选”aUtomatically manage sigining”，然后选择Team来自动匹配描述文件，也可以不勾选，点击“Provisioning Pofile”进行手动指定描述文件</p>
+<p><img src="/posts/18640/3794267-fa2b6c4f19c16e65.png" srcset="/img/loading.gif" lazyload alt="7-2"></p>
+<p><img src="/posts/18640/3794267-63e5ff2e91ae376a.png" srcset="/img/loading.gif" lazyload alt="7-3"></p>
+<h2 id="7-2-打包上传"><a href="#7-2-打包上传" class="headerlink" title="7.2 打包上传"></a>7.2 打包上传</h2><p>点击菜单栏的Product–Archive，xcode会进行自动打包，等待一会就好。打包的时候xcode不能指定任何设备，要选择“Any ios Device”，如图7-4</p>
+<p><img src="/posts/18640/3794267-a9767736fa048373.png" srcset="/img/loading.gif" lazyload alt="7-4"></p>
+<p>打包完成后，桌面会自动跳出来上传配置页面，点击“Distribute App”进入图7-6</p>
+<p><img src="/posts/18640/3794267-7cd684fc6e6d5375.png" srcset="/img/loading.gif" lazyload alt="7-5"></p>
+<p>选中第一个代表上传到App Store。<br> 选中第二个属于测试分发，上传类似蒲公英的平台，或者有需要超级签名的。<br> 选中第三个是企业账号进行打包<br> 选中第四个表示测试环境的，也无法作为正式版APP使用。<br> ———–分割线———————-<br><strong>更新xcode之后的补充</strong><br> xcode更新了15版本以后，APP打包完想导出IPA包的界面已经更改了。如图7-5-1，想要用企业证书导出IPA的话，需要选中如图所示，点击next，才会出现图7-5的页面。如果只是上架App Store或者进行adhoc打包的话，直接选中第一个或者第二个就行。</p>
+<p><img src="/posts/18640/3794267-34f5b1bf4b86b7e9.png" srcset="/img/loading.gif" lazyload alt="7-5-1"></p>
+<p>————–分割线———————-<br> 接下来的流程以第一个为例</p>
+<p><img src="/posts/18640/3794267-bf0f6fd7603231a3.png" srcset="/img/loading.gif" lazyload alt="7-6"></p>
+<p>选中App Store connect，点击next到图7-7，这里的upload或者export代表两种上传方式。upload可以直接进行上传，export会先导出来一个IPA包，然后配合Transporter工具进行上传，好处是可以把IPA包放到另一台电脑上传。</p>
+<p><img src="/posts/18640/3794267-b5d1d08aa116627f.png" srcset="/img/loading.gif" lazyload alt="7-7"></p>
+<p>选中upload一路next到图7-8，第一个表示自动匹配描述文件，点击next后，再点击upload就会开始上传，第二个表示手动指定，点击next进入7-9进行指定，然后next，再点击upload开始上传</p>
+<p><img src="/posts/18640/3794267-cea5c2b3e8821fa9.png" srcset="/img/loading.gif" lazyload alt="7-8"></p>
+<p><img src="/posts/18640/3794267-192d1548313c52fe.png" srcset="/img/loading.gif" lazyload alt="7-9"></p>
+<p><img src="/posts/18640/3794267-8bb66b4cfafe528f.png" srcset="/img/loading.gif" lazyload alt="7-10"></p>
+<p>选中export，next到图7-8所示，这里手动指定还是自动指定都和upload的流程一样，next之后，点击export，选择一个文件夹存放导出来的内容。在访达内如图7-11所示，扩展名为“.ipa”的就是用来上传的文件，如果是中文名请改成英文</p>
+<p><img src="/posts/18640/3794267-79539a15739114f1.png" srcset="/img/loading.gif" lazyload alt="7-11"></p>
+<p>然后电脑在App Store中下载Transpoeter，打开并登录开发者账号，点击左上角的加号，从访达中选择IPA文件进行上传。</p>
+<p><img src="/posts/18640/3794267-3fe319824b088175.png" srcset="/img/loading.gif" lazyload alt="7-12"></p>
+<h1 id="8-提交上架"><a href="#8-提交上架" class="headerlink" title="8. 提交上架"></a>8. 提交上架</h1><p>回到APP store connect网站，刚刚打包上传的文件会显示在testflight中，刚上传的会在构建版本好后面有“正在审核”的字样，审核时间大概半个小时.如果在3-5分钟左右，刷新页面后发现构建版本没了，说你的IPA包有错误，被苹果退回了，可以去开发者账号的邮箱查看苹果审核团队发给你的邮件，修改源码后重新打包上传，这时候的构建版本号不需要再+1。这里的审核完成后，开发者邮箱会收到邮件，如果有开起了测试，那么测试手机上“testflight”APP也会有推送消息。</p>
+<p><img src="/posts/18640/3794267-eca18753e6520c39.png" srcset="/img/loading.gif" lazyload alt="8-1"></p>
+<p>点击到图8-2，testflight审核成功后，这里的构建版本会出现一个按钮让你选择要上架的构架版本，选择后点击右上角的添加以供审核，再点击一下提交审核，APP状态变成“正在等待审核”，表示提交完成，等待苹果的人工审核就好了，人工审核时间理论上是两天，但是现在一般一天就会有结果。</p>
+<p><img src="/posts/18640/3794267-ebfcd0b382358fd2.png" srcset="/img/loading.gif" lazyload alt="8-2"></p>
+<h1 id="9-钥匙串导出P12文件"><a href="#9-钥匙串导出P12文件" class="headerlink" title="9. 钥匙串导出P12文件"></a>9. 钥匙串导出P12文件</h1><p>如果另一台电脑也想对同一个项目进行调试，甚至打包上传怎么办，还需要通过第二步的内容进行新建证书吗，当然会不需要，况且发布证书最多只能创建三个，不可能每台电脑都要新建证书。这时候就要用到p12文件了。某一台电脑新建过证书，并且也下载安装到钥匙串了，这时候就可以从钥匙串导出一个p12文件传给另一台电脑，另一台电脑接收后，双击安装到钥匙串，就可以看到该证书了。<br> 选中证书右击，注意不要展开，是选中证书主体，选择“导出<em><strong><strong>证书名</strong></strong></em>”，到图p-2，文件格式扩展名为.p12，然后选择文件夹，填写名称，点击存储，设置密码后存储到磁盘，然后就可以发给其他设备了</p>
+<p><img src="/posts/18640/3794267-e359ce43821f74e9.png" srcset="/img/loading.gif" lazyload alt="9-1"></p>
+<p><img src="/posts/18640/3794267-2cf95d04115e49df.png" srcset="/img/loading.gif" lazyload alt="9-2"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/IOS/" class="category-chain-item">IOS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/IOS/" class="print-no-link">#IOS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>iOS上架分发流程及打包详解</div>
+      <div>https://yonghengshikong.github.io/posts/18640/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/38425/" title="游戏开发-Unity技术框架集合">
+                        <span class="hidden-mobile">游戏开发-Unity技术框架集合</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
