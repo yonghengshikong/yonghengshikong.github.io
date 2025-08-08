@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、单一职责原则（SRP）完整解析1.1 什么是单一职责原则？​核心定义​：一个类应该只有一个引起它变化的原因。换句话说，一个类应该只负责一件事情。 1.2 为什么需要SRP？​三大核心价值​：  ​降低复杂度​：每个类只关注一个功能点 ​提高可维护性​：修改影响范围可控 ​增强可读性​：代码结构清晰明了  二、优化设计 vs 不良设计对比2.1 不良设计示例（违反SRP）123456789101">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4.类设计规范之单一职责原则（SRP）">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/28822/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、单一职责原则（SRP）完整解析1.1 什么是单一职责原则？​核心定义​：一个类应该只有一个引起它变化的原因。换句话说，一个类应该只负责一件事情。 1.2 为什么需要SRP？​三大核心价值​：  ​降低复杂度​：每个类只关注一个功能点 ​提高可维护性​：修改影响范围可控 ​增强可读性​：代码结构清晰明了  二、优化设计 vs 不良设计对比2.1 不良设计示例（违反SRP）123456789101">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-08T01:32:35.126Z">
+<meta property="article:modified_time" content="2025-08-08T02:07:19.321Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="CodingStandards">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>4.类设计规范之单一职责原则（SRP） - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="4.类设计规范之单一职责原则（SRP）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-08 09:32" pubdate>
+          2025年8月8日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          964 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">4.类设计规范之单一职责原则（SRP）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="一、单一职责原则（SRP）完整解析"><a href="#一、单一职责原则（SRP）完整解析" class="headerlink" title="一、单一职责原则（SRP）完整解析"></a>一、单一职责原则（SRP）完整解析</h3><h4 id="1-1-什么是单一职责原则？"><a href="#1-1-什么是单一职责原则？" class="headerlink" title="1.1 什么是单一职责原则？"></a>1.1 什么是单一职责原则？</h4><p>​<strong>核心定义</strong>​：一个类应该只有一个引起它变化的原因。换句话说，一个类应该只负责一件事情。</p>
+<h4 id="1-2-为什么需要SRP？"><a href="#1-2-为什么需要SRP？" class="headerlink" title="1.2 为什么需要SRP？"></a>1.2 为什么需要SRP？</h4><p>​<strong>三大核心价值</strong>​：</p>
+<ol>
+<li>​<strong>降低复杂度</strong>​：每个类只关注一个功能点</li>
+<li>​<strong>提高可维护性</strong>​：修改影响范围可控</li>
+<li>​<strong>增强可读性</strong>​：代码结构清晰明了</li>
+</ol>
+<h3 id="二、优化设计-vs-不良设计对比"><a href="#二、优化设计-vs-不良设计对比" class="headerlink" title="二、优化设计 vs 不良设计对比"></a>二、优化设计 vs 不良设计对比</h3><h4 id="2-1-不良设计示例（违反SRP）"><a href="#2-1-不良设计示例（违反SRP）" class="headerlink" title="2.1 不良设计示例（违反SRP）"></a>2.1 不良设计示例（违反SRP）</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PokerGame</span> &#123;<br>    <span class="hljs-comment">// 混杂了三种职责</span><br>    <span class="hljs-title function_">dealCards</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">// 职责1：业务逻辑</span><br>        <span class="hljs-keyword">const</span> cards = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_calculateDealOrder</span>();<br>        <br>        <span class="hljs-comment">// 职责2：网络通信</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_sendNetworkMessage</span>(<span class="hljs-string">&#x27;deal&#x27;</span>, cards);<br>        <br>        <span class="hljs-comment">// 职责3：UI更新</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_updateDealAnimation</span>(cards);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">_calculateDealOrder</span>(): <span class="hljs-title class_">Card</span>[] &#123; <br>        <span class="hljs-comment">// 复杂的发牌算法</span><br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">_sendNetworkMessage</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">// 网络通信细节</span><br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">_updateDealAnimation</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-comment">// UI动画控制</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>​<strong>存在的问题</strong>​：</p>
+<ol>
+<li>修改发牌算法会影响网络通信和UI展示</li>
+<li>无法单独测试发牌逻辑</li>
+<li>团队协作困难，多人修改容易冲突</li>
+</ol>
+<h4 id="2-2-优化设计示例（符合SRP）"><a href="#2-2-优化设计示例（符合SRP）" class="headerlink" title="2.2 优化设计示例（符合SRP）"></a>2.2 优化设计示例（符合SRP）</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 职责1：专门处理发牌规则</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PokerDealer</span> &#123;<br>    <span class="hljs-title function_">calculateDealOrder</span>(<span class="hljs-attr">players</span>: <span class="hljs-title class_">Player</span>[]): <span class="hljs-title class_">Card</span>[] &#123;<br>        <span class="hljs-comment">// 纯粹的业务逻辑</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 职责2：专门处理网络通信</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PokerNetworkService</span> &#123;<br>    <span class="hljs-title function_">sendMessage</span>(<span class="hljs-params">action: <span class="hljs-built_in">string</span>, data: <span class="hljs-built_in">any</span></span>) &#123;<br>        <span class="hljs-comment">// 专业的网络处理</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 职责3：专门处理UI展示</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PokerAnimationController</span> &#123;<br>    <span class="hljs-title function_">playDealAnimation</span>(<span class="hljs-params">cards: Card[]</span>) &#123;<br>        <span class="hljs-comment">// 专业的动画控制</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 协调层（唯一允许的复合职责）</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PokerGameCoordinator</span> &#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span><br><span class="hljs-params">        <span class="hljs-keyword">private</span> dealer: PokerDealer,</span><br><span class="hljs-params">        <span class="hljs-keyword">private</span> network: PokerNetworkService,</span><br><span class="hljs-params">        <span class="hljs-keyword">private</span> animator: PokerAnimationController</span><br><span class="hljs-params">    </span>) &#123;&#125;<br><br>    <span class="hljs-title function_">dealCards</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">const</span> cards = <span class="hljs-variable language_">this</span>.<span class="hljs-property">dealer</span>.<span class="hljs-title function_">calculateDealOrder</span>();<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">network</span>.<span class="hljs-title function_">sendMessage</span>(<span class="hljs-string">&#x27;deal&#x27;</span>, cards);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">animator</span>.<span class="hljs-title function_">playDealAnimation</span>(cards);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>​<strong>优化后的优势</strong>​：</p>
+<ol>
+<li>修改发牌算法只需改动<code>PokerDealer</code></li>
+<li>可以单独测试每个模块</li>
+<li>团队成员可以并行开发不同模块</li>
+</ol>
+<h3 id="三、SRP实施指南"><a href="#三、SRP实施指南" class="headerlink" title="三、SRP实施指南"></a>三、SRP实施指南</h3><h4 id="3-1-何时应该拆分？"><a href="#3-1-何时应该拆分？" class="headerlink" title="3.1 何时应该拆分？"></a>3.1 何时应该拆分？</h4><table>
+<thead>
+<tr>
+<th>特征信号</th>
+<th>处理方案</th>
+<th>典型案例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类同时处理业务逻辑和UI</td>
+<td>拆分为Logic + View</td>
+<td>牌局逻辑 vs 动画展示</td>
+</tr>
+<tr>
+<td>包含跨技术栈的实现</td>
+<td>拆分为Core + Platform</td>
+<td>游戏逻辑 vs 微信小游戏适配</td>
+</tr>
+<tr>
+<td>经常因不同原因被修改</td>
+<td>拆分为多个专项类</td>
+<td>网络协议处理 vs 数据解析</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-何时可以放宽？"><a href="#3-2-何时可以放宽？" class="headerlink" title="3.2 何时可以放宽？"></a>3.2 何时可以放宽？</h4><table>
+<thead>
+<tr>
+<th>场景特征</th>
+<th>考虑因素</th>
+<th>典型案例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>简单功能模块</td>
+<td>开发效率优先</td>
+<td>游戏设置界面</td>
+</tr>
+<tr>
+<td>性能关键路径</td>
+<td>减少调用开销</td>
+<td>牌局状态同步</td>
+</tr>
+<tr>
+<td>紧密耦合的功能</td>
+<td>拆分收益不高</td>
+<td>动画与音效同步</td>
+</tr>
+</tbody></table>
+<h3 id="四、质量检查清单"><a href="#四、质量检查清单" class="headerlink" title="四、质量检查清单"></a>四、质量检查清单</h3><h4 id="4-1-设计评审问题"><a href="#4-1-设计评审问题" class="headerlink" title="4.1 设计评审问题"></a>4.1 设计评审问题</h4><ol>
+<li>这个类是否只有一个被修改的原因？</li>
+<li>能否用一句话准确描述这个类的职责？</li>
+<li>团队新人能否快速定位相关功能代码？</li>
+</ol>
+<h4 id="4-2-代码异味检测"><a href="#4-2-代码异味检测" class="headerlink" title="4.2 代码异味检测"></a>4.2 代码异味检测</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 不良特征示例</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">BadExample</span> &#123;<br>    <span class="hljs-comment">// 方法名包含&quot;And&quot;/&quot;Or&quot;（如：updateModelAndView）</span><br>    <span class="hljs-comment">// 类属性被多个不相关的方法使用</span><br>    <span class="hljs-comment">// 经常需要修改同一个类的不同功能</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="五、常见问题解答"><a href="#五、常见问题解答" class="headerlink" title="五、常见问题解答"></a>五、常见问题解答</h3><h4 id="5-1-如何控制类的规模？"><a href="#5-1-如何控制类的规模？" class="headerlink" title="5.1 如何控制类的规模？"></a>5.1 如何控制类的规模？</h4><p>​<strong>推荐做法</strong>​：</p>
+<ul>
+<li>核心业务类：≤800行代码</li>
+<li>工具辅助类：≤300行代码</li>
+<li>每类方法数：≤15个</li>
+</ul>
+<p>​<strong>超标处理</strong>​：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 原始大类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">OversizedClass</span> &#123; <span class="hljs-comment">/* 1200行代码 */</span> &#125;<br><br><span class="hljs-comment">// 优化方案</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CoreFunctionality</span> &#123; <span class="hljs-comment">/* 600行 */</span> &#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ExtendedFeatures</span> &#123; <span class="hljs-comment">/* 400行 */</span> &#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">HelperUtils</span> &#123; <span class="hljs-comment">/* 200行 */</span> &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-2-协调层职责如何处理？"><a href="#5-2-协调层职责如何处理？" class="headerlink" title="5.2 协调层职责如何处理？"></a>5.2 协调层职责如何处理？</h4><p>​<strong>最佳实践</strong>​：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GameCoordinator</span> &#123;<br>    <span class="hljs-comment">// 允许包含必要的流程控制</span><br>    <span class="hljs-comment">// 但不应包含具体业务逻辑</span><br>    <span class="hljs-title function_">startGame</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">model</span>.<span class="hljs-title function_">init</span>();<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">view</span>.<span class="hljs-title function_">render</span>();<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">network</span>.<span class="hljs-title function_">connect</span>();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="六、实战建议"><a href="#六、实战建议" class="headerlink" title="六、实战建议"></a>六、实战建议</h3><ol>
+<li>​<strong>渐进式重构</strong>​：不要试图一次性改造所有代码</li>
+<li>​<strong>文档注释</strong>​：为每个类编写明确的职责说明</li>
+<li>​<strong>团队共识</strong>​：建立统一的代码规范标准</li>
+</ol>
+<blockquote>
+<p>关键提示：在棋牌游戏开发中，对牌局引擎、网络同步等核心模块必须严格遵循SRP，对活动页面等次要模块可适当放宽要求。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CodingStandards/" class="category-chain-item">CodingStandards</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CodingStandards/" class="print-no-link">#CodingStandards</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>4.类设计规范之单一职责原则（SRP）</div>
+      <div>https://yonghengshikong.github.io/posts/28822/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/3/" title="5.类设计规范之开闭原则（OCP）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">5.类设计规范之开闭原则（OCP）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/19296/" title="3.注释规范">
+                        <span class="hidden-mobile">3.注释规范</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

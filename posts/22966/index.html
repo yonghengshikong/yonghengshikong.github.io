@@ -1,0 +1,908 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="​一、变量与函数​变量定义时，严格按照strict标准定义,标注清楚变量的类型    类型 规则 示例    局部变量 小驼峰，语义化 playerHealth   常量 全大写+下划线 MAX_HEALTH &#x3D; 100   布尔值 is&#x2F;has&#x2F;can前缀 isJumping, hasWeapon   函数&#x2F;方法 小驼峰，动词+名词 getPlayerData()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.命名规范">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/22966/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="​一、变量与函数​变量定义时，严格按照strict标准定义,标注清楚变量的类型    类型 规则 示例    局部变量 小驼峰，语义化 playerHealth   常量 全大写+下划线 MAX_HEALTH &#x3D; 100   布尔值 is&#x2F;has&#x2F;can前缀 isJumping, hasWeapon   函数&#x2F;方法 小驼峰，动词+名词 getPlayerData()">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-08T01:32:35.123Z">
+<meta property="article:modified_time" content="2025-08-08T01:43:10.956Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="CodingStandards">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>2.命名规范 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2.命名规范"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-08 09:32" pubdate>
+          2025年8月8日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          630 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2.命名规范</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="​一、变量与函数​"><a href="#​一、变量与函数​" class="headerlink" title="​一、变量与函数​"></a>​<strong>一、变量与函数</strong>​</h3><p>变量定义时，严格按照strict标准定义,标注清楚变量的类型</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>规则</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>局部变量</td>
+<td>小驼峰，语义化</td>
+<td><code>playerHealth</code></td>
+</tr>
+<tr>
+<td>常量</td>
+<td>全大写+下划线</td>
+<td><code>MAX_HEALTH = 100</code></td>
+</tr>
+<tr>
+<td>布尔值</td>
+<td><code>is</code>&#x2F;<code>has</code>&#x2F;<code>can</code>前缀</td>
+<td><code>isJumping</code>, <code>hasWeapon</code></td>
+</tr>
+<tr>
+<td>函数&#x2F;方法</td>
+<td>小驼峰，动词+名词</td>
+<td><code>getPlayerData()</code></td>
+</tr>
+<tr>
+<td>私有成员</td>
+<td><code>_</code>前缀</td>
+<td><code>private _speed = 10;</code></td>
+</tr>
+</tbody></table>
+<h3 id="​二、类与文件​"><a href="#​二、类与文件​" class="headerlink" title="​二、类与文件​"></a>​<strong>二、类与文件</strong>​</h3><p>保证类名和文件名一致，从命名阶段就区分出组件和普通类</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>规则</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类名</td>
+<td>大驼峰</td>
+<td><code>class PlayerController</code></td>
+</tr>
+<tr>
+<td>脚本文件</td>
+<td>与类名一致+<code>.ts</code></td>
+<td><code>PlayerController.ts</code></td>
+</tr>
+<tr>
+<td>普通组件</td>
+<td><code>节点名 + Comp</code> 后缀</td>
+<td><code>PlayerMoveComp.ts</code></td>
+</tr>
+<tr>
+<td>视图组件</td>
+<td><code>节点名 + View</code> 后缀</td>
+<td><code>AssistHallView.ts</code></td>
+</tr>
+<tr>
+<td>视图逻辑类</td>
+<td><code>节点名 + ViewCtrl</code> 后缀</td>
+<td><code>AssistHallViewCtrl.ts</code></td>
+</tr>
+</tbody></table>
+<h3 id="​三、资源命名规则"><a href="#​三、资源命名规则" class="headerlink" title="​三、资源命名规则"></a>​<strong>三、资源命名规则</strong></h3><h4 id="核心原则​"><a href="#核心原则​" class="headerlink" title="核心原则​"></a><strong>核心原则</strong>​</h4><ul>
+<li>​<strong>功能导向</strong>​：命名体现资源用途（如<code>btn</code>、<code>icon</code>、<code>img</code>）</li>
+<li>​<strong>状态&#x2F;变体</strong>​：追加状态描述（<code>normal</code>、<code>pressed</code>、<code>disabled</code>）</li>
+<li>​<strong>全小写+下划线</strong>​：保证跨平台兼容性</li>
+</ul>
+<p><strong>插件预制体除外，插件预制体依旧保持原有格式使用高驼峰命名，如<code>AssistHallView.prefab</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>资源类型</th>
+<th>命名格式</th>
+<th>示例</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<strong>通用2D图片</strong>​</td>
+<td><code>[功能]_[状态].[后缀]</code></td>
+<td><code>btn_start_pressed.png</code></td>
+<td>按钮&#x2F;背景&#x2F;图标等</td>
+</tr>
+<tr>
+<td>​<strong>3D纹理</strong>​</td>
+<td><code>3d_[用途]_[类型].[后缀]</code></td>
+<td><code>3d_hero_normal.png</code></td>
+<td>角色模型贴图</td>
+</tr>
+<tr>
+<td>​<strong>预制体</strong>​</td>
+<td><code>[功能]_[类型].prefab</code></td>
+<td><code>login_window.prefab</code></td>
+<td>UI窗口&#x2F;游戏实体</td>
+</tr>
+<tr>
+<td>​<strong>音效</strong>​</td>
+<td><code>[场景]_[动作].[后缀]</code></td>
+<td><code>fight_swing.wav</code></td>
+<td>游戏音效</td>
+</tr>
+<tr>
+<td>​<strong>动画</strong>​</td>
+<td><code>[角色]_[动作].[后缀]</code></td>
+<td><code>player_run.anim</code></td>
+<td>2D骨骼动画</td>
+</tr>
+</tbody></table>
+<h3 id="四、Cocos-Creator-节点命名规范​"><a href="#四、Cocos-Creator-节点命名规范​" class="headerlink" title="四、Cocos Creator 节点命名规范​"></a><strong>四、Cocos Creator 节点命名规范</strong>​</h3><h4 id="​核心原则​"><a href="#​核心原则​" class="headerlink" title="​核心原则​"></a>​<strong>核心原则</strong>​</h4><ul>
+<li>​<strong>前缀分类</strong>​：组件类型作为前缀（如 <code>btn_</code>、<code>txt_</code>）</li>
+<li>​<strong>功能导向</strong>​：明确节点用途（如 <code>start</code>、<code>hp_bar</code>）</li>
+<li>​<strong>全小写+下划线</strong>​：避免空格和中文</li>
+<li>​<strong>禁用冗余词</strong>​：不重复父节点名称（如避免 <code>player_node_player</code>）</li>
+<li><strong>避免使用无意义词</strong>：如Node_1等</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>类型</th>
+<th>命名格式</th>
+<th>示例</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>btn_</code></td>
+<td>按钮</td>
+<td><code>btn_[功能]_[状态]</code></td>
+<td><code>btn_attack_pressed</code></td>
+<td>所有交互按钮</td>
+</tr>
+<tr>
+<td><code>txt_</code></td>
+<td>文本</td>
+<td><code>txt_[内容描述]</code></td>
+<td><code>txt_damage_value</code></td>
+<td>数值&#x2F;文字显示</td>
+</tr>
+<tr>
+<td><code>img_</code></td>
+<td>图片</td>
+<td><code>img_[功能]_[类型]</code></td>
+<td><code>img_bg_main</code></td>
+<td>背景&#x2F;图标</td>
+</tr>
+<tr>
+<td><code>node_</code></td>
+<td>容器</td>
+<td><code>group_[功能]</code></td>
+<td><code>group_inventory</code></td>
+<td>物品栏容器</td>
+</tr>
+<tr>
+<td><code>anim_</code></td>
+<td>动画</td>
+<td><code>anim_[角色]_[动作]</code></td>
+<td><code>anim_player_run</code></td>
+<td>角色动画</td>
+</tr>
+<tr>
+<td><code>popup_</code></td>
+<td>弹窗</td>
+<td><code>popup_[功能]</code></td>
+<td><code>popup_settings</code></td>
+<td>系统弹窗</td>
+</tr>
+<tr>
+<td><code>3d_</code></td>
+<td>3D资源</td>
+<td><code>model_[角色]_[部位]</code></td>
+<td><code>model_orc_helmet</code></td>
+<td>3D模型</td>
+</tr>
+<tr>
+<td><code>fx_</code></td>
+<td>特效</td>
+<td><code>fx_[效果描述]</code></td>
+<td><code>fx_magic_aura</code></td>
+<td>粒子特效</td>
+</tr>
+<tr>
+<td><code>bar_</code></td>
+<td>进度条</td>
+<td><code>bar_[功能]_[方向]</code></td>
+<td><code>bar_mp_vertical</code></td>
+<td>状态条</td>
+</tr>
+<tr>
+<td><code>ctrl_</code></td>
+<td>控制器</td>
+<td><code>ctrl_[功能]</code></td>
+<td><code>ctrl_camera</code></td>
+<td>逻辑控制节点</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>提示：规范是工具而非枷锁，当您发现更好的命名方式时，欢迎优化调整这套规范。核心目标是让代码”说人话”，而不是机械地遵守格式。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CodingStandards/" class="category-chain-item">CodingStandards</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CodingStandards/" class="print-no-link">#CodingStandards</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2.命名规范</div>
+      <div>https://yonghengshikong.github.io/posts/22966/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/19296/" title="3.注释规范">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">3.注释规范</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/42733/" title="1.目录结构设计规范">
+                        <span class="hidden-mobile">1.目录结构设计规范</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

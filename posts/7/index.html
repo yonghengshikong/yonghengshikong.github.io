@@ -1,0 +1,800 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、核心标准 ​命名三要素​  前缀标识类型（on&#x2F;get&#x2F;update） 动词表明动作（load&#x2F;calculate&#x2F;format） 名词明确对象（Player&#x2F;Currency&#x2F;Config）   ​参数三原则​  数量不超过5个 复杂参数必须对象化 严格类型声明（禁用any）   ​职能三不可​  不可超过单一职责 不可隐藏副作用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9.函数编写规范">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、核心标准 ​命名三要素​  前缀标识类型（on&#x2F;get&#x2F;update） 动词表明动作（load&#x2F;calculate&#x2F;format） 名词明确对象（Player&#x2F;Currency&#x2F;Config）   ​参数三原则​  数量不超过5个 复杂参数必须对象化 严格类型声明（禁用any）   ​职能三不可​  不可超过单一职责 不可隐藏副作用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-08T01:32:35.134Z">
+<meta property="article:modified_time" content="2025-08-08T02:06:22.290Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="CodingStandards">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>9.函数编写规范 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="9.函数编写规范"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-08 09:32" pubdate>
+          2025年8月8日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          486 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">9.函数编写规范</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="一、核心标准"><a href="#一、核心标准" class="headerlink" title="一、核心标准"></a>一、核心标准</h3><ol>
+<li><p>​<strong>命名三要素</strong>​</p>
+<ul>
+<li>前缀标识类型（<code>on</code>&#x2F;<code>get</code>&#x2F;<code>update</code>）</li>
+<li>动词表明动作（<code>load</code>&#x2F;<code>calculate</code>&#x2F;<code>format</code>）</li>
+<li>名词明确对象（<code>Player</code>&#x2F;<code>Currency</code>&#x2F;<code>Config</code>）</li>
+</ul>
+</li>
+<li><p>​<strong>参数三原则</strong>​</p>
+<ul>
+<li>数量不超过5个</li>
+<li>复杂参数必须对象化</li>
+<li>严格类型声明（禁用<code>any</code>）</li>
+</ul>
+</li>
+<li><p>​<strong>职能三不可</strong>​</p>
+<ul>
+<li>不可超过单一职责</li>
+<li>不可隐藏副作用</li>
+<li>不可超过50行代码</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、规范速查表"><a href="#二、规范速查表" class="headerlink" title="二、规范速查表"></a>二、规范速查表</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>标准要求</th>
+<th>合规示例</th>
+<th>违规示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<strong>命名</strong>​</td>
+<td>动词开头+明确对象</td>
+<td><code>formatPlayerName()</code></td>
+<td><code>doSomething()</code></td>
+</tr>
+<tr>
+<td>​<strong>参数</strong>​</td>
+<td>≤5个+对象化</td>
+<td><code>move(&#123;x,y&#125;)</code></td>
+<td><code>move(x,y,z,...)</code></td>
+</tr>
+<tr>
+<td>​<strong>职责</strong>​</td>
+<td>单一功能</td>
+<td><code>calculateDamage()</code></td>
+<td><code>calculateAndShowDamage()</code></td>
+</tr>
+<tr>
+<td>​<strong>长度</strong>​</td>
+<td>≤50行</td>
+<td>拆分子函数</td>
+<td>200行混合逻辑</td>
+</tr>
+<tr>
+<td>​<strong>类型</strong>​</td>
+<td>严格TS类型</td>
+<td><code>score: number</code></td>
+<td><code>data: any</code></td>
+</tr>
+</tbody></table>
+<h3 id="三、黄金准则"><a href="#三、黄金准则" class="headerlink" title="三、黄金准则"></a>三、黄金准则</h3><ol>
+<li><p>​<strong>命名如造句</strong>​</p>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 好：主谓宾结构</span><br><span class="hljs-title function_">onEnemyAttack</span>()<br><span class="hljs-title function_">updatePlayerPosition</span>()<br><br><span class="hljs-comment">// 差：含义模糊</span><br><span class="hljs-title function_">doAction</span>()<br><span class="hljs-title function_">processData</span>()<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>参数如点餐</strong>​</p>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 好：选项式参数</span><br><span class="hljs-title function_">createEnemy</span>(&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;boss&#x27;</span>,<br>    <span class="hljs-attr">hp</span>: <span class="hljs-number">1000</span>,<br>    <span class="hljs-attr">skills</span>: [<span class="hljs-string">&#x27;fireball&#x27;</span>]<br>&#125;)<br><br><span class="hljs-comment">// 差：长参数列表</span><br><span class="hljs-title function_">createEnemy</span>(<span class="hljs-string">&#x27;boss&#x27;</span>, <span class="hljs-number">1000</span>, [<span class="hljs-string">&#x27;fireball&#x27;</span>], <span class="hljs-literal">true</span>, <span class="hljs-number">1.5</span>)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>函数如积木</strong>​</p>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 好：单一功能</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">validateInput</span>(<span class="hljs-params"></span>) &#123;...&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">showErrorMessage</span>(<span class="hljs-params"></span>) &#123;...&#125;<br><br><span class="hljs-comment">// 差：多功能混合</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">validateAndShowError</span>(<span class="hljs-params"></span>) &#123;...&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="四、大厂特别条款"><a href="#四、大厂特别条款" class="headerlink" title="四、大厂特别条款"></a>四、大厂特别条款</h3><ol>
+<li><p>​<strong>腾讯条款</strong>​</p>
+<ul>
+<li>所有公共方法必须包含完整<a target="_blank" rel="noopener" href="https://www.jsdoc.com.cn/">JSDoc</a></li>
+<li>高频函数需标注性能预期</li>
+</ul>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@performance</span> O(1) 时间复杂度</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@cache</span> 使用内存缓存</span><br><span class="hljs-comment"> */</span><br><span class="hljs-title function_">getPlayerLevel</span>(): <span class="hljs-built_in">number</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>网易条款</strong>​</p>
+<ul>
+<li>异步操作必须返回Promise</li>
+<li>错误码必须枚举化</li>
+</ul>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">LoadError</span> &#123;<br>  <span class="hljs-variable constant_">TIMEOUT</span> = <span class="hljs-number">1001</span>,<br>  <span class="hljs-variable constant_">NETWORK_ERROR</span> = <span class="hljs-number">1002</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>米哈游条款</strong>​</p>
+<ul>
+<li>修改全局状态的函数需添加@warning</li>
+</ul>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@warning</span> 将修改window.globalState</span><br><span class="hljs-comment"> */</span><br><span class="hljs-title function_">updateGlobalConfig</span>()<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="五、合规性测试"><a href="#五、合规性测试" class="headerlink" title="五、合规性测试"></a>五、合规性测试</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 测试用例：验证函数规范</span><br><span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;函数规范校验&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;命名合规性&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">isValidName</span>(<span class="hljs-string">&#x27;onPlayerJump&#x27;</span>)).<span class="hljs-title function_">toBeTruthy</span>();<br>    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">isValidName</span>(<span class="hljs-string">&#x27;handle&#x27;</span>)).<span class="hljs-title function_">toBeFalsy</span>();<br>  &#125;);<br><br>  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;参数数量&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">getParamCount</span>(<span class="hljs-string">&#x27;func(a,b,c)&#x27;</span>)).<span class="hljs-title function_">toBeLessThan</span>(<span class="hljs-number">6</span>);<br>  &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>​<strong>终极标准</strong>​：当新人开发者能在10秒内理解函数功能，且不查看实现就能正确调用，即符合规范。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CodingStandards/" class="category-chain-item">CodingStandards</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CodingStandards/" class="print-no-link">#CodingStandards</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>9.函数编写规范</div>
+      <div>https://yonghengshikong.github.io/posts/7/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/32585/" title="10.代码规范纠正示例文档">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">10.代码规范纠正示例文档</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/5/" title="8.类设计规范之依赖倒置原则（DIP）">
+                        <span class="hidden-mobile">8.类设计规范之依赖倒置原则（DIP）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
