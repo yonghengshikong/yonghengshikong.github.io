@@ -16,22 +16,22 @@
   <meta name="author" content="YongHengShiKong">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、里氏替换原则核心要义1.1 基本原则• 子类必须能够完全替代父类 • 保持父类约定不变：   • 参数类型：子类可更宽松（逆变）  • 返回类型：子类应更严格（协变）  • 前置条件：子类不能强化  • 后置条件：子类不能弱化 1.2 设计价值• 保证继承体系的可靠性• 提高代码可复用性• 降低系统维护成本 二、设计实践对比分析2.1 违反原则的典型实现12345678910111213cla">
+    <meta name="description" content="一、核心标准 ​命名三要素​  前缀标识类型（on&#x2F;get&#x2F;update） 动词表明动作（load&#x2F;calculate&#x2F;format） 名词明确对象（Player&#x2F;Currency&#x2F;Config）   ​参数三原则​  数量不超过5个 复杂参数必须对象化 严格类型声明（禁用any）   ​职能三不可​  不可超过单一职责 不可隐藏副作用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="6.类设计规范之里氏替换原则（LSP）">
-<meta property="og:url" content="https://yonghengshikong.github.io/posts/4/index.html">
+<meta property="og:title" content="9.函数编写规范">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/10576/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="一、里氏替换原则核心要义1.1 基本原则• 子类必须能够完全替代父类 • 保持父类约定不变：   • 参数类型：子类可更宽松（逆变）  • 返回类型：子类应更严格（协变）  • 前置条件：子类不能强化  • 后置条件：子类不能弱化 1.2 设计价值• 保证继承体系的可靠性• 提高代码可复用性• 降低系统维护成本 二、设计实践对比分析2.1 违反原则的典型实现12345678910111213cla">
+<meta property="og:description" content="一、核心标准 ​命名三要素​  前缀标识类型（on&#x2F;get&#x2F;update） 动词表明动作（load&#x2F;calculate&#x2F;format） 名词明确对象（Player&#x2F;Currency&#x2F;Config）   ​参数三原则​  数量不超过5个 复杂参数必须对象化 严格类型声明（禁用any）   ​职能三不可​  不可超过单一职责 不可隐藏副作用">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-08-08T01:32:35.129Z">
-<meta property="article:modified_time" content="2025-08-08T02:06:45.826Z">
+<meta property="article:published_time" content="2025-08-08T01:32:35.134Z">
+<meta property="article:modified_time" content="2025-08-08T07:52:35.364Z">
 <meta property="article:author" content="YongHengShiKong">
 <meta property="article:tag" content="CodingStandards">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>6.类设计规范之里氏替换原则（LSP） - Hexo</title>
+  <title>9.函数编写规范 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="6.类设计规范之里氏替换原则（LSP）"></span>
+            <span id="subtitle" data-typed-text="9.函数编写规范"></span>
           
         </div>
 
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          658 字
+          486 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          6 分钟
+          5 分钟
         
       </span>
     
@@ -280,62 +280,109 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">6.类设计规范之里氏替换原则（LSP）</h1>
+            <h1 id="seo-header">9.函数编写规范</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="一、里氏替换原则核心要义"><a href="#一、里氏替换原则核心要义" class="headerlink" title="一、里氏替换原则核心要义"></a>一、里氏替换原则核心要义</h3><h4 id="1-1-基本原则"><a href="#1-1-基本原则" class="headerlink" title="1.1 基本原则"></a>1.1 基本原则</h4><p>• 子类必须能够完全替代父类</p>
-<p>• 保持父类约定不变：</p>
-<p>  • 参数类型：子类可更宽松（逆变）<br>  • 返回类型：子类应更严格（协变）<br>  • 前置条件：子类不能强化<br>  • 后置条件：子类不能弱化</p>
-<h4 id="1-2-设计价值"><a href="#1-2-设计价值" class="headerlink" title="1.2 设计价值"></a>1.2 设计价值</h4><p>• 保证继承体系的可靠性<br>• 提高代码可复用性<br>• 降低系统维护成本</p>
-<h3 id="二、设计实践对比分析"><a href="#二、设计实践对比分析" class="headerlink" title="二、设计实践对比分析"></a>二、设计实践对比分析</h3><h4 id="2-1-违反原则的典型实现"><a href="#2-1-违反原则的典型实现" class="headerlink" title="2.1 违反原则的典型实现"></a>2.1 违反原则的典型实现</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Player</span> &#123;<br>    <span class="hljs-comment">// 约定：返回实际得分[0,100]</span><br>    <span class="hljs-title function_">getScore</span>(): <span class="hljs-built_in">number</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">calculateScore</span>();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">AIPlayer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Player</span> &#123;<br>    <span class="hljs-comment">// ❌ 违反约定：返回随机值</span><br>    <span class="hljs-title function_">getScore</span>(): <span class="hljs-built_in">number</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">100</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="2-2-符合原则的优化方案"><a href="#2-2-符合原则的优化方案" class="headerlink" title="2.2 符合原则的优化方案"></a>2.2 符合原则的优化方案</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Player</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取玩家得分</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@returns</span> 实际游戏得分 [0, 100]</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-title function_">getScore</span>(): <span class="hljs-built_in">number</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">calculateScore</span>();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">AIPlayer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Player</span> &#123;<br>    <span class="hljs-keyword">private</span> _difficulty = <span class="hljs-number">0.8</span>;<br>    <br>    <span class="hljs-comment">// ✅ 保持约定：返回值仍在[0,100]</span><br>    <span class="hljs-title function_">getScore</span>(): <span class="hljs-built_in">number</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">getScore</span>() * <span class="hljs-variable language_">this</span>.<span class="hljs-property">_difficulty</span>;<br>    &#125;<br>    <br>    <span class="hljs-comment">// ✅ 新增方法扩展功能</span><br>    <span class="hljs-title function_">getSimulatedScore</span>(): <span class="hljs-built_in">number</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">100</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="三、棋牌游戏典型应用"><a href="#三、棋牌游戏典型应用" class="headerlink" title="三、棋牌游戏典型应用"></a>三、棋牌游戏典型应用</h3><h4 id="3-1-扑克牌系统实现"><a href="#3-1-扑克牌系统实现" class="headerlink" title="3.1 扑克牌系统实现"></a>3.1 扑克牌系统实现</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Card</span> &#123;<br>    <span class="hljs-comment">// 约定：返回标准牌值[1,13]</span><br>    <span class="hljs-keyword">abstract</span> <span class="hljs-title function_">getValue</span>(): <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">StandardCard</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Card</span> &#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> _value: <span class="hljs-built_in">number</span></span>) &#123;<br>        <span class="hljs-variable language_">super</span>();<br>    &#125;<br>    <br>    <span class="hljs-title function_">getValue</span>(): <span class="hljs-built_in">number</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">1</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-number">13</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">_value</span>));<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">JokerCard</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Card</span> &#123;<br>    <span class="hljs-comment">// ✅ 特殊牌仍符合数值约定</span><br>    <span class="hljs-title function_">getValue</span>(): <span class="hljs-built_in">number</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">14</span>; <span class="hljs-comment">// 王作为特殊值</span><br>    &#125;<br>    <br>    <span class="hljs-comment">// ✅ 扩展特有方法</span><br>    <span class="hljs-title function_">isWildCard</span>(): <span class="hljs-built_in">boolean</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="3-2-牌桌规则系统"><a href="#3-2-牌桌规则系统" class="headerlink" title="3.2 牌桌规则系统"></a>3.2 牌桌规则系统</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RuleValidator</span> &#123;<br>    <span class="hljs-comment">// 约定：验证合法出牌</span><br>    <span class="hljs-title function_">validate</span>(<span class="hljs-attr">cards</span>: <span class="hljs-title class_">Card</span>[]): <span class="hljs-built_in">boolean</span> &#123;<br>        <span class="hljs-keyword">return</span> cards.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TexasRuleValidator</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">RuleValidator</span> &#123;<br>    <span class="hljs-comment">// ✅ 加强验证但不违反约定</span><br>    <span class="hljs-title function_">validate</span>(<span class="hljs-attr">cards</span>: <span class="hljs-title class_">Card</span>[]): <span class="hljs-built_in">boolean</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">validate</span>(cards) &amp;&amp; cards.<span class="hljs-property">length</span> &lt;= <span class="hljs-number">2</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="四、实施质量检查"><a href="#四、实施质量检查" class="headerlink" title="四、实施质量检查"></a>四、实施质量检查</h3><h4 id="4-1-设计验证清单"><a href="#4-1-设计验证清单" class="headerlink" title="4.1 设计验证清单"></a>4.1 设计验证清单</h4><ol>
-<li>子类是否维持父类行为约定？</li>
-<li>单元测试能否用子类替代父类？</li>
-<li>是否通过扩展而非修改实现新功能？</li>
+                <h3 id="一、核心标准"><a href="#一、核心标准" class="headerlink" title="一、核心标准"></a>一、核心标准</h3><ol>
+<li><p>​<strong>命名三要素</strong>​</p>
+<ul>
+<li>前缀标识类型（<code>on</code>&#x2F;<code>get</code>&#x2F;<code>update</code>）</li>
+<li>动词表明动作（<code>load</code>&#x2F;<code>calculate</code>&#x2F;<code>format</code>）</li>
+<li>名词明确对象（<code>Player</code>&#x2F;<code>Currency</code>&#x2F;<code>Config</code>）</li>
+</ul>
+</li>
+<li><p>​<strong>参数三原则</strong>​</p>
+<ul>
+<li>数量不超过5个</li>
+<li>复杂参数必须对象化</li>
+<li>严格类型声明（禁用<code>any</code>）</li>
+</ul>
+</li>
+<li><p>​<strong>职能三不可</strong>​</p>
+<ul>
+<li>不可超过单一职责</li>
+<li>不可隐藏副作用</li>
+<li>不可超过50行代码</li>
+</ul>
+</li>
 </ol>
-<h4 id="4-2-常见违规场景"><a href="#4-2-常见违规场景" class="headerlink" title="4.2 常见违规场景"></a>4.2 常见违规场景</h4><table>
+<h3 id="二、规范速查表"><a href="#二、规范速查表" class="headerlink" title="二、规范速查表"></a>二、规范速查表</h3><table>
 <thead>
 <tr>
-<th>违规类型</th>
-<th>问题表现</th>
-<th>修正方案</th>
+<th>维度</th>
+<th>标准要求</th>
+<th>合规示例</th>
+<th>违规示例</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>返回值不符</td>
-<td>子类返回范围超出父类约定</td>
-<td>约束返回值范围</td>
+<td>​<strong>命名</strong>​</td>
+<td>动词开头+明确对象</td>
+<td><code>formatPlayerName()</code></td>
+<td><code>doSomething()</code></td>
 </tr>
 <tr>
-<td>异常增加</td>
-<td>子类抛出父类未声明的异常</td>
-<td>使用组合替代继承</td>
+<td>​<strong>参数</strong>​</td>
+<td>≤5个+对象化</td>
+<td><code>move(&#123;x,y&#125;)</code></td>
+<td><code>move(x,y,z,...)</code></td>
 </tr>
 <tr>
-<td>功能削弱</td>
-<td>子类忽略父类某些操作</td>
-<td>保持核心功能完整</td>
+<td>​<strong>职责</strong>​</td>
+<td>单一功能</td>
+<td><code>calculateDamage()</code></td>
+<td><code>calculateAndShowDamage()</code></td>
+</tr>
+<tr>
+<td>​<strong>长度</strong>​</td>
+<td>≤50行</td>
+<td>拆分子函数</td>
+<td>200行混合逻辑</td>
+</tr>
+<tr>
+<td>​<strong>类型</strong>​</td>
+<td>严格TS类型</td>
+<td><code>score: number</code></td>
+<td><code>data: any</code></td>
 </tr>
 </tbody></table>
-<h3 id="五、最佳实践建议"><a href="#五、最佳实践建议" class="headerlink" title="五、最佳实践建议"></a>五、最佳实践建议</h3><h4 id="5-1-实施策略"><a href="#5-1-实施策略" class="headerlink" title="5.1 实施策略"></a>5.1 实施策略</h4><ol>
-<li>明确定义父类契约（文档注释）</li>
-<li>优先使用组合扩展功能</li>
-<li>建立子类测试验证体系</li>
+<h3 id="三、黄金准则"><a href="#三、黄金准则" class="headerlink" title="三、黄金准则"></a>三、黄金准则</h3><ol>
+<li><p>​<strong>命名如造句</strong>​</p>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 好：主谓宾结构</span><br><span class="hljs-title function_">onEnemyAttack</span>()<br><span class="hljs-title function_">updatePlayerPosition</span>()<br><br><span class="hljs-comment">// 差：含义模糊</span><br><span class="hljs-title function_">doAction</span>()<br><span class="hljs-title function_">processData</span>()<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>参数如点餐</strong>​</p>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 好：选项式参数</span><br><span class="hljs-title function_">createEnemy</span>(&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;boss&#x27;</span>,<br>    <span class="hljs-attr">hp</span>: <span class="hljs-number">1000</span>,<br>    <span class="hljs-attr">skills</span>: [<span class="hljs-string">&#x27;fireball&#x27;</span>]<br>&#125;)<br><br><span class="hljs-comment">// 差：长参数列表</span><br><span class="hljs-title function_">createEnemy</span>(<span class="hljs-string">&#x27;boss&#x27;</span>, <span class="hljs-number">1000</span>, [<span class="hljs-string">&#x27;fireball&#x27;</span>], <span class="hljs-literal">true</span>, <span class="hljs-number">1.5</span>)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>函数如积木</strong>​</p>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 好：单一功能</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">validateInput</span>(<span class="hljs-params"></span>) &#123;...&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">showErrorMessage</span>(<span class="hljs-params"></span>) &#123;...&#125;<br><br><span class="hljs-comment">// 差：多功能混合</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">validateAndShowError</span>(<span class="hljs-params"></span>) &#123;...&#125;<br></code></pre></td></tr></table></figure></li>
 </ol>
-<h4 id="5-2-注意事项"><a href="#5-2-注意事项" class="headerlink" title="5.2 注意事项"></a>5.2 注意事项</h4><p>• 避免过度使用继承</p>
-<p>• 注意协变&#x2F;逆变规则</p>
-<p>• 保持单元测试覆盖率</p>
+<h3 id="四、大厂特别条款"><a href="#四、大厂特别条款" class="headerlink" title="四、大厂特别条款"></a>四、大厂特别条款</h3><ol>
+<li><p>​<strong>腾讯条款</strong>​</p>
+<ul>
+<li>所有公共方法必须包含完整<a target="_blank" rel="noopener" href="https://www.jsdoc.com.cn/">JSDoc</a></li>
+<li>高频函数需标注性能预期</li>
+</ul>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@performance</span> O(1) 时间复杂度</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@cache</span> 使用内存缓存</span><br><span class="hljs-comment"> */</span><br><span class="hljs-title function_">getPlayerLevel</span>(): <span class="hljs-built_in">number</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>网易条款</strong>​</p>
+<ul>
+<li>异步操作必须返回Promise</li>
+<li>错误码必须枚举化</li>
+</ul>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">LoadError</span> &#123;<br>  <span class="hljs-variable constant_">TIMEOUT</span> = <span class="hljs-number">1001</span>,<br>  <span class="hljs-variable constant_">NETWORK_ERROR</span> = <span class="hljs-number">1002</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>​<strong>米哈游条款</strong>​</p>
+<ul>
+<li>修改全局状态的函数需添加@warning</li>
+</ul>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@warning</span> 将修改window.globalState</span><br><span class="hljs-comment"> */</span><br><span class="hljs-title function_">updateGlobalConfig</span>()<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="五、合规性测试"><a href="#五、合规性测试" class="headerlink" title="五、合规性测试"></a>五、合规性测试</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 测试用例：验证函数规范</span><br><span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;函数规范校验&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;命名合规性&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">isValidName</span>(<span class="hljs-string">&#x27;onPlayerJump&#x27;</span>)).<span class="hljs-title function_">toBeTruthy</span>();<br>    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">isValidName</span>(<span class="hljs-string">&#x27;handle&#x27;</span>)).<span class="hljs-title function_">toBeFalsy</span>();<br>  &#125;);<br><br>  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;参数数量&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">getParamCount</span>(<span class="hljs-string">&#x27;func(a,b,c)&#x27;</span>)).<span class="hljs-title function_">toBeLessThan</span>(<span class="hljs-number">6</span>);<br>  &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
 <blockquote>
-<p>提示：在棋牌游戏开发中，对核心玩法组件（如卡牌、规则等）应严格遵循该原则，而对UI组件等可变部分可适当放宽要求。</p>
+<p>​<strong>终极标准</strong>​：当新人开发者能在10秒内理解函数功能，且不查看实现就能正确调用，即符合规范。</p>
 </blockquote>
 
                 
@@ -382,8 +429,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>6.类设计规范之里氏替换原则（LSP）</div>
-      <div>https://yonghengshikong.github.io/posts/4/</div>
+      <div>9.函数编写规范</div>
+      <div>https://yonghengshikong.github.io/posts/10576/</div>
     </div>
     <div class="license-meta">
       
@@ -427,18 +474,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/6/" title="7.类设计规范之接口隔离原则（ISP）">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">7.类设计规范之接口隔离原则（ISP）</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/3/" title="5.类设计规范之开闭原则（OCP）">
-                        <span class="hidden-mobile">5.类设计规范之开闭原则（OCP）</span>
+                      <a href="/posts/10323/" title="8.类设计规范之依赖倒置原则（DIP）">
+                        <span class="hidden-mobile">8.类设计规范之依赖倒置原则（DIP）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
