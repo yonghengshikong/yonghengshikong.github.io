@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YongHengShiKong">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召前言在搭建小说 &#x2F; 游戏剧情生成 Agent 的过程中，很多人止步于基础 RAG：把角色、剧情分片存入向量库，依靠单纯向量相似度检索，就以为能解决人物 OOC、剧情幻觉。实际落地长篇连载后会暴露两大致命短板：  多角色同场、海量支线剧情下，次要对话、细碎场景挤占角色档案 Token，核心人设权重">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召">
+<meta property="og:url" content="https://yonghengshikong.github.io/posts/27731/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召前言在搭建小说 &#x2F; 游戏剧情生成 Agent 的过程中，很多人止步于基础 RAG：把角色、剧情分片存入向量库，依靠单纯向量相似度检索，就以为能解决人物 OOC、剧情幻觉。实际落地长篇连载后会暴露两大致命短板：  多角色同场、海量支线剧情下，次要对话、细碎场景挤占角色档案 Token，核心人设权重">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-06T07:10:54.222Z">
+<meta property="article:modified_time" content="2026-07-06T07:11:33.562Z">
+<meta property="article:author" content="YongHengShiKong">
+<meta property="article:tag" content="AI Agent">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yonghengshikong.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>码农日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/88888" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>书籍</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-06 15:10" pubdate>
+          2026年7月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="小说叙事Agent高级RAG检索体系：权重分层-双路召回-动态裁剪，根治长篇人设稀释与剧情漏召"><a href="#小说叙事Agent高级RAG检索体系：权重分层-双路召回-动态裁剪，根治长篇人设稀释与剧情漏召" class="headerlink" title="小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召"></a>小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在搭建小说 &#x2F; 游戏剧情生成 Agent 的过程中，很多人止步于基础 RAG：把角色、剧情分片存入向量库，依靠单纯向量相似度检索，就以为能解决人物 OOC、剧情幻觉。<br>实际落地长篇连载后会暴露两大致命短板：</p>
+<ol>
+<li><p>多角色同场、海量支线剧情下，次要对话、细碎场景挤占角色档案 Token，核心人设权重被稀释，角色行为逐步跑偏；</p>
+</li>
+<li><p>纯语义向量检索存在随机性，角色姓名、专属羁绊、主线关键事件极易漏召回，AI 因缺少前置设定凭空编造剧情、人物恩怨。</p>
+</li>
+</ol>
+<p>Day7 完整学习了面向叙事场景的<strong>生产级 RAG 检索三层优化架构</strong>：素材权重分层、标签 + 向量双路混合召回、检索后置重排与 Token 动态裁剪。这套机制是叙事 Agent 底层核心，从输入源头降低偏移与幻觉，搭配循环校验、工具更新模块，才能支撑百万字长篇稳定创作。</p>
+<h2 id="一、单一向量检索的天然缺陷（网文创作专属痛点）"><a href="#一、单一向量检索的天然缺陷（网文创作专属痛点）" class="headerlink" title="一、单一向量检索的天然缺陷（网文创作专属痛点）"></a>一、单一向量检索的天然缺陷（网文创作专属痛点）</h2><p>仅依靠向量相似度检索，无法适配多角色、多支线、可修改剧情的小说场景，三大硬伤无法规避：</p>
+<ol>
+<li><p><strong>无信息优先级区分，核心设定被稀释</strong><br>向量只判断语义相近程度，不会区分 “主角硬性人设” 和 “路人无关日常”，大量低价值支线文本抢占上下文空间，模型注意力偏向剧情，弱化角色底层约束。</p>
+</li>
+<li><p><strong>实体信息召回不稳定，关键剧情随机丢失</strong><br>角色 ID、专属恩怨、决定性主线事件属于精确实体信息，仅靠语义匹配极易漏招；缺少关键过往经历，是 AI 编造虚假身世、反转关系的核心诱因。</p>
+</li>
+<li><p><strong>多支线时序互相干扰，逻辑冲突频发</strong><br>主线、多条支线素材混杂存储，检索时无时间线隔离，无关支线剧情混入 Prompt，造成时间线悖论、人物行为前后矛盾。</p>
+</li>
+</ol>
+<p>想要实现稳定可控的叙事生成，必须给检索链路叠加三层标准化优化。</p>
+<h2 id="二、第一层优化：知识库素材权重分层设计"><a href="#二、第一层优化：知识库素材权重分层设计" class="headerlink" title="二、第一层优化：知识库素材权重分层设计"></a>二、第一层优化：知识库素材权重分层设计</h2><p>入库阶段给每一条向量文档绑定数字权重，从根源划定信息优先级，检索后强制高权重内容优先保留，次要素材可按需裁剪，完美适配小说分层信息结构。</p>
+<h3 id="叙事场景四级权重标准"><a href="#叙事场景四级权重标准" class="headerlink" title="叙事场景四级权重标准"></a>叙事场景四级权重标准</h3><ol>
+<li><p>权重 10（最高强制保留，不可裁剪）<br>主角完整人物档案、世界观底层规则、主线决定性转折、角色核心行为底线。</p>
+</li>
+<li><p>权重 7（高优尽量保留）<br>重要配角档案、核心人物两两羁绊、立场反转、重大恩怨剧情。</p>
+</li>
+<li><p>权重 3（次要，Token 超限优先删减）<br>支线常规事件、次要配角日常互动、通用场景描写。</p>
+</li>
+<li><p>权重 1（补充素材，资源不足直接舍弃）<br>路人对话、无冲突细碎日常、无关环境铺垫。</p>
+</li>
+</ol>
+<h3 id="配套执行规则"><a href="#配套执行规则" class="headerlink" title="配套执行规则"></a>配套执行规则</h3><ol>
+<li><p>所有权重≥7 的文档锁定，无论上下文是否超限，必须注入 Prompt 约束区块；</p>
+</li>
+<li><p>仅权重 3、1 的素材参与动态裁剪，删减顺序从最低权重开始；</p>
+</li>
+<li><p>所有角色相关文档统一拉高权重，杜绝剧情片段覆盖人设。</p>
+</li>
+</ol>
+<h2 id="三、第二层优化：双路混合召回（标签强制召回-向量语义召回）"><a href="#三、第二层优化：双路混合召回（标签强制召回-向量语义召回）" class="headerlink" title="三、第二层优化：双路混合召回（标签强制召回 + 向量语义召回）"></a>三、第二层优化：双路混合召回（标签强制召回 + 向量语义召回）</h2><p>单一检索存在盲区，行业标准采用两路并行召回，结果合并去重，兼顾精确实体匹配与软性语义关联，彻底杜绝关键角色、主线事件漏招。</p>
+<h3 id="1-标签强制召回（确定性兜底，解决实体丢失）"><a href="#1-标签强制召回（确定性兜底，解决实体丢失）" class="headerlink" title="1. 标签强制召回（确定性兜底，解决实体丢失）"></a>1. 标签强制召回（确定性兜底，解决实体丢失）</h3><p>每条入库素材绑定结构化元标签：角色 ID、timeline_group 时间线分组、事件类型、所属势力、人物关系。<br>执行逻辑：系统识别本次出场角色列表、当前写作所属主线 &#x2F; 支线，根据角色 ID 批量拉取全部绑定该角色标签的文档，100% 全量取出。<br>核心优势：不受语义相似度干扰，只要文档绑定角色标签，一定会被召回，彻底解决角色过往经历遗漏。</p>
+<h3 id="2-向量语义召回（补充隐性关联剧情）"><a href="#2-向量语义召回（补充隐性关联剧情）" class="headerlink" title="2. 向量语义召回（补充隐性关联剧情）"></a>2. 向量语义召回（补充隐性关联剧情）</h3><p>将本次写作需求转为向量，在向量库匹配语义相近的场景、冲突、伏笔桥段，补充标签无法覆盖的软性剧情关联，丰富故事逻辑铺垫。<br>核心优势：捕捉同义词、相似冲突、隐性伏笔，让剧情过渡自然，不会生硬割裂。</p>
+<h3 id="两路召回不可单独使用的原因"><a href="#两路召回不可单独使用的原因" class="headerlink" title="两路召回不可单独使用的原因"></a>两路召回不可单独使用的原因</h3><ul>
+<li><p>只保留向量检索：角色、关键主线事件随机漏招，信息缺失诱发大量幻觉；</p>
+</li>
+<li><p>只保留标签检索：只能匹配固定实体，无法自动关联相似剧情、伏笔，剧情单薄、缺少铺垫。</p>
+</li>
+</ul>
+<h3 id="合并流程"><a href="#合并流程" class="headerlink" title="合并流程"></a>合并流程</h3><p>标签召回素材集合 + 向量语义召回素材集合 → 去重合并，生成候选素材池。</p>
+<h2 id="四、第三层优化：检索后置重排序与-Token-动态裁剪"><a href="#四、第三层优化：检索后置重排序与-Token-动态裁剪" class="headerlink" title="四、第三层优化：检索后置重排序与 Token 动态裁剪"></a>四、第三层优化：检索后置重排序与 Token 动态裁剪</h2><p>两路召回合并后素材总量极易超出上下文窗口上限，直接拼接依旧会出现信息稀释，必须增加后置过滤流程，四步标准化处理：</p>
+<ol>
+<li><p><strong>去重</strong>：同一角色档案、同一段剧情重复召回仅保留一份，减少冗余 Token 占用；</p>
+</li>
+<li><p><strong>权重重排</strong>：所有权重 10 置顶，其次权重 7，最后次要素材，让模型优先读取不可篡改的硬性设定；</p>
+</li>
+<li><p><strong>Token 总量测算</strong>：实时统计所有候选素材总字符 Token；</p>
+</li>
+<li><p><strong>梯度裁剪</strong>：从权重最低文档依次删减，直到总素材 Token 低于预设阈值。</p>
+</li>
+</ol>
+<h3 id="兜底保护规则"><a href="#兜底保护规则" class="headerlink" title="兜底保护规则"></a>兜底保护规则</h3><p>裁剪过程中不允许删除权重≥7 核心素材；若删减后依旧超限，自动缩短单次生成剧情篇幅，保证人设完整。</p>
+<h3 id="多角色同场专属适配逻辑"><a href="#多角色同场专属适配逻辑" class="headerlink" title="多角色同场专属适配逻辑"></a>多角色同场专属适配逻辑</h3><p>单段剧情出场 5 人以上高频场景：</p>
+<ol>
+<li><p>批量标签召回全部角色档案、两两人物关系；</p>
+</li>
+<li><p>向量检索匹配多人共同参与的主线事件；</p>
+</li>
+<li><p>路人、次要配角素材做精简压缩，优先保障主角、核心配角人设完整。</p>
+</li>
+</ol>
+<h3 id="多支线无统一时间线适配逻辑"><a href="#多支线无统一时间线适配逻辑" class="headerlink" title="多支线无统一时间线适配逻辑"></a>多支线无统一时间线适配逻辑</h3><p>大量小说不存在全局统一线性时间轴，采用时间线标签隔离方案：</p>
+<ol>
+<li><p>强制拉取全部主线高权重事件，主线规则全局生效，所有支线不能违背主线设定；</p>
+</li>
+<li><p>仅召回当前写作所属支线剧情，过滤其他无关支线素材，避免多条支线互相干扰；</p>
+</li>
+<li><p>上层评审 Agent 额外校验支线剧情与主线关键事件无逻辑冲突。</p>
+</li>
+</ol>
+<h2 id="五、完整检索全链路（小说-Agent-标准流水线）"><a href="#五、完整检索全链路（小说-Agent-标准流水线）" class="headerlink" title="五、完整检索全链路（小说 Agent 标准流水线）"></a>五、完整检索全链路（小说 Agent 标准流水线）</h2><p>用户输入章节写作需求</p>
+<ol>
+<li><p>语义解析识别出场角色列表、当前所属主线 &#x2F; 支线时间线；</p>
+</li>
+<li><p>标签强制召回：所有出场角色档案、主线高权重固定事件；</p>
+</li>
+<li><p>向量语义召回：匹配相似场景、关联伏笔、同类冲突剧情；</p>
+</li>
+<li><p>两路素材合并、去重，按照预设权重降序重排；</p>
+</li>
+<li><p>实时测算总 Token，梯度裁剪低权重次要素材；</p>
+</li>
+<li><p>筛选完成的合规素材自动填入分层 Prompt 约束区块，送入 LLM 生成剧情。</p>
+</li>
+</ol>
+<h2 id="六、这套检索架构解决的核心痛点复盘"><a href="#六、这套检索架构解决的核心痛点复盘" class="headerlink" title="六、这套检索架构解决的核心痛点复盘"></a>六、这套检索架构解决的核心痛点复盘</h2><ol>
+<li><p>解决长篇人设稀释：权重分层保证角色档案、世界观规则永远优先展示，不会被海量支线剧情覆盖；</p>
+</li>
+<li><p>解决角色、关键剧情漏召回：标签强制兜底，不受向量相似度波动影响；</p>
+</li>
+<li><p>解决多支线剧情混乱：时间线标签隔离无关支线，仅保留主线 + 当前支线素材；</p>
+</li>
+<li><p>严格控制上下文 Token 总量：动态裁剪平衡素材丰富度与窗口上限，兼顾创意与人设稳定。</p>
+</li>
+</ol>
+<h2 id="七、简易-RAG-与叙事级优化-RAG-的本质差距"><a href="#七、简易-RAG-与叙事级优化-RAG-的本质差距" class="headerlink" title="七、简易 RAG 与叙事级优化 RAG 的本质差距"></a>七、简易 RAG 与叙事级优化 RAG 的本质差距</h2><p>基础简易 RAG 仅做「向量检索 + 简单文本拼接」，属于单向输入优化，存在不可逆缺陷：</p>
+<ol>
+<li><p>关键角色、主线事件随机漏招，幻觉频发；</p>
+</li>
+<li><p>次要素材挤占核心人设，长篇连载持续 OOC；</p>
+</li>
+<li><p>多支线混杂，剧情逻辑容易自相矛盾。</p>
+</li>
+</ol>
+<p>权重分层 + 双路混合召回 + 后置裁剪属于<strong>叙事专用生产级 RAG 方案</strong>，是搭建稳定小说 Agent 不可或缺的底层基础；仅依靠这套检索体系只能优化输入素材，想要完全杜绝偏移，还需要搭配循环迭代校验架构、Function Call 知识库自动更新模块，形成完整自治智能体闭环。</p>
+<h2 id="结尾总结"><a href="#结尾总结" class="headerlink" title="结尾总结"></a>结尾总结</h2><p>想要 AI 写长篇小说、游戏剧情不 OOC、不编造虚假内容，单纯优化提示词、调整模型温度参数治标不治本。检索层精细化设计才是底层根基：<br>权重分层解决信息优先级失衡，双路召回解决关键信息遗漏，重排动态裁剪解决上下文稀释。三者组合形成可控、稳定的素材供给链路，从源头大幅降低角色偏移与幻觉概率，再依靠上层评审 Agent 做最终兜底，支撑几十万、上百万字长篇连载逻辑完全自洽。</p>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Agent/" class="category-chain-item">AI Agent</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI-Agent/" class="print-no-link">#AI Agent</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>小说叙事Agent高级RAG检索体系：权重分层+双路召回+动态裁剪，根治长篇人设稀释与剧情漏召</div>
+      <div>https://yonghengshikong.github.io/posts/27731/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YongHengShiKong</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年7月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/57589/" title="从AI写文跑偏到自研叙事Agent：大模型底层思维与架构复盘（纯干货）">
+                        <span class="hidden-mobile">从AI写文跑偏到自研叙事Agent：大模型底层思维与架构复盘（纯干货）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"yonghengshikong/yonghengshikong.github.io","repo-id":"R_kgDOMLxO7A","category":"General","category-id":"DIC_kwDOMLxO7M4CkMKB","theme-light":"light","theme-dark":"dark","mapping":"title","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
